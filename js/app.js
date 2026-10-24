@@ -517,6 +517,7 @@ function renderTodayView() {
 
     // Add Any Exercise dropdown
     const availableToAdd = Object.keys(allEx).filter(i => !exerciseIds.includes(i));
+    availableToAdd.sort((a, b) => (allEx[a]?.name || '').localeCompare(allEx[b]?.name || ''));
     html += `
       <div class="c">
         <b>Customize Workout</b>
@@ -986,6 +987,8 @@ function renderExercisesView() {
     const matchesMuscle = exerciseFilterMuscle === 'all' || ex.primary === exerciseFilterMuscle || ex.secondary.includes(exerciseFilterMuscle);
     return matchesSearch && matchesMuscle;
   });
+
+  filteredKeys.sort((a, b) => (allEx[a]?.name || '').localeCompare(allEx[b]?.name || ''));
 
   html += `
     <div style="margin-top:10px">
@@ -1786,3 +1789,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+

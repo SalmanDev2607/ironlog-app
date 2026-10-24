@@ -244,3 +244,4 @@ export function resetState() {
   localStorage.removeItem(STORAGE_KEY);
   AppState = { ...DEFAULT_STATE };
 }
+

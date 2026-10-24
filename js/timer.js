@@ -161,3 +161,4 @@ export function formatTime(seconds) {
   const secs = seconds % 60;
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
+

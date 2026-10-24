@@ -173,3 +173,4 @@ ironlog-app/
 ## 📄 License
 
 MIT License. Free to use, modify, and distribute.
+

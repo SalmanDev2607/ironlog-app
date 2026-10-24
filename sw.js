@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ironlog-v2.0.0';
+const CACHE_NAME = 'ironlog-v2.1.0';
 const ASSETS = [
   './',
   './index.html',
@@ -60,3 +60,4 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
