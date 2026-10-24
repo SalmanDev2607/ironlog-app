@@ -1,0 +1,35 @@
+{
+  "name": "IronLog – Smart Gym & Hypertrophy Tracker",
+  "short_name": "IronLog",
+  "description": "Adaptive Push-Pull-Legs gym tracker with golden-era proportion targets, muscle recovery tracking, and smart progression.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#12151a",
+  "theme_color": "#e4531a",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["fitness", "health", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Today's Workout",
+      "short_name": "Workout",
+      "description": "Open today's workout tracker",
+      "url": "./index.html?tab=today",
+      "icons": [{ "src": "./icons/icon.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Muscle Recovery",
+      "short_name": "Recovery",
+      "description": "Check muscle recovery status",
+      "url": "./index.html?tab=progress",
+      "icons": [{ "src": "./icons/icon.svg", "sizes": "192x192" }]
+    }
+  ]
+}

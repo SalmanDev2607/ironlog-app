@@ -1,0 +1,9 @@
+services:
+  ironlog:
+    build: .
+    container_name: ironlog-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - TZ=UTC

@@ -1,0 +1,3208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <title>IronLog – Gym & Hypertrophy Tracker</title>
+  
+  <meta name="description" content="Adaptive Push-Pull-Legs gym tracker with golden-era proportion targets, muscle recovery tracking, and smart progressive overload.">
+  <meta name="theme-color" content="#12151a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f6f3" media="(prefers-color-scheme: light)">
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="IronLog">
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMWMyMTI3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzEyMTUxYSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYWNjZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmN2EzZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNDUzMWEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8ZmlsdGVyIGlkPSJnbG93IiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj4KICAgICAgPGZlRHJvcFNoYWRvdyBkeD0iMCIgZHk9IjgiIHN0ZERldmlhdGlvbj0iMTIiIGZsb29kLWNvbG9yPSIjZTQ1MzFhIiBmbG9vZC1vcGFjaXR5PSIwLjM1Ii8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTAiIGZpbGw9InVybCgjYmcpIi8+CiAgPHJlY3Qgd2lkdGg9IjUwNCIgaGVpZ2h0PSI1MDQiIHg9IjQiIHk9IjQiIHJ4PSIxMDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJjMzMzYiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgCiAgPCEtLSBTdHlsaXplZCBIZXhhZ29uIFNoaWVsZCAvIER1bWJiZWxsIENvcmUgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU2LDI1Nikgc2NhbGUoMS4xNSkiIGZpbHRlcj0idXJsKCNnbG93KSI+CiAgICA8IS0tIER1bWJiZWxsIEJhciAtLT4KICAgIDxyZWN0IHg9Ii0xMTAiIHk9Ii0xMiIgd2lkdGg9IjIyMCIgaGVpZ2h0PSIyNCIgcng9IjEyIiBmaWxsPSIjZWNlZmYyIi8+CiAgICAKICAgIDwhLS0gT3V0ZXIgUGxhdGVzIExlZnQgLS0+CiAgICA8cmVjdCB4PSItMTM1IiB5PSItNzUiIHdpZHRoPSIyMiIgaGVpZ2h0PSIxNTAiIHJ4PSI3IiBmaWxsPSJ1cmwoI2FjY2VudCkiLz4KICAgIDxyZWN0IHg9Ii0xMDUiIHk9Ii01NSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjExMCIgcng9IjYiIGZpbGw9IiM4ODkyOWIiLz4KICAgIDxyZWN0IHg9Ii0xNDgiIHk9Ii00MCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjgwIiByeD0iNCIgZmlsbD0iIzY2NzA3OCIvPgogICAgCiAgICA8IS0tIE91dGVyIFBsYXRlcyBSaWdodCAtLT4KICAgIDxyZWN0IHg9IjExMyIgeT0iLTc1IiB3aWR0aD0iMjIiIGhlaWdodD0iMTUwIiByeD0iNyIgZmlsbD0idXJsKCNhY2NlbnQpIi8+CiAgICA8cmVjdCB4PSI4NyIgeT0iLTU1IiB3aWR0aD0iMTgiIGhlaWdodD0iMTEwIiByeD0iNiIgZmlsbD0iIzg4OTI5YiIvPgogICAgPHJlY3QgeD0iMTM2IiB5PSItNDAiIHdpZHRoPSIxMiIgaGVpZ2h0PSI4MCIgcng9IjQiIGZpbGw9IiM2NjcwNzgiLz4KICAgIAogICAgPCEtLSBDZW50ZXIgR3JpcCB3aXRoIEtudXJsaW5nIGRldGFpbHMgLS0+CiAgICA8cmVjdCB4PSItNDUiIHk9Ii0xNSIgd2lkdGg9IjkwIiBoZWlnaHQ9IjMwIiByeD0iNiIgZmlsbD0iI2U0NTMxYSIvPgogICAgPGxpbmUgeDE9Ii0zMCIgeTE9Ii0xNSIgeDI9Ii0zMCIgeTI9IjE1IiBzdHJva2U9IiMxMjE1MWEiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9Ii0xNSIgeTE9Ii0xNSIgeDI9Ii0xNSIgeTI9IjE1IiBzdHJva2U9IiMxMjE1MWEiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9IjAiIHkxPSItMTUiIHgyPSIwIiB5Mj0iMTUiIHN0cm9rZT0iIzEyMTUxYSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8bGluZSB4MT0iMTUiIHkxPSItMTUiIHgyPSIxNSIgeTI9IjE1IiBzdHJva2U9IiMxMjE1MWEiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9IjMwIiB5MT0iLTE1IiB4Mj0iMzAiIHkyPSIxNSIgc3Ryb2tlPSIjMTIxNTFhIiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIAogICAgPCEtLSBMaWdodG5pbmcgLyBQZWFrIEJhZGdlIC0tPgogICAgPHBhdGggZD0iTS04LC00OCBMMTQsLTQ4IEw0LC0yOCBMMTgsLTI4IEwtMTQsMCBMLTQsLTIwIEwtMTYsLTIwIFoiIGZpbGw9IiNmZmIwODgiIG9wYWNpdHk9IjAuOSIvPgogIDwvZz4KICAKICA8IS0tIFRleHQgTGFiZWwgLS0+CiAgPHRleHQgeD0iMjU2IiB5PSI0MTUiIGZvbnQtZmFtaWx5PSInQmFybG93IENvbmRlbnNlZCcsICdJbXBhY3QnLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZWNlZmYyIiBsZXR0ZXItc3BhY2luZz0iNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SVJPTkxPRzwvdGV4dD4KPC9zdmc+Cg==">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMWMyMTI3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzEyMTUxYSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYWNjZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmN2EzZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNDUzMWEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8ZmlsdGVyIGlkPSJnbG93IiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj4KICAgICAgPGZlRHJvcFNoYWRvdyBkeD0iMCIgZHk9IjgiIHN0ZERldmlhdGlvbj0iMTIiIGZsb29kLWNvbG9yPSIjZTQ1MzFhIiBmbG9vZC1vcGFjaXR5PSIwLjM1Ii8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTAiIGZpbGw9InVybCgjYmcpIi8+CiAgPHJlY3Qgd2lkdGg9IjUwNCIgaGVpZ2h0PSI1MDQiIHg9IjQiIHk9IjQiIHJ4PSIxMDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJjMzMzYiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgCiAgPCEtLSBTdHlsaXplZCBIZXhhZ29uIFNoaWVsZCAvIER1bWJiZWxsIENvcmUgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU2LDI1Nikgc2NhbGUoMS4xNSkiIGZpbHRlcj0idXJsKCNnbG93KSI+CiAgICA8IS0tIER1bWJiZWxsIEJhciAtLT4KICAgIDxyZWN0IHg9Ii0xMTAiIHk9Ii0xMiIgd2lkdGg9IjIyMCIgaGVpZ2h0PSIyNCIgcng9IjEyIiBmaWxsPSIjZWNlZmYyIi8+CiAgICAKICAgIDwhLS0gT3V0ZXIgUGxhdGVzIExlZnQgLS0+CiAgICA8cmVjdCB4PSItMTM1IiB5PSItNzUiIHdpZHRoPSIyMiIgaGVpZ2h0PSIxNTAiIHJ4PSI3IiBmaWxsPSJ1cmwoI2FjY2VudCkiLz4KICAgIDxyZWN0IHg9Ii0xMDUiIHk9Ii01NSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjExMCIgcng9IjYiIGZpbGw9IiM4ODkyOWIiLz4KICAgIDxyZWN0IHg9Ii0xNDgiIHk9Ii00MCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjgwIiByeD0iNCIgZmlsbD0iIzY2NzA3OCIvPgogICAgCiAgICA8IS0tIE91dGVyIFBsYXRlcyBSaWdodCAtLT4KICAgIDxyZWN0IHg9IjExMyIgeT0iLTc1IiB3aWR0aD0iMjIiIGhlaWdodD0iMTUwIiByeD0iNyIgZmlsbD0idXJsKCNhY2NlbnQpIi8+CiAgICA8cmVjdCB4PSI4NyIgeT0iLTU1IiB3aWR0aD0iMTgiIGhlaWdodD0iMTEwIiByeD0iNiIgZmlsbD0iIzg4OTI5YiIvPgogICAgPHJlY3QgeD0iMTM2IiB5PSItNDAiIHdpZHRoPSIxMiIgaGVpZ2h0PSI4MCIgcng9IjQiIGZpbGw9IiM2NjcwNzgiLz4KICAgIAogICAgPCEtLSBDZW50ZXIgR3JpcCB3aXRoIEtudXJsaW5nIGRldGFpbHMgLS0+CiAgICA8cmVjdCB4PSItNDUiIHk9Ii0xNSIgd2lkdGg9IjkwIiBoZWlnaHQ9IjMwIiByeD0iNiIgZmlsbD0iI2U0NTMxYSIvPgogICAgPGxpbmUgeDE9Ii0zMCIgeTE9Ii0xNSIgeDI9Ii0zMCIgeTI9IjE1IiBzdHJva2U9IiMxMjE1MWEiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9Ii0xNSIgeTE9Ii0xNSIgeDI9Ii0xNSIgeTI9IjE1IiBzdHJva2U9IiMxMjE1MWEiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9IjAiIHkxPSItMTUiIHgyPSIwIiB5Mj0iMTUiIHN0cm9rZT0iIzEyMTUxYSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8bGluZSB4MT0iMTUiIHkxPSItMTUiIHgyPSIxNSIgeTI9IjE1IiBzdHJva2U9IiMxMjE1MWEiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9IjMwIiB5MT0iLTE1IiB4Mj0iMzAiIHkyPSIxNSIgc3Ryb2tlPSIjMTIxNTFhIiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIAogICAgPCEtLSBMaWdodG5pbmcgLyBQZWFrIEJhZGdlIC0tPgogICAgPHBhdGggZD0iTS04LC00OCBMMTQsLTQ4IEw0LC0yOCBMMTgsLTI4IEwtMTQsMCBMLTQsLTIwIEwtMTYsLTIwIFoiIGZpbGw9IiNmZmIwODgiIG9wYWNpdHk9IjAuOSIvPgogIDwvZz4KICAKICA8IS0tIFRleHQgTGFiZWwgLS0+CiAgPHRleHQgeD0iMjU2IiB5PSI0MTUiIGZvbnQtZmFtaWx5PSInQmFybG93IENvbmRlbnNlZCcsICdJbXBhY3QnLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZWNlZmYyIiBsZXR0ZXItc3BhY2luZz0iNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SVJPTkxPRzwvdGV4dD4KPC9zdmc+Cg==">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+/* IronLog Modern Athletic UI Theme */
+
+:root {
+  --bg: #12151a;
+  --cd: #1c2127;
+  --cd-hover: #232932;
+  --tx: #eceff2;
+  --mu: #98a2ab;
+  --ac: #ff7a3d;
+  --ac-hover: #ff915b;
+  --ax: #1a0e06;
+  --bd: #2c333b;
+  --rd: #ef7676;
+  --rd-bg: rgba(239, 118, 118, 0.15);
+  --yl: #e8b34a;
+  --yl-bg: rgba(232, 179, 74, 0.15);
+  --gn: #6fcf76;
+  --gn-bg: rgba(111, 207, 118, 0.15);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --radius: 12px;
+  --radius-sm: 8px;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f4f6f3;
+  --cd: #ffffff;
+  --cd-hover: #f9faf8;
+  --tx: #161a1f;
+  --mu: #616e78;
+  --ac: #e4531a;
+  --ac-hover: #c94411;
+  --ax: #ffffff;
+  --bd: #dce1dc;
+  --rd: #c62828;
+  --rd-bg: rgba(198, 40, 40, 0.1);
+  --yl: #b7791f;
+  --yl-bg: rgba(183, 121, 31, 0.1);
+  --gn: #2e7d32;
+  --gn-bg: rgba(46, 125, 50, 0.1);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'Barlow', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 500;
+  line-height: 1.45;
+  min-height: 100vh;
+}
+
+body {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top, 14px) 16px calc(90px + env(safe-area-inset-bottom, 16px));
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-family: 'Barlow Condensed', Impact, -apple-system, sans-serif;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+h1 { font-size: 32px; line-height: 1.1; }
+h2 { font-size: 24px; line-height: 1.15; }
+h3 { font-size: 19px; line-height: 1.2; }
+h4 { font-size: 16px; line-height: 1.25; }
+
+.mu {
+  color: var(--mu);
+  font-size: 14px;
+}
+
+.mu-sm {
+  color: var(--mu);
+  font-size: 12px;
+}
+
+/* Layout Utilities */
+.r {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sb {
+  justify-content: space-between;
+}
+
+.c-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gr {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gr-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* Cards */
+.c {
+  background: var(--cd);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 12px 0;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.c-highlight {
+  border-color: var(--ac);
+  background: linear-gradient(180deg, rgba(228, 83, 26, 0.06) 0%, var(--cd) 100%);
+}
+
+/* Header Bar */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 16px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 14px;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+
+.app-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Buttons */
+button {
+  font-family: 'Barlow', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  background: var(--ac);
+  color: var(--ax);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+button:hover {
+  background: var(--ac-hover);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button.g {
+  background: transparent;
+  color: var(--tx);
+  border: 1px solid var(--bd);
+}
+
+button.g:hover {
+  background: var(--cd-hover);
+  border-color: var(--mu);
+}
+
+button.w {
+  width: 100%;
+  font-size: 18px;
+  padding: 14px;
+  font-family: 'Barlow Condensed', Impact, sans-serif;
+  letter-spacing: 0.5px;
+}
+
+button.danger {
+  background: var(--rd);
+  color: #fff;
+}
+
+button.danger-outline {
+  background: transparent;
+  color: var(--rd);
+  border: 1px solid var(--rd);
+}
+
+button.sm {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+button.icon-btn {
+  padding: 8px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--bd);
+  color: var(--tx);
+  min-width: 36px;
+  height: 36px;
+}
+
+/* Inputs & Form Controls */
+input, select, textarea {
+  font-family: 'Barlow', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  color: var(--tx);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--ac);
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--mu);
+  margin: 10px 0 4px;
+}
+
+/* Input Stepper (+ and - buttons) */
+.input-stepper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.input-stepper button {
+  width: 36px;
+  height: 42px;
+  padding: 0;
+  font-size: 18px;
+  background: var(--cd-hover);
+  border: 1px solid var(--bd);
+  color: var(--tx);
+  flex-shrink: 0;
+}
+
+.input-stepper input {
+  text-align: center;
+}
+
+/* Bottom Navigation */
+nav#nv {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--cd);
+  border-top: 1px solid var(--bd);
+  display: flex;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  backdrop-filter: blur(10px);
+}
+
+nav#nv button {
+  flex: 1;
+  background: none;
+  color: var(--mu);
+  border-radius: 0;
+  padding: 10px 2px 8px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+nav#nv button.on {
+  color: var(--ac);
+  border-top: 2px solid var(--ac);
+  background: rgba(228, 83, 26, 0.05);
+}
+
+nav#nv button svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+}
+
+/* Badges & Chips */
+.t {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--bd);
+  color: var(--mu);
+}
+
+.t-ac {
+  border-color: var(--ac);
+  color: var(--ac);
+  background: rgba(228, 83, 26, 0.1);
+}
+
+.t-gn {
+  border-color: var(--gn);
+  color: var(--gn);
+  background: var(--gn-bg);
+}
+
+.t-yl {
+  border-color: var(--yl);
+  color: var(--yl);
+  background: var(--yl-bg);
+}
+
+.t-rd {
+  border-color: var(--rd);
+  color: var(--rd);
+  background: var(--rd-bg);
+}
+
+.ch {
+  display: inline-flex;
+  align-items: center;
+  margin: 4px 6px 0 0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  font-size: 14px;
+}
+
+.ch .del-set {
+  margin-left: 6px;
+  cursor: pointer;
+  color: var(--rd);
+  font-weight: bold;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* Modal Dialog */
+#md {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: flex-end;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#md.show {
+  opacity: 1;
+}
+
+#md > div {
+  background: var(--cd);
+  width: 100%;
+  max-width: 560px;
+  margin: auto;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 18px 18px 0 0;
+  border-top: 1px solid var(--bd);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+td, th {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--bd);
+  text-align: left;
+}
+
+th {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--mu);
+}
+
+/* Progress & Golden Ratio Bars */
+.bar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bd);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.cl {
+  display: none;
+  font-size: 13px;
+  color: var(--mu);
+  margin-top: 6px;
+  padding: 8px;
+  background: var(--bg);
+  border-radius: 6px;
+  border-left: 3px solid var(--ac);
+}
+
+.rw:hover .cl, .rw.o .cl {
+  display: block;
+}
+
+/* Floating Rest Timer Pill */
+.rest-timer-bar {
+  position: fixed;
+  bottom: calc(72px + env(safe-area-inset-bottom, 10px));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cd);
+  border: 1px solid var(--ac);
+  border-radius: 30px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 25px rgba(228, 83, 26, 0.3);
+  z-index: 45;
+  width: calc(100% - 32px);
+  max-width: 520px;
+  animation: popIn 0.2s ease;
+}
+
+@keyframes popIn {
+  from { transform: translateX(-50%) scale(0.9); opacity: 0; }
+  to { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+.rest-timer-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ac);
+  min-width: 54px;
+}
+
+/* Toast */
+.toast-notice {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  background: var(--tx);
+  color: var(--bg);
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 99px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  z-index: 120;
+  pointer-events: none;
+  animation: toastFade 2.6s ease forwards;
+}
+
+@keyframes toastFade {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  10% { opacity: 1; transform: translate(-50%, 0); }
+  85% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
+}
+
+/* Exercise Library List */
+.ex-card {
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.ex-card:hover {
+  border-color: var(--ac);
+}
+
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <nav id="nv"></nav>
+  <div id="md" onclick="if(event.target===this)IronLog.closeModal()">
+    <div id="mb"></div>
+  </div>
+
+  <script>
+// --- exercises.js ---
+// IronLog Exercises Database & Target Proportions
+
+const DEFAULT_EXERCISES = {
+  bp: {
+    name: 'Barbell Bench Press',
+    primary: 'chest',
+    secondary: ['shoulders', 'triceps'],
+    weightFactor: 0.75,
+    steps: [
+      'Lie flat on the bench with eyes directly under the bar.',
+      'Pinch shoulder blades back and down into the pad.',
+      'Grip the bar slightly wider than shoulder-width.',
+      'Unrack and lower with control to mid-chest, keeping elbows tucked ~45°.',
+      'Drive feet into the floor and press up explosively until arms lock out.'
+    ],
+    mistakes: 'Bouncing the bar off the ribcage; flaring elbows wide at 90°; lifting hips off bench.'
+  },
+  ip: {
+    name: 'Incline Dumbbell Press',
+    primary: 'chest',
+    secondary: ['shoulders', 'triceps'],
+    weightFactor: 0.25, // per dumbbell
+    steps: [
+      'Set incline bench to 30° (higher turns it into a shoulder press).',
+      'Kick dumbbells to shoulder level and plant feet firmly.',
+      'Press dumbbells up and slightly together in an arc.',
+      'Lower slowly until you feel a deep stretch across upper chest.'
+    ],
+    mistakes: 'Bench angled too high (>45°); clanking dumbbells at the top; cutting bottom range.'
+  },
+  sp: {
+    name: 'Overhead Press (OHP)',
+    primary: 'shoulders',
+    secondary: ['triceps'],
+    weightFactor: 0.45,
+    steps: [
+      'Rest bar at upper collarbone, hands just outside shoulders.',
+      'Squeeze glutes and brace abs tight.',
+      'Press straight up; tuck chin slightly as bar passes your nose, then push head forward under the bar.',
+      'Lock out overhead with shrug at top; lower under full control.'
+    ],
+    mistakes: 'Excessive lower back arching; pushing bar forward instead of vertical; loose core.'
+  },
+  lr: {
+    name: 'Dumbbell Lateral Raise',
+    primary: 'shoulders',
+    secondary: [],
+    weightFactor: 0.08,
+    steps: [
+      'Stand with slight forward torso hinge, dumbbells resting at sides.',
+      'Maintain slight bend at elbows (about 15°).',
+      'Raise dumbbells outward leading with elbows until parallel to floor.',
+      'Pause for a split second, then lower under a slow 2-second tempo.'
+    ],
+    mistakes: 'Swinging the torso for momentum; shrugging traps to lift weight; raising hands higher than elbows.'
+  },
+  pd: {
+    name: 'Triceps Cable Pushdown',
+    primary: 'triceps',
+    secondary: [],
+    weightFactor: 0.35,
+    steps: [
+      'Attach rope or straight bar to high pulley.',
+      'Pin elbows firmly to your ribs with slight forward lean.',
+      'Push handle straight down until arms are fully locked out.',
+      'Control the eccentric return until forearms are past parallel.'
+    ],
+    mistakes: 'Elbows drifting forward and back; using body weight to lean onto bar; incomplete lockout.'
+  },
+  oe: {
+    name: 'Overhead Triceps Extension',
+    primary: 'triceps',
+    secondary: [],
+    weightFactor: 0.3,
+    steps: [
+      'Grip one heavy dumbbell with both hands cupped under top plate.',
+      'Press overhead; keep elbows pointing forward and tucked close to head.',
+      'Lower weight behind head until forearms touch biceps for a deep triceps stretch.',
+      'Extend forearms straight overhead to lock out.'
+    ],
+    mistakes: 'Elbows flaring excessively wide; hyperextending lower back; rushing bottom turnaround.'
+  },
+  lt: {
+    name: 'Lat Pulldown',
+    primary: 'back',
+    secondary: ['biceps'],
+    weightFactor: 0.6,
+    steps: [
+      'Grip bar slightly wider than shoulders with overhand grip.',
+      'Lock thighs under pads, puff chest up toward the ceiling.',
+      'Drive elbows down and back, pulling bar to your upper chest / clavicle.',
+      'Squeeze lats at bottom, then let bar return slowly for a full stretch overhead.'
+    ],
+    mistakes: 'Pulling behind the neck; swinging body backwards; pulling with biceps instead of lats.'
+  },
+  br: {
+    name: 'Barbell Bent-Over Row',
+    primary: 'back',
+    secondary: ['biceps'],
+    weightFactor: 0.6,
+    steps: [
+      'Hinge at hips with a flat back at roughly 45° angle, knees slightly soft.',
+      'Grip bar slightly wider than shoulder width.',
+      'Pull bar toward lower abdomen/belly button, driving elbows back.',
+      'Pinch shoulder blades together at top, lower slowly with control.'
+    ],
+    mistakes: 'Jerking hips and standing upright to yank weight; rounding spinal column; short reps.'
+  },
+  cr: {
+    name: 'Seated Cable Row',
+    primary: 'back',
+    secondary: ['biceps'],
+    weightFactor: 0.5,
+    steps: [
+      'Sit tall with knees slightly bent and feet firmly braced on footplates.',
+      'Pull attachment toward lower stomach while driving shoulders back and down.',
+      'Squeeze mid-back at contraction.',
+      'Extend arms forward slowly, allowing shoulder blades to open up for full lat stretch.'
+    ],
+    mistakes: 'Rocking torso back and forth excessively; hunching shoulders; rushing return.'
+  },
+  fp: {
+    name: 'Face Pull',
+    primary: 'shoulders',
+    secondary: ['back'],
+    weightFactor: 0.25,
+    steps: [
+      'Set cable pulley to upper chest or eye level with rope attachment.',
+      'Grip rope with thumbs pointed toward you.',
+      'Step back, pull rope directly toward bridge of nose while externally rotating hands outward.',
+      'Hold peak squeeze for 1 full second with elbows high and wide, then return smoothly.'
+    ],
+    mistakes: 'Using too much weight; dropping elbows below wrists; leaning back to swing.'
+  },
+  bc: {
+    name: 'Barbell / EZ-Bar Curl',
+    primary: 'biceps',
+    secondary: [],
+    weightFactor: 0.3,
+    steps: [
+      'Stand upright, feet shoulder-width, gripping bar with palms up.',
+      'Keep elbows pinned near waistline.',
+      'Curl bar up toward collarbone while contracting biceps.',
+      'Lower bar slowly all the way down until elbows are fully extended.'
+    ],
+    mistakes: 'Swinging torso or thrusting hips; elbows kicking forward 6 inches; cutting bottom lockout.'
+  },
+  hc: {
+    name: 'Dumbbell Hammer Curl',
+    primary: 'biceps',
+    secondary: ['forearms'],
+    weightFactor: 0.12, // per dumbbell
+    steps: [
+      'Hold dumbbells at sides with neutral grip (palms facing each other).',
+      'Keep upper arms stationary; curl dumbbells up toward shoulders.',
+      'Squeeze brachialis and forearms at the top.',
+      'Lower under 2-3 seconds of constant tension.'
+    ],
+    mistakes: 'Swinging weights; rushing eccentric; moving elbows out of position.'
+  },
+  sq: {
+    name: 'Barbell Back Squat',
+    primary: 'quads',
+    secondary: ['glutes', 'hamstrings'],
+    weightFactor: 0.9,
+    steps: [
+      'Rest bar securely on upper traps (high bar) or rear delts (low bar).',
+      'Feet shoulder-width apart, toes flared out ~15-30°.',
+      'Brace core with Valsalva breath, sit back and down between knees.',
+      'Descend until hip crease is below top of knees (parallel or deeper).',
+      'Drive forcefully up through mid-foot, knees tracking over toes.'
+    ],
+    mistakes: 'Knees caving inward (valgus collapse); heels lifting off ground; chest collapsing forward.'
+  },
+  lp: {
+    name: 'Leg Press',
+    primary: 'quads',
+    secondary: ['glutes'],
+    weightFactor: 1.5,
+    steps: [
+      'Sit deep in seat with lower back and tailbone pressed flush against backrest.',
+      'Place feet shoulder-width in center of plate.',
+      'Lower platform until knees reach 90° angle without butt lifting.',
+      'Press sled up through whole foot, stopping just short of hyperextending knees.'
+    ],
+    mistakes: 'Lower back curling off seat at the bottom; forcefully locking/snapping knees straight.'
+  },
+  rd: {
+    name: 'Romanian Deadlift (RDL)',
+    primary: 'hamstrings',
+    secondary: ['glutes'],
+    weightFactor: 0.8,
+    steps: [
+      'Stand tall holding bar at hips with overhand grip.',
+      'Keep knees softly unlocked (15° bend) and static.',
+      'Push hips straight backward as if touching a wall behind you.',
+      'Slide bar close along thighs down to mid-shin until hamstrings are fully loaded.',
+      'Drive hips forward and squeeze glutes to lock out.'
+    ],
+    mistakes: 'Rounding the lower back; bending knees into a conventional squat; looking up into mirror.'
+  },
+  lc: {
+    name: 'Lying or Seated Leg Curl',
+    primary: 'hamstrings',
+    secondary: [],
+    weightFactor: 0.4,
+    steps: [
+      'Adjust pad so it rests right behind Achilles tendon / lower calves.',
+      'Grip handles to stabilize pelvis and prevent hips from rising.',
+      'Curl heels actively toward glutes with strong contraction.',
+      'Control the negative back down until legs are almost straight.'
+    ],
+    mistakes: 'Lifting hips off the bench during the squeeze; dropping weight quickly.'
+  },
+  ht: {
+    name: 'Barbell Hip Thrust',
+    primary: 'glutes',
+    secondary: ['hamstrings'],
+    weightFactor: 1.0,
+    steps: [
+      'Position shoulder blades across the edge of a sturdy bench.',
+      'Place padded barbell over hip crease; feet flat on floor shoulder-width apart.',
+      'Drive through heels to push hips up until torso and thighs form a straight line.',
+      'Tuck chin looking forward, squeeze glutes hard at the top for 1 second, then lower with control.'
+    ],
+    mistakes: 'Hyperextending lower back at top; placing feet too far out or too close; looking up at ceiling.'
+  },
+  cf: {
+    name: 'Standing Calf Raise',
+    primary: 'calves',
+    secondary: [],
+    weightFactor: 0.8,
+    steps: [
+      'Place balls of feet on elevated block or machine step.',
+      'Lower heels slowly into a deep stretch and hold for 1 full second.',
+      'Explode onto balls of toes and big toe joint to peak height.',
+      'Pause at maximum peak contraction for 1 second before lowering.'
+    ],
+    mistakes: 'Bouncing using Achilles tendon spring reflex; bending knees; cutting range of motion.'
+  },
+  cc: {
+    name: 'Cable Kneeling Crunch',
+    primary: 'abs',
+    secondary: [],
+    weightFactor: 0.25,
+    steps: [
+      'Kneel facing cable stack with rope held tightly beside ears/temples.',
+      'Keep hips locked still; curl spine downward by flexing abs.',
+      'Bring elbows down toward knees, rounding upper and mid back.',
+      'Contract abs hard at bottom, then slowly unroll spine.'
+    ],
+    mistakes: 'Sitting back onto heels (using hip flexors); pulling with arms instead of spinal flexion.'
+  },
+  hl: {
+    name: 'Hanging Leg / Knee Raise',
+    primary: 'abs',
+    secondary: [],
+    weightFactor: 0.0, // bodyweight
+    steps: [
+      'Hang from pull-up bar with active engaged shoulders.',
+      'Posteriorly tilt pelvis to engage lower abdomen.',
+      'Raise knees or straight legs up until thighs pass parallel to floor and pelvis curls up.',
+      'Lower legs slowly without letting body swing.'
+    ],
+    mistakes: 'Swinging legs with momentum; arching lower back; dead hang without core tension.'
+  },
+  wc: {
+    name: 'Dumbbell Wrist Curl',
+    primary: 'forearms',
+    secondary: [],
+    weightFactor: 0.1,
+    steps: [
+      'Sit on bench with forearms resting flat on thighs, wrists hanging slightly off knees, palms facing up.',
+      'Lower dumbbell down fingers to open hand slightly.',
+      'Curl fingers and wrist upward as high as possible.',
+      'Pause for peak forearm squeeze, then lower smoothly.'
+    ],
+    mistakes: 'Lifting forearms off thighs; jerky wrist movement; using too heavy weight.'
+  }
+};
+
+// Muscle group definitions
+const MUSCLE_GROUPS = [
+  'chest', 'shoulders', 'triceps', 'back', 'biceps',
+  'quads', 'hamstrings', 'glutes', 'calves', 'abs', 'forearms'
+];
+
+// Mapping from muscle group to Golden Ratio body part measurement key
+const MUSCLE_TO_MEASUREMENT = {
+  chest: 'chest',
+  shoulders: 'shoulders',
+  back: 'shoulders',
+  triceps: 'bicep',
+  biceps: 'bicep',
+  quads: 'thigh',
+  hamstrings: 'thigh',
+  glutes: 'hips',
+  calves: 'calf'
+};
+
+// Target Golden-era aesthetic proportions relative to standing height (height * ratio)
+const GOLDEN_RATIOS = {
+  m: {
+    chest: 0.53,
+    shoulders: 0.62,
+    bicep: 0.19,
+    hips: 0.54,
+    thigh: 0.32,
+    calf: 0.21
+  },
+  f: {
+    chest: 0.50,
+    shoulders: 0.55,
+    bicep: 0.16,
+    hips: 0.58,
+    thigh: 0.33,
+    calf: 0.21
+  }
+};
+
+const MEASUREMENT_KEYS = ['chest', 'shoulders', 'bicep', 'waist', 'hips', 'thigh', 'calf'];
+
+// Push-Pull-Legs Routine Splits (6-day PPL)
+const WORKOUT_SPLITS = [
+  ['Push A', ['bp', 'sp', 'ip', 'lr', 'pd', 'cc']],
+  ['Pull A', ['lt', 'br', 'fp', 'bc', 'hc', 'wc']],
+  ['Legs A', ['sq', 'rd', 'lc', 'cf']],
+  ['Push B', ['ip', 'sp', 'lr', 'oe', 'pd', 'hl']],
+  ['Pull B', ['cr', 'lt', 'fp', 'hc', 'bc', 'wc']],
+  ['Legs B', ['lp', 'ht', 'rd', 'cf']]
+];
+
+/**
+ * Calculates current proportion score (ratio of actual to golden target)
+ */
+function getMuscleScore(muscle, state) {
+  if (!state || !state.p || !state.m || !state.m.length) return null;
+  const lastM = state.m[state.m.length - 1].v;
+  if (!lastM) return null;
+  const k = MUSCLE_TO_MEASUREMENT[muscle];
+  if (!k) return null;
+  const gender = state.p.g === 'f' ? 'f' : 'm';
+  const ratio = GOLDEN_RATIOS[gender][k];
+  if (!ratio || !state.p.h) return null;
+  const target = state.p.h * ratio;
+  return lastM[k] / target;
+}
+
+/**
+ * Calculates recovery status of a muscle group based on hours since last intense session (>=3 sets)
+ * Returns { status: 'red'|'yellow'|'green', label: 'Recovering'|'Almost ready'|'Ready', hours: number }
+ */
+function getMuscleRecovery(muscle, state, exercisesDict = DEFAULT_EXERCISES) {
+  if (!state || !state.s || !state.s.length) {
+    return { status: 'green', label: 'Ready', hours: 999 };
+  }
+
+  for (let i = state.s.length - 1; i >= 0; i--) {
+    const session = state.s[i];
+    if (!session || !session.sets) continue;
+    const setsForMuscle = session.sets.filter(s => {
+      const ex = exercisesDict[s.ex] || state.customExercises?.[s.ex];
+      return ex && ex.primary === muscle;
+    });
+
+    if (setsForMuscle.length >= 3) {
+      const hours = (Date.now() - session.end) / (3600 * 1000);
+      if (hours < 36) {
+        return { status: 'red', label: 'Recovering', hours: Math.round(hours) };
+      } else if (hours < 56) {
+        return { status: 'yellow', label: 'Almost ready', hours: Math.round(hours) };
+      } else {
+        return { status: 'green', label: 'Ready', hours: Math.round(hours) };
+      }
+    }
+  }
+
+  return { status: 'green', label: 'Ready', hours: 999 };
+}
+
+/**
+ * Determines target sets for today based on lag status & priority
+ */
+function getTargetSets(muscle, state) {
+  const score = getMuscleScore(muscle, state);
+  let baseSets = 3;
+  if (score !== null) {
+    if (score < 0.93) {
+      baseSets = 4; // Below golden target: overload volume
+    } else if (score >= 1.02) {
+      baseSets = 2; // At or above target: maintenance volume
+    } else {
+      baseSets = 3;
+    }
+  }
+
+  const priorityList = state?.p?.pri || [];
+  if (priorityList.includes(muscle)) {
+    baseSets += 1; // User selected priority muscle
+  }
+
+  return baseSets;
+}
+
+/**
+ * Calculates suggested starting weight for an exercise
+ */
+function getSuggestedWeight(exId, state, exercisesDict = DEFAULT_EXERCISES) {
+  if (!state) return 0;
+  // Check previous logged sets for this exercise
+  if (state.s && state.s.length) {
+    for (let i = state.s.length - 1; i >= 0; i--) {
+      const match = state.s[i].sets?.filter(s => s.ex === exId).pop();
+      if (match && match.w) return match.w;
+    }
+  }
+
+  // Fallback to bodyweight formula
+  const ex = exercisesDict[exId] || state.customExercises?.[exId];
+  if (!ex || !ex.weightFactor) return 0;
+
+  const latestWeight = state.w && state.w.length ? state.w[state.w.length - 1].w : (state.p?.w || 70);
+  const genderMultiplier = state.p?.g === 'f' ? 0.65 : 1.0;
+  const estimated = latestWeight * ex.weightFactor * genderMultiplier;
+  
+  // Round to nearest 1.25kg, minimum 2.5kg
+  return Math.max(2.5, Math.round(estimated / 1.25) * 1.25);
+}
+
+
+// --- state.js ---
+// IronLog State Management & Persistence
+
+
+
+const STORAGE_KEY = 'il';
+
+const DEFAULT_STATE = {
+  p: null, // Profile: { g: 'm', a: 28, h: 178, w: 75, o: 'gain', l: 'i', pri: [] }
+  w: [],   // Weight log: [{ d: '2026-10-24', w: 75.0 }]
+  m: [],   // Body measurements: [{ d: '2026-10-24', v: { chest: 100, ... } }]
+  s: [],   // Completed workouts: [{ d: '2026-10-24', n: 'Push A', start, end, sets: [] }]
+  a: null, // Active workout session
+  pr: null,// Prediction for next month
+  c: null, // Comparison of last month's prediction vs actual
+  ov: null,// Day override: { d: '2026-10-24', i: 0 }
+  x: null, // Daily exercise modifications: { d: '2026-10-24', rm: [], add: [], fo: [] }
+  u: 'cm', // Length unit: 'cm' | 'in'
+  wu: 'kg',// Weight unit: 'kg' | 'lbs'
+  theme: 'dark', // 'dark' | 'light' | 'system'
+  restTimerDuration: 90, // seconds
+  soundEnabled: true,
+  hapticsEnabled: true,
+  customExercises: {}
+};
+
+let AppState = { ...DEFAULT_STATE };
+
+/**
+ * Returns ISO date string 'YYYY-MM-DD' for today (local time)
+ */
+function getTodayDate() {
+  return new Date().toLocaleDateString('en-CA');
+}
+
+/**
+ * Loads state from localStorage
+ */
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      AppState = {
+        ...DEFAULT_STATE,
+        ...parsed,
+        // Ensure default settings exist if migrating from old version
+        u: parsed.u || 'cm',
+        wu: parsed.wu || 'kg',
+        theme: parsed.theme || 'dark',
+        restTimerDuration: parsed.restTimerDuration || 90,
+        soundEnabled: parsed.soundEnabled ?? true,
+        hapticsEnabled: parsed.hapticsEnabled ?? true,
+        customExercises: parsed.customExercises || {}
+      };
+    } else {
+      AppState = { ...DEFAULT_STATE };
+    }
+  } catch (err) {
+    console.error('Failed to load state from localStorage:', err);
+    AppState = { ...DEFAULT_STATE };
+  }
+  return AppState;
+}
+
+/**
+ * Saves current state to localStorage
+ */
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(AppState));
+  } catch (err) {
+    console.error('Failed to persist state to localStorage:', err);
+  }
+}
+
+/**
+ * Returns reference to current AppState
+ */
+function getState() {
+  return AppState;
+}
+
+/**
+ * Gets the most recent recorded body weight in kg
+ */
+function getLatestWeight() {
+  if (AppState.w && AppState.w.length > 0) {
+    return AppState.w[AppState.w.length - 1].w;
+  }
+  return AppState.p ? AppState.p.w : 70;
+}
+
+/**
+ * Unit Conversion Helpers
+ */
+function formatWeight(kgVal, unit = AppState.wu) {
+  if (kgVal == null || isNaN(kgVal)) return '--';
+  if (unit === 'lbs') {
+    return (kgVal * 2.20462).toFixed(1);
+  }
+  return Number(kgVal).toFixed(1);
+}
+
+function parseWeightInput(inputVal, unit = AppState.wu) {
+  const val = parseFloat(inputVal);
+  if (isNaN(val) || val <= 0) return null;
+  if (unit === 'lbs') {
+    return +(val / 2.20462).toFixed(2);
+  }
+  return +val.toFixed(2);
+}
+
+function formatLength(cmVal, unit = AppState.u) {
+  if (cmVal == null || isNaN(cmVal)) return '--';
+  if (unit === 'in') {
+    return (cmVal / 2.54).toFixed(1);
+  }
+  return Number(cmVal).toFixed(1);
+}
+
+function parseLengthInput(inputVal, unit = AppState.u) {
+  const val = parseFloat(inputVal);
+  if (isNaN(val) || val <= 0) return null;
+  if (unit === 'in') {
+    return +(val * 2.54).toFixed(1);
+  }
+  return +val.toFixed(1);
+}
+
+/**
+ * Recalculates 1-month future projection based on current measurements, goal, and experience level
+ */
+function updateProjection() {
+  if (!AppState.p || !AppState.m.length) return;
+  const lastM = AppState.m[AppState.m.length - 1].v;
+  if (!lastM) return;
+
+  const baseGainRates = { b: 0.006, i: 0.003, a: 0.0015 };
+  let rate = (baseGainRates[AppState.p.l] || 0.003) * (AppState.p.o === 'lose' ? 0.5 : 1.0);
+
+  const expected = {};
+  MEASUREMENT_KEYS.forEach(k => {
+    const muscle = MUSCLE_GROUPS.find(m => MUSCLE_TO_MEASUREMENT[m] === k);
+    const score = muscle ? getMuscleScore(muscle, AppState) : 1;
+    const isPriority = (AppState.p.pri || []).some(m => MUSCLE_TO_MEASUREMENT[m] === k);
+    const lagBoost = (score && score < 0.93) || isPriority ? 1.5 : 1.0;
+
+    if (k === 'waist') {
+      expected[k] = +(lastM[k] * (AppState.p.o === 'lose' ? 0.985 : 1.003)).toFixed(2);
+    } else {
+      expected[k] = +(lastM[k] * (1 + rate * lagBoost)).toFixed(2);
+    }
+  });
+
+  // Extrapolate weight trend over past 14 days
+  const w = AppState.w;
+  let weightChangeForecast = 0;
+  if (w && w.length >= 7) {
+    const diff = w[w.length - 1].w - w[Math.max(0, w.length - 14)].w;
+    const days = Math.max(1, Math.min(13, w.length - 1));
+    weightChangeForecast = (diff / days) * 30;
+  } else {
+    weightChangeForecast = { gain: 0.8, lose: -2.0, both: 0.0 }[AppState.p.o] || 0;
+  }
+
+  const currentW = getLatestWeight();
+  AppState.pr = {
+    d: getTodayDate(),
+    e: expected,
+    wt: +(currentW + weightChangeForecast).toFixed(1)
+  };
+}
+
+/**
+ * Export full state as JSON file
+ */
+function exportStateJson() {
+  const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(AppState, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute('href', dataStr);
+  downloadAnchor.setAttribute('download', `ironlog-backup-${getTodayDate()}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+
+/**
+ * Import state from JSON string
+ */
+function importStateJson(jsonString) {
+  try {
+    const parsed = JSON.parse(jsonString);
+    if (!parsed || typeof parsed !== 'object') {
+      throw new Error('Invalid JSON format');
+    }
+    // Verify core structure
+    if (!('p' in parsed) && !('w' in parsed)) {
+      throw new Error('File does not appear to be an IronLog backup');
+    }
+    AppState = {
+      ...DEFAULT_STATE,
+      ...parsed
+    };
+    saveState();
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Export completed workouts as CSV
+ */
+function exportWorkoutsCsv(exercisesDict) {
+  if (!AppState.s || !AppState.s.length) {
+    return false;
+  }
+
+  const rows = [['Date', 'Workout', 'Duration (min)', 'Exercise', 'Weight (kg)', 'Weight (lbs)', 'Reps']];
+  AppState.s.forEach(session => {
+    const duration = Math.round((session.end - session.start) / 60000);
+    session.sets.forEach(set => {
+      const exName = exercisesDict[set.ex]?.name || AppState.customExercises?.[set.ex]?.name || set.ex;
+      const wKg = set.w;
+      const wLbs = +(set.w * 2.20462).toFixed(1);
+      rows.push([session.d, `"${session.n}"`, duration, `"${exName}"`, wKg, wLbs, set.r]);
+    });
+  });
+
+  const csvContent = 'data:text/csv;charset=utf-8,' + rows.map(r => r.join(',')).join('\n');
+  const anchor = document.createElement('a');
+  anchor.setAttribute('href', encodeURI(csvContent));
+  anchor.setAttribute('download', `ironlog-workouts-${getTodayDate()}.csv`);
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  return true;
+}
+
+/**
+ * Reset all state back to clean slate
+ */
+function resetState() {
+  localStorage.removeItem(STORAGE_KEY);
+  AppState = { ...DEFAULT_STATE };
+}
+
+
+// --- timer.js ---
+// IronLog Timer & Sound Synthesizer (Zero External Dependencies)
+
+
+
+let restTimerInterval = null;
+let restTimeRemaining = 0;
+let restTotalDuration = 90;
+let isRestPaused = false;
+let onRestTickCallback = null;
+let onRestCompleteCallback = null;
+
+// Web Audio API context for zero-asset chime
+let audioCtx = null;
+
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) {
+      audioCtx = new AudioContext();
+    }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+/**
+ * Play a double chime sound when timer completes
+ */
+function playChime() {
+  const state = getState();
+  if (!state.soundEnabled) return;
+
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const playTone = (freq, startTime, duration) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, startTime);
+
+      // Smooth attack and decay envelope
+      gain.gain.setValueAtTime(0.001, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.3, startTime + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    };
+
+    const now = ctx.currentTime;
+    playTone(659.25, now, 0.25);        // E5
+    playTone(880.00, now + 0.15, 0.45); // A5
+  } catch (err) {
+    console.warn('Audio playback error:', err);
+  }
+}
+
+/**
+ * Trigger haptic vibration if supported
+ */
+function triggerHaptic(pattern = [200, 80, 200]) {
+  const state = getState();
+  if (!state.hapticsEnabled) return;
+
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    try {
+      navigator.vibrate(pattern);
+    } catch (e) {}
+  }
+}
+
+/**
+ * Start or reset the rest timer
+ */
+function startRestTimer(seconds, onTick, onComplete) {
+  stopRestTimer();
+  restTotalDuration = seconds || getState().restTimerDuration || 90;
+  restTimeRemaining = restTotalDuration;
+  isRestPaused = false;
+  onRestTickCallback = onTick;
+  onRestCompleteCallback = onComplete;
+
+  // First callback immediately
+  if (onRestTickCallback) {
+    onRestTickCallback(restTimeRemaining, restTotalDuration);
+  }
+
+  restTimerInterval = setInterval(() => {
+    if (isRestPaused) return;
+
+    restTimeRemaining--;
+    if (onRestTickCallback) {
+      onRestTickCallback(restTimeRemaining, restTotalDuration);
+    }
+
+    if (restTimeRemaining <= 0) {
+      stopRestTimer();
+      playChime();
+      triggerHaptic([250, 100, 250, 100, 400]);
+      if (onRestCompleteCallback) {
+        onRestCompleteCallback();
+      }
+    }
+  }, 1000);
+}
+
+/**
+ * Pause or resume rest timer
+ */
+function togglePauseRestTimer() {
+  isRestPaused = !isRestPaused;
+  return isRestPaused;
+}
+
+/**
+ * Add or subtract seconds to current rest timer
+ */
+function adjustRestTimer(deltaSeconds) {
+  if (restTimerInterval) {
+    restTimeRemaining = Math.max(0, restTimeRemaining + deltaSeconds);
+    restTotalDuration = Math.max(restTimeRemaining, restTotalDuration + deltaSeconds);
+    if (onRestTickCallback) {
+      onRestTickCallback(restTimeRemaining, restTotalDuration);
+    }
+  }
+}
+
+/**
+ * Stop and dismiss rest timer
+ */
+function stopRestTimer() {
+  if (restTimerInterval) {
+    clearInterval(restTimerInterval);
+    restTimerInterval = null;
+  }
+  restTimeRemaining = 0;
+  isRestPaused = false;
+}
+
+function isRestTimerRunning() {
+  return restTimerInterval !== null;
+}
+
+function getRestTimeRemaining() {
+  return restTimeRemaining;
+}
+
+/**
+ * Formats seconds into M:SS string
+ */
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+
+// --- icons.js ---
+// IronLog SVG Vector Icons
+
+const ICONS = {
+  today: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M2 9h4M2 15h4M18 9h4M18 15h4M6 12h12"/></svg>`,
+  weight: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`,
+  body: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M9 11l3 2 3-2M9 20l3-4 3 4"/></svg>`,
+  progress: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>`,
+  exercises: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>`,
+  settings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+  sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
+  moon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+  timer: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M22 6l-3-3M12 2v3"/></svg>`,
+  play: `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+  pause: `<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`,
+  close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+  minus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+  download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+  upload: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`,
+  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`
+};
+
+
+// --- app.js ---
+// IronLog Main Application Controller
+
+
+
+
+
+
+
+
+
+// DOM Element shortcuts
+const $ = (id) => document.getElementById(id);
+
+let currentTab = 'today';
+let bodyView = 'f'; // 'f' for front, 'b' for back
+let bodyPointerX = 0;
+let exerciseSearchQuery = '';
+let exerciseFilterMuscle = 'all';
+
+// Initialize App
+function initApp() {
+  loadState();
+  applyTheme();
+  renderApp();
+  setupTimerInterval();
+}
+
+/**
+ * Apply theme to document
+ */
+function applyTheme() {
+  const state = getState();
+  const theme = state.theme || 'dark';
+  const root = document.documentElement;
+
+  if (theme === 'system') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  } else {
+    root.setAttribute('data-theme', theme);
+  }
+}
+
+/**
+ * Toast Notification
+ */
+function showToast(message) {
+  const existing = document.querySelector('.toast-notice');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-notice';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
+
+/**
+ * Open Modal
+ */
+function openModal(htmlContent) {
+  const md = $('md');
+  const mb = $('mb');
+  mb.innerHTML = htmlContent;
+  md.style.display = 'flex';
+  setTimeout(() => md.classList.add('show'), 10);
+}
+
+/**
+ * Close Modal
+ */
+function closeModal() {
+  const md = $('md');
+  md.classList.remove('show');
+  setTimeout(() => {
+    md.style.display = 'none';
+    $('mb').innerHTML = '';
+  }, 200);
+}
+
+/**
+ * Format date for header
+ */
+function getFormattedHeaderDate() {
+  return new Date().toLocaleDateString(undefined, {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
+}
+
+/**
+ * Get active workout today
+ */
+function getTodayWorkout() {
+  const state = getState();
+  const todayStr = getTodayDate();
+  if (state.ov && state.ov.d === todayStr) {
+    return state.ov.i < 0 ? null : WORKOUT_SPLITS[state.ov.i];
+  }
+  const dayIndex = (new Date().getDay() + 6) % 7; // Monday=0 ... Sunday=6
+  return dayIndex > 5 ? null : WORKOUT_SPLITS[dayIndex];
+}
+
+/**
+ * Daily exercise modifications list
+ */
+function getDailyMods() {
+  const state = getState();
+  const todayStr = getTodayDate();
+  if (!state.x || state.x.d !== todayStr) {
+    state.x = { d: todayStr, rm: [], add: [], fo: [] };
+  }
+  return state.x;
+}
+
+/**
+ * Helper to get combined exercises dict (default + custom)
+ */
+function getAllExercises() {
+  const state = getState();
+  return { ...DEFAULT_EXERCISES, ...(state.customExercises || {}) };
+}
+
+/**
+ * Renders Top Header
+ */
+function renderHeader() {
+  const state = getState();
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  
+  return `
+    <header class="app-header">
+      <div class="app-brand">
+        <img src="./icons/icon.svg" alt="IronLog Logo" class="app-logo">
+        <div>
+          <h1 style="font-size:24px;letter-spacing:1px">IRONLOG</h1>
+          <div class="mu-sm">${getFormattedHeaderDate()}</div>
+        </div>
+      </div>
+      <div class="app-actions">
+        <button class="icon-btn" onclick="IronLog.toggleTheme()" title="Toggle Theme">
+          ${isDark ? ICONS.sun : ICONS.moon}
+        </button>
+        <button class="icon-btn" onclick="IronLog.setTab('settings')" title="Settings">
+          ${ICONS.settings}
+        </button>
+      </div>
+    </header>
+  `;
+}
+
+/**
+ * Renders Bottom Navigation
+ */
+function renderNavigation() {
+  const state = getState();
+  if (!state.p) return '';
+
+  const tabs = [
+    { id: 'today', label: 'Today', icon: ICONS.today },
+    { id: 'weight', label: 'Weight', icon: ICONS.weight },
+    { id: 'body', label: 'Body', icon: ICONS.body },
+    { id: 'progress', label: 'Progress', icon: ICONS.progress },
+    { id: 'exercises', label: 'Exercises', icon: ICONS.exercises }
+  ];
+
+  return tabs.map(t => `
+    <button class="${currentTab === t.id ? 'on' : ''}" onclick="IronLog.setTab('${t.id}')">
+      ${t.icon}
+      <span>${t.label}</span>
+    </button>
+  `).join('');
+}
+
+/**
+ * Render Rest Timer Floating Bar if active
+ */
+function renderRestTimerBar() {
+  if (!isRestTimerRunning()) return '';
+  const remaining = getRestTimeRemaining();
+  
+  return `
+    <div class="rest-timer-bar">
+      <span style="display:flex;align-items:center;color:var(--ac)">${ICONS.timer}</span>
+      <div style="flex:1">
+        <div class="mu-sm" style="font-weight:700;text-transform:uppercase">Resting</div>
+        <div class="rest-timer-time" id="restTimerDisplay">${formatTime(remaining)}</div>
+      </div>
+      <button class="icon-btn sm" onclick="IronLog.adjustRest(-15)" title="Minus 15s">-15s</button>
+      <button class="icon-btn sm" onclick="IronLog.adjustRest(30)" title="Plus 30s">+30s</button>
+      <button class="icon-btn sm" onclick="IronLog.toggleRestPause()" id="restPauseBtn">
+        ${ICONS.pause}
+      </button>
+      <button class="icon-btn sm" onclick="IronLog.dismissRest()" style="color:var(--rd)">
+        ${ICONS.close}
+      </button>
+    </div>
+  `;
+}
+
+/**
+ * Quick Weight Input Widget
+ */
+function renderQuickWeightWidget() {
+  const state = getState();
+  const currentKg = getLatestWeight();
+  const unit = state.wu;
+  const displayVal = formatWeight(currentKg, unit);
+
+  return `
+    <div class="c">
+      <div class="r sb">
+        <div>
+          <b>Today’s Weight (${unit})</b>
+          <div class="mu-sm">Last: ${displayVal} ${unit}</div>
+        </div>
+      </div>
+      <div class="r" style="margin-top:10px">
+        <input id="quickWeightInput" type="number" step="${unit === 'lbs' ? '0.2' : '0.1'}" 
+               placeholder="${displayVal}" value="${displayVal}" style="flex:1">
+        <button onclick="IronLog.saveQuickWeight()">Save</button>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * VIEW: Onboarding / Profile Setup
+ */
+function renderOnboardingView() {
+  return `
+    ${renderHeader()}
+    <div class="c c-highlight">
+      <h2>Welcome to IronLog</h2>
+      <p class="mu">Adaptive Push-Pull-Legs training with Golden-era aesthetic targets, muscle recovery tracking, and smart progressive overload.</p>
+      
+      <label>Gender</label>
+      <select id="ob_gender">
+        <option value="m">Male (Target Golden Ratios)</option>
+        <option value="f">Female (Target Golden Ratios)</option>
+        <option value="o">Other</option>
+      </select>
+
+      <div class="gr">
+        <div>
+          <label>Age</label>
+          <input id="ob_age" type="number" value="26">
+        </div>
+        <div>
+          <label>Height (cm)</label>
+          <input id="ob_height" type="number" value="178">
+        </div>
+      </div>
+
+      <div class="gr">
+        <div>
+          <label>Weight (kg)</label>
+          <input id="ob_weight" type="number" step="0.1" value="75">
+        </div>
+        <div>
+          <label>Primary Goal</label>
+          <select id="ob_goal">
+            <option value="gain">Build Muscle</option>
+            <option value="lose">Lose Fat</option>
+            <option value="both">Recomposition</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Experience Level</label>
+      <select id="ob_level">
+        <option value="b">Beginner (&lt; 1 year lifting)</option>
+        <option value="i" selected>Intermediate (1–3 years lifting)</option>
+        <option value="a">Advanced (3+ years lifting)</option>
+      </select>
+
+      <div class="mu-sm" style="margin-top:12px">
+        Schedule: 6-day Push-Pull-Legs split (Monday to Saturday), Sunday Rest. You can customize daily workouts anytime.
+      </div>
+
+      <button class="w" style="margin-top:16px" onclick="IronLog.saveOnboarding()">
+        Start Tracking
+      </button>
+    </div>
+  `;
+}
+
+/**
+ * VIEW: Today's Workout
+ */
+function renderTodayView() {
+  const state = getState();
+  const allEx = getAllExercises();
+  const todayWorkout = getTodayWorkout();
+  const todayStr = getTodayDate();
+  const mods = getDailyMods();
+  const unit = state.wu;
+
+  let html = renderHeader();
+
+  // Active workout or Check-in status
+  if (state.a) {
+    const elapsedSecs = Math.floor((Date.now() - state.a.start) / 1000);
+    html += `
+      <div class="c c-highlight">
+        <div class="r sb">
+          <div>
+            <div class="mu-sm" style="text-transform:uppercase;font-weight:700;color:var(--ac)">● Workout In Progress</div>
+            <h2 id="activeTimer" style="font-size:32px;letter-spacing:1px">${formatTime(elapsedSecs)}</h2>
+          </div>
+          <button onclick="IronLog.checkoutWorkout()" style="background:var(--gn);color:#fff">
+            Finish Workout
+          </button>
+        </div>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="c">
+        <div class="r sb">
+          <div>
+            <div class="mu-sm" style="text-transform:uppercase;font-weight:700">Scheduled Today</div>
+            <h2>${todayWorkout ? todayWorkout[0] : 'Rest Day'}</h2>
+          </div>
+          ${todayWorkout ? `<button onclick="IronLog.checkinWorkout()">${ICONS.play} Start Workout</button>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  // Day selector override
+  const currentOverrideVal = state.ov && state.ov.d === todayStr ? state.ov.i : 'auto';
+  html += `
+    <div class="c" style="padding:12px 16px">
+      <div class="r sb">
+        <label style="margin:0">Change Workout</label>
+        <select onchange="IronLog.setDayOverride(this.value)" style="width:auto;min-width:180px;padding:6px 10px">
+          <option value="auto" ${currentOverrideVal === 'auto' ? 'selected' : ''}>Automatic (by weekday)</option>
+          ${WORKOUT_SPLITS.map((s, idx) => `
+            <option value="${idx}" ${currentOverrideVal === idx ? 'selected' : ''}>${s[0]}</option>
+          `).join('')}
+          <option value="-1" ${currentOverrideVal === -1 ? 'selected' : ''}>Rest Day</option>
+        </select>
+      </div>
+    </div>
+  `;
+
+  if (todayWorkout) {
+    let exerciseIds = [...todayWorkout[1]];
+    // Auto-add hip thrust for female legs A
+    if (state.p.g === 'f' && todayWorkout[0] === 'Legs A' && !exerciseIds.includes('ht')) {
+      exerciseIds.push('ht');
+    }
+    // Add custom additions
+    exerciseIds = exerciseIds.concat(mods.add).filter((id, pos, arr) => !mods.rm.includes(id) && arr.indexOf(id) === pos);
+
+    const readyExercises = [];
+    const recoveringExercises = [];
+
+    exerciseIds.forEach(id => {
+      const ex = allEx[id];
+      if (!ex) return;
+      const rec = getMuscleRecovery(ex.primary, state, allEx);
+      if (rec.status === 'red' && !mods.fo.includes(id)) {
+        recoveringExercises.push(id);
+      } else {
+        readyExercises.push(id);
+      }
+    });
+
+    // Prioritize lagging muscles
+    readyExercises.sort((a, b) => {
+      const scoreA = getMuscleScore(allEx[a].primary, state) ?? 1;
+      const scoreB = getMuscleScore(allEx[b].primary, state) ?? 1;
+      return scoreA - scoreB;
+    });
+
+    // Render Ready Exercises
+    readyExercises.forEach(id => {
+      const ex = allEx[id];
+      const targetSetsCount = getTargetSets(ex.primary, state);
+      const loggedSets = state.a ? state.a.sets.filter(s => s.ex === id) : [];
+      const score = getMuscleScore(ex.primary, state);
+      const isPriority = (state.p.pri || []).includes(ex.primary);
+      const repRange = state.p.g === 'f' ? '8–15' : '6–12';
+
+      // Suggested weight
+      const lastSuggestedKg = loggedSets.length ? loggedSets[loggedSets.length - 1].w : getSuggestedWeight(id, state, allEx);
+      const suggestedDisplayVal = formatWeight(lastSuggestedKg, unit);
+      const stepVal = unit === 'lbs' ? '5' : '1.25';
+
+      html += `
+        <div class="c">
+          <div class="r sb">
+            <h3 style="cursor:pointer" onclick="IronLog.showExerciseGuide('${id}')">${ex.name}</h3>
+            <div class="r">
+              <button class="g sm" onclick="IronLog.showExerciseGuide('${id}')">Guide</button>
+              <button class="g sm" onclick="IronLog.skipExercise('${id}')" title="Skip this exercise">Skip</button>
+            </div>
+          </div>
+
+          <div class="r" style="margin:6px 0;flex-wrap:wrap">
+            <span class="t">${ex.primary}</span>
+            ${score && score < 0.93 ? '<span class="t t-ac">Below Target (+1 set)</span>' : ''}
+            ${score && score >= 1.02 ? '<span class="t">At Target (2 sets)</span>' : ''}
+            ${isPriority ? '<span class="t t-ac">Priority Focus (+1 set)</span>' : ''}
+          </div>
+
+          <div class="mu-sm" style="margin-bottom:8px">
+            Target: <b>${targetSetsCount} sets</b> · <b>${repRange} reps</b>
+          </div>
+
+          <!-- Logged Sets Chips -->
+          <div>
+            ${loggedSets.map((s, sIdx) => `
+              <span class="ch">
+                <b>${formatWeight(s.w, unit)} ${unit}</b> × ${s.r} reps
+                ${state.a ? `<span class="del-set" onclick="IronLog.deleteSet('${id}', ${sIdx})" title="Remove set">×</span>` : ''}
+              </span>
+            `).join('')}
+          </div>
+
+          <!-- Active Set Logger -->
+          ${state.a ? (
+            loggedSets.length < targetSetsCount ? `
+              <div class="r" style="margin-top:12px;align-items:flex-end">
+                <div style="flex:1">
+                  <label>Weight (${unit})</label>
+                  <div class="input-stepper">
+                    <button type="button" onclick="IronLog.stepInput('w_${id}', -${stepVal})">-</button>
+                    <input id="w_${id}" type="number" step="${stepVal}" value="${suggestedDisplayVal}">
+                    <button type="button" onclick="IronLog.stepInput('w_${id}', ${stepVal})">+</button>
+                  </div>
+                </div>
+                <div style="flex:1">
+                  <label>Reps</label>
+                  <div class="input-stepper">
+                    <button type="button" onclick="IronLog.stepInput('r_${id}', -1)">-</button>
+                    <input id="r_${id}" type="number" value="10">
+                    <button type="button" onclick="IronLog.stepInput('r_${id}', 1)">+</button>
+                  </div>
+                </div>
+                <button onclick="IronLog.logSet('${id}')" style="height:42px">
+                  Log Set
+                </button>
+              </div>
+            ` : `
+              <div class="r sb" style="margin-top:10px;padding-top:6px;border-top:1px dashed var(--bd)">
+                <span class="t t-gn">Completed ✓ (${loggedSets.length}/${targetSetsCount} sets)</span>
+                <button class="g sm" onclick="IronLog.logExtraSet('${id}')">+ Extra Set</button>
+              </div>
+            `
+          ) : `
+            <div class="mu-sm" style="margin-top:8px">Start workout above to log sets.</div>
+          `}
+        </div>
+      `;
+    });
+
+    // Recovering Exercises Card
+    if (recoveringExercises.length > 0) {
+      html += `
+        <div class="c" style="border-left:3px solid var(--rd)">
+          <b>Omitted: Muscle Still Recovering</b>
+          <div class="mu-sm">These exercises were filtered to allow adequate muscle protein synthesis & recovery (&lt; 36h).</div>
+          <div style="margin-top:8px">
+            ${recoveringExercises.map(id => {
+              const ex = allEx[id];
+              const rec = getMuscleRecovery(ex.primary, state, allEx);
+              return `
+                <div class="r sb" style="margin:6px 0;padding:6px 0;border-bottom:1px solid var(--bd)">
+                  <span class="mu">${ex.name} (${ex.primary} - ${rec.hours}h ago)</span>
+                  <button class="g sm" onclick="IronLog.forceExercise('${id}')">Do Anyway</button>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // Add Any Exercise dropdown
+    const availableToAdd = Object.keys(allEx).filter(i => !exerciseIds.includes(i));
+    html += `
+      <div class="c">
+        <b>Customize Workout</b>
+        <div class="mu-sm">Want to perform another movement? Select any exercise from your library:</div>
+        <select onchange="IronLog.addExerciseToToday(this.value); this.value='';" style="margin-top:8px">
+          <option value="">+ Add Exercise to Today...</option>
+          ${availableToAdd.map(i => `<option value="${i}">${allEx[i].name} (${allEx[i].primary})</option>`).join('')}
+        </select>
+      </div>
+    `;
+  }
+
+  html += renderQuickWeightWidget();
+  return html;
+}
+
+/**
+ * VIEW: Weight Tracking & SVG Chart
+ */
+function renderWeightView() {
+  const state = getState();
+  const unit = state.wu;
+  const weights = state.w || [];
+  
+  // Calculate 7-day rolling average
+  const rollingAverages = weights.map((entry, idx) => {
+    const window = weights.slice(Math.max(0, idx - 6), idx + 1);
+    const avg = window.reduce((sum, item) => sum + item.w, 0) / window.length;
+    return avg;
+  });
+
+  const recentWeights = weights.slice(-30);
+  const recentAverages = rollingAverages.slice(-30);
+
+  let html = renderHeader();
+  html += renderQuickWeightWidget();
+
+  if (recentWeights.length > 1) {
+    const vals = recentWeights.map(x => unit === 'lbs' ? x.w * 2.20462 : x.w);
+    const avgVals = recentAverages.map(x => unit === 'lbs' ? x * 2.20462 : x);
+    const allVals = vals.concat(avgVals);
+    const minVal = Math.min(...allVals) - 1.0;
+    const maxVal = Math.max(...allVals) + 1.0;
+
+    const getX = (idx) => 15 + (idx * 290) / (vals.length - 1);
+    const getY = (val) => 110 - ((val - minVal) / (maxVal - minVal)) * 95;
+    const pointsStr = (arr) => arr.map((y, i) => `${getX(i).toFixed(1)},${getY(y).toFixed(1)}`).join(' ');
+
+    const diff7 = weights.length >= 2 
+      ? (weights[weights.length - 1].w - weights[Math.max(0, weights.length - 8)].w)
+      : 0;
+    const diff7Display = formatWeight(Math.abs(diff7), unit);
+    const sign = diff7 >= 0 ? '+' : '-';
+
+    html += `
+      <div class="c">
+        <h3>Weight Trend (Past ${vals.length} Entries)</h3>
+        <div style="margin:12px 0">
+          <svg viewBox="0 0 320 120" style="width:100%;height:auto;overflow:visible">
+            <!-- Grid lines -->
+            <line x1="15" y1="15" x2="305" y2="15" stroke="var(--bd)" stroke-dasharray="2 2"/>
+            <line x1="15" y1="62" x2="305" y2="62" stroke="var(--bd)" stroke-dasharray="2 2"/>
+            <line x1="15" y1="110" x2="305" y2="110" stroke="var(--bd)" stroke-dasharray="2 2"/>
+
+            <!-- Daily Line -->
+            <polyline points="${pointsStr(vals)}" fill="none" stroke="var(--mu)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <!-- 7-Day Moving Avg Line -->
+            <polyline points="${pointsStr(avgVals)}" fill="none" stroke="var(--ac)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Latest Point Dot -->
+            <circle cx="${getX(vals.length - 1)}" cy="${getY(vals[vals.length - 1])}" r="4" fill="var(--ac)"/>
+          </svg>
+        </div>
+        <div class="r sb mu-sm">
+          <span>Min: ${minVal.toFixed(1)} ${unit}</span>
+          <span style="color:var(--ac)">● Orange: 7-day average</span>
+          <span>Max: ${maxVal.toFixed(1)} ${unit}</span>
+        </div>
+      </div>
+
+      <div class="c">
+        <div class="gr">
+          <div>
+            <div class="mu-sm">Current Weight</div>
+            <h2>${formatWeight(getLatestWeight(), unit)} ${unit}</h2>
+          </div>
+          <div>
+            <div class="mu-sm">Past 7 Entries Trend</div>
+            <h2 style="color:${diff7 > 0 ? 'var(--yl)' : 'var(--gn)'}">${sign}${diff7Display} ${unit}</h2>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="c">
+        <p class="mu">Log your weight on two or more days to generate your rolling 7-day trend chart.</p>
+      </div>
+    `;
+  }
+
+  // Weight History Table
+  if (weights.length > 0) {
+    html += `
+      <div class="c">
+        <div class="r sb">
+          <h3>Weight History</h3>
+          <span class="mu-sm">${weights.length} entries</span>
+        </div>
+        <table>
+          <tr>
+            <th>Date</th>
+            <th>Weight (${unit})</th>
+            <th>Action</th>
+          </tr>
+          ${weights.slice(-10).reverse().map((entry, idx) => `
+            <tr>
+              <td>${entry.d}</td>
+              <td><b>${formatWeight(entry.w, unit)} ${unit}</b></td>
+              <td>
+                <button class="g sm" style="color:var(--rd);padding:2px 8px" onclick="IronLog.deleteWeightEntry('${entry.d}')">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    `;
+  }
+
+  return html;
+}
+
+/**
+ * VIEW: Body Measurements & Golden Ratios
+ */
+function renderBodyView() {
+  const state = getState();
+  const unit = state.u;
+  const lastEntry = state.m.length ? state.m[state.m.length - 1] : null;
+  const daysSinceLast = lastEntry ? (Date.now() - new Date(lastEntry.d)) / (86400 * 1000) : 999;
+  const isDue = !lastEntry || daysSinceLast >= 28;
+
+  let html = renderHeader();
+
+  html += `
+    <div class="c c-highlight">
+      <div class="r sb">
+        <h2>Monthly Body Check</h2>
+        <div class="r">
+          <button class="${unit === 'cm' ? '' : 'g'} sm" onclick="IronLog.setLengthUnit('cm')">cm</button>
+          <button class="${unit === 'in' ? '' : 'g'} sm" onclick="IronLog.setLengthUnit('in')">in</button>
+        </div>
+      </div>
+
+      <div class="mu" style="margin:8px 0">
+        ${lastEntry 
+          ? (isDue 
+              ? `<b style="color:var(--ac)">Measurements Due Now.</b> Last recorded ${lastEntry.d}.`
+              : `Last recorded ${lastEntry.d}. Next check in ~${Math.max(1, Math.ceil(28 - daysSinceLast))} days.`)
+          : 'Record your baseline measurements to calculate Golden Ratio proportions and next-month projections.'}
+      </div>
+
+      <div class="gr" style="margin-top:12px">
+        ${MEASUREMENT_KEYS.map(k => `
+          <div>
+            <label>${k} (${unit})</label>
+            <input id="bm_${k}" type="number" step="0.1" 
+                   value="${lastEntry && lastEntry.v[k] ? formatLength(lastEntry.v[k], unit) : ''}" 
+                   placeholder="0.0">
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="r sb" style="margin-top:12px">
+        <button class="g sm" onclick="IronLog.showMeasureGuide()">How to Measure</button>
+        <span class="mu-sm">Measure relaxed in morning</span>
+      </div>
+
+      <button class="w" style="margin-top:14px" onclick="IronLog.saveMeasurements()">
+        Save & Update Plan
+      </button>
+    </div>
+  `;
+
+  // Priority Muscles Selector
+  const currentPri = state.p?.pri || [];
+  html += `
+    <div class="c">
+      <h3>Target Muscle Focus</h3>
+      <div class="mu-sm" style="margin-bottom:8px">
+        Tap to toggle priority muscles. Selected muscles receive <b>+1 extra set</b> in every workout and accelerated monthly growth projections:
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        ${MUSCLE_GROUPS.map(m => `
+          <button class="${currentPri.includes(m) ? '' : 'g'} sm" onclick="IronLog.toggleMusclePriority('${m}')">
+            ${currentPri.includes(m) ? '★ ' : ''}${m}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  // Golden Ratios vs Actual
+  if (lastEntry) {
+    const gender = state.p.g === 'f' ? 'f' : 'm';
+    const ratios = GOLDEN_RATIOS[gender];
+    const userH = state.p.h;
+
+    html += `
+      <div class="c">
+        <h3>Golden-Era Proportion Analysis</h3>
+        <div class="mu-sm" style="margin-bottom:12px">
+          Compares your measurements against classic bodybuilding aesthetic proportions based on height (${userH} cm).
+          Tap any bar to expand details.
+        </div>
+
+        ${MUSCLE_GROUPS.filter(m => getMuscleScore(m, state) !== null).map(m => {
+          const score = getMuscleScore(m, state);
+          const barColor = score < 0.93 ? 'var(--ac)' : 'var(--gn)';
+          const key = MUSCLE_TO_MEASUREMENT[m];
+          const ratioVal = ratios[key];
+          const targetCm = userH * ratioVal;
+          const userMeasureCm = lastEntry.v[key];
+          const pct = Math.round(score * 100);
+
+          let statusText = 'Close to Target (3 sets)';
+          if (score < 0.93) statusText = 'Below Target (+1 set volume)';
+          else if (score >= 1.02) statusText = 'At Target (2 sets maintenance)';
+
+          return `
+            <div class="rw" style="margin-top:10px;cursor:pointer" onclick="this.classList.toggle('o')">
+              <div class="r sb">
+                <span style="text-transform:capitalize;font-weight:600">${m}</span>
+                <span class="mu-sm">${pct}% · ${statusText}</span>
+              </div>
+              <div class="bar">
+                <i style="width:${Math.min(100, pct)}%;background:${barColor}"></i>
+              </div>
+              <div class="cl">
+                <b>Formula breakdown:</b><br>
+                Your ${key}: ${formatLength(userMeasureCm, unit)} ${unit}<br>
+                Target: ${formatLength(targetCm, unit)} ${unit} (${ratioVal} × height ${formatLength(userH, unit)} ${unit}) = <b>${pct}%</b><br>
+                &bull; &lt;93%: 4 sets (lagging)<br>
+                &bull; 93–102%: 3 sets (optimal)<br>
+                &bull; &ge;102%: 2 sets (maintenance)
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  return html;
+}
+
+/**
+ * VIEW: Progress & Interactive 3D SVG Recovery Body
+ */
+function renderProgressView() {
+  const state = getState();
+  const sessions = state.s || [];
+  const currentMonthStr = getTodayDate().slice(0, 7);
+  const thisMonthSessions = sessions.filter(s => s.d.slice(0, 7) === currentMonthStr);
+  const avgDurationMin = thisMonthSessions.length 
+    ? Math.round(thisMonthSessions.reduce((acc, s) => acc + (s.end - s.start) / 60000, 0) / thisMonthSessions.length)
+    : 0;
+
+  let html = renderHeader();
+
+  // Summary Metrics
+  html += `
+    <div class="c">
+      <div class="gr">
+        <div>
+          <div class="mu-sm">Sessions This Month</div>
+          <h2>${thisMonthSessions.length} / 24</h2>
+        </div>
+        <div>
+          <div class="mu-sm">Avg Workout Time</div>
+          <h2>${avgDurationMin} min</h2>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Interactive Muscle Recovery Model
+  html += `
+    <div class="c">
+      <div class="r sb">
+        <h3>Muscle Recovery Map</h3>
+        <button class="g sm" onclick="IronLog.rotateBodyView()">Rotate ${bodyView === 'f' ? 'Back' : 'Front'} ↻</button>
+      </div>
+
+      <div id="bodyFigureContainer" 
+           onpointerdown="IronLog.onBodyPointerDown(event)" 
+           onpointerup="IronLog.onBodyPointerUp(event)"
+           style="touch-action:pan-y;transition:transform 0.2s;margin:12px 0">
+        ${renderBodySvg()}
+      </div>
+
+      <div class="r" style="justify-content:center;gap:12px;margin:8px 0">
+        <span class="mu-sm">${bodyView === 'f' ? '● Front View' : '● Back View'} (Swipe or Tap Rotate)</span>
+      </div>
+
+      <!-- Recovery Status Pills -->
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+        ${MUSCLE_GROUPS.map(m => {
+          const rec = getMuscleRecovery(m, state, getAllExercises());
+          const colorVar = rec.status === 'red' ? 'var(--rd)' : rec.status === 'yellow' ? 'var(--yl)' : 'var(--gn)';
+          return `
+            <span class="ch" style="font-size:13px">
+              <span class="dot" style="background:${colorVar}"></span>
+              <b>${m}:</b>&nbsp;${rec.label} ${rec.hours < 100 ? `(${rec.hours}h)` : ''}
+            </span>
+          `;
+        }).join('')}
+      </div>
+      <div class="mu-sm" style="margin-top:8px">
+        <span style="color:var(--rd)">● Red:</span> Recovering (&lt;36h). 
+        <span style="color:var(--yl)">● Yellow:</span> Near ready (36–56h). 
+        <span style="color:var(--gn)">● Green:</span> Ready (&gt;56h).
+      </div>
+    </div>
+  `;
+
+  // Next Month Projection Card
+  if (state.pr) {
+    const unit = state.u;
+    const wUnit = state.wu;
+    const lastM = state.m.length ? state.m[state.m.length - 1].v : {};
+
+    html += `
+      <div class="c">
+        <h3>1-Month Growth Forecast</h3>
+        <div class="mu-sm" style="margin-bottom:8px">
+          Calculated on ${state.pr.d} based on training frequency, goal (${state.p.o}), and golden proportion gaps:
+        </div>
+        <table>
+          <tr>
+            <th>Measurement</th>
+            <th>Current → Projected</th>
+          </tr>
+          ${MEASUREMENT_KEYS.map(k => {
+            const currentVal = lastM[k] || 0;
+            const projectedVal = state.pr.e[k] || currentVal;
+            const diff = +(projectedVal - currentVal).toFixed(2);
+            const diffSign = diff >= 0 ? '+' : '';
+            return `
+              <tr>
+                <td style="text-transform:capitalize">${k}</td>
+                <td>
+                  ${formatLength(currentVal, unit)} → <b>${formatLength(projectedVal, unit)} ${unit}</b>
+                  <span class="mu-sm">(${diffSign}${formatLength(diff, unit)})</span>
+                </td>
+              </tr>
+            `;
+          }).join('')}
+          <tr>
+            <td>Body Weight</td>
+            <td>${formatWeight(getLatestWeight(), wUnit)} → <b>${formatWeight(state.pr.wt, wUnit)} ${wUnit}</b></td>
+          </tr>
+        </table>
+      </div>
+    `;
+  }
+
+  // Previous Month Comparison Card (Predicted vs Actual)
+  if (state.c) {
+    const unit = state.u;
+    const wUnit = state.wu;
+    html += `
+      <div class="c">
+        <h3>Last Month: Predicted vs Actual</h3>
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Predicted</th>
+            <th>Actual</th>
+          </tr>
+          ${MEASUREMENT_KEYS.map(k => `
+            <tr>
+              <td style="text-transform:capitalize">${k}</td>
+              <td>${formatLength(state.c.pred[k], unit)} ${unit}</td>
+              <td><b>${formatLength(state.c.act[k], unit)} ${unit}</b></td>
+            </tr>
+          `).join('')}
+          <tr>
+            <td>Weight</td>
+            <td>${formatWeight(state.c.wp, wUnit)} ${wUnit}</td>
+            <td><b>${formatWeight(state.c.wa, wUnit)} ${wUnit}</b></td>
+          </tr>
+        </table>
+      </div>
+    `;
+  }
+
+  // Recent Workouts Log
+  html += `
+    <div class="c">
+      <h3>Workout History</h3>
+      ${sessions.length > 0 ? (
+        sessions.slice(-8).reverse().map((session, sIdx) => {
+          const duration = Math.round((session.end - session.start) / 60000);
+          return `
+            <div style="padding:8px 0;border-bottom:1px solid var(--bd)">
+              <div class="r sb">
+                <b>${session.d} · ${session.n}</b>
+                <span class="mu-sm">${duration} min · ${session.sets.length} sets</span>
+              </div>
+              <div class="mu-sm" style="margin-top:4px">
+                ${session.sets.map(s => {
+                  const ex = getAllExercises()[s.ex];
+                  return `${ex ? ex.name : s.ex} (${formatWeight(s.w, state.wu)}${state.wu}×${s.r})`;
+                }).slice(0, 4).join(', ')}${session.sets.length > 4 ? '...' : ''}
+              </div>
+            </div>
+          `;
+        }).join('')
+      ) : `
+        <div class="mu-sm" style="margin-top:8px">No completed workouts recorded yet. Check in on the Today tab!</div>
+      `}
+    </div>
+  `;
+
+  return html;
+}
+
+/**
+ * VIEW: Exercise Library Browser
+ */
+function renderExercisesView() {
+  const allEx = getAllExercises();
+  let html = renderHeader();
+
+  const muscleFilters = ['all', ...MUSCLE_GROUPS];
+
+  html += `
+    <div class="c">
+      <div class="r sb">
+        <h2>Exercise Library</h2>
+        <button class="g sm" onclick="IronLog.showAddCustomExerciseModal()">+ Custom</button>
+      </div>
+
+      <div style="margin:10px 0">
+        <input type="text" placeholder="Search exercises..." value="${exerciseSearchQuery}"
+               oninput="IronLog.onSearchExercise(this.value)">
+      </div>
+
+      <div style="display:flex;overflow-x:auto;gap:6px;padding-bottom:6px">
+        ${muscleFilters.map(m => `
+          <button class="${exerciseFilterMuscle === m ? '' : 'g'} sm" 
+                  style="white-space:nowrap;text-transform:capitalize"
+                  onclick="IronLog.setExerciseFilter('${m}')">
+            ${m}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  const filteredKeys = Object.keys(allEx).filter(id => {
+    const ex = allEx[id];
+    const matchesSearch = ex.name.toLowerCase().includes(exerciseSearchQuery.toLowerCase()) ||
+                          ex.primary.toLowerCase().includes(exerciseSearchQuery.toLowerCase());
+    const matchesMuscle = exerciseFilterMuscle === 'all' || ex.primary === exerciseFilterMuscle || ex.secondary.includes(exerciseFilterMuscle);
+    return matchesSearch && matchesMuscle;
+  });
+
+  html += `
+    <div style="margin-top:10px">
+      ${filteredKeys.map(id => {
+        const ex = allEx[id];
+        return `
+          <div class="ex-card" onclick="IronLog.showExerciseGuide('${id}')">
+            <div class="r sb">
+              <b>${ex.name}</b>
+              <span class="t">${ex.primary}</span>
+            </div>
+            <div class="mu-sm" style="margin-top:4px">
+              ${ex.steps ? ex.steps[0] : ''}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  return html;
+}
+
+/**
+ * VIEW: Settings & Data Management
+ */
+function renderSettingsView() {
+  const state = getState();
+  let html = renderHeader();
+
+  html += `
+    <div class="c">
+      <h2>App Settings & Profile</h2>
+
+      <label>Display Theme</label>
+      <select onchange="IronLog.updateSetting('theme', this.value)">
+        <option value="dark" ${state.theme === 'dark' ? 'selected' : ''}>Dark Athletic</option>
+        <option value="light" ${state.theme === 'light' ? 'selected' : ''}>Clean Light</option>
+        <option value="system" ${state.theme === 'system' ? 'selected' : ''}>System Default</option>
+      </select>
+
+      <div class="gr">
+        <div>
+          <label>Weight Unit</label>
+          <select onchange="IronLog.updateSetting('wu', this.value)">
+            <option value="kg" ${state.wu === 'kg' ? 'selected' : ''}>Kilograms (kg)</option>
+            <option value="lbs" ${state.wu === 'lbs' ? 'selected' : ''}>Pounds (lbs)</option>
+          </select>
+        </div>
+        <div>
+          <label>Length Unit</label>
+          <select onchange="IronLog.updateSetting('u', this.value)">
+            <option value="cm" ${state.u === 'cm' ? 'selected' : ''}>Centimeters (cm)</option>
+            <option value="in" ${state.u === 'in' ? 'selected' : ''}>Inches (in)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="gr">
+        <div>
+          <label>Rest Timer (sec)</label>
+          <input type="number" step="15" value="${state.restTimerDuration || 90}"
+                 onchange="IronLog.updateSetting('restTimerDuration', +this.value)">
+        </div>
+        <div>
+          <label>Sound & Chimes</label>
+          <select onchange="IronLog.updateSetting('soundEnabled', this.value === 'true')">
+            <option value="true" ${state.soundEnabled ? 'selected' : ''}>Enabled</option>
+            <option value="false" ${!state.soundEnabled ? 'selected' : ''}>Muted</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Editor Card -->
+    ${state.p ? `
+      <div class="c">
+        <h3>Edit Profile</h3>
+        <div class="gr">
+          <div>
+            <label>Gender</label>
+            <select id="ed_gender">
+              <option value="m" ${state.p.g === 'm' ? 'selected' : ''}>Male</option>
+              <option value="f" ${state.p.g === 'f' ? 'selected' : ''}>Female</option>
+              <option value="o" ${state.p.g === 'o' ? 'selected' : ''}>Other</option>
+            </select>
+          </div>
+          <div>
+            <label>Age</label>
+            <input id="ed_age" type="number" value="${state.p.a}">
+          </div>
+        </div>
+
+        <div class="gr">
+          <div>
+            <label>Height (cm)</label>
+            <input id="ed_height" type="number" value="${state.p.h}">
+          </div>
+          <div>
+            <label>Weight (kg)</label>
+            <input id="ed_weight" type="number" step="0.1" value="${state.p.w}">
+          </div>
+        </div>
+
+        <div class="gr">
+          <div>
+            <label>Primary Goal</label>
+            <select id="ed_goal">
+              <option value="gain" ${state.p.o === 'gain' ? 'selected' : ''}>Build Muscle</option>
+              <option value="lose" ${state.p.o === 'lose' ? 'selected' : ''}>Lose Fat</option>
+              <option value="both" ${state.p.o === 'both' ? 'selected' : ''}>Recomposition</option>
+            </select>
+          </div>
+          <div>
+            <label>Experience</label>
+            <select id="ed_level">
+              <option value="b" ${state.p.l === 'b' ? 'selected' : ''}>Beginner</option>
+              <option value="i" ${state.p.l === 'i' ? 'selected' : ''}>Intermediate</option>
+              <option value="a" ${state.p.l === 'a' ? 'selected' : ''}>Advanced</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="g" style="margin-top:14px;width:100%" onclick="IronLog.saveProfileEdit()">
+          Save Profile Updates
+        </button>
+      </div>
+    ` : ''}
+
+    <!-- Backup, Export & Restore -->
+    <div class="c">
+      <h3>Data Backup & Restore</h3>
+      <p class="mu-sm">Your data is stored locally in your browser. Export backups regularly so you never lose your workout history.</p>
+      
+      <div class="r" style="margin-top:10px;flex-wrap:wrap">
+        <button class="g" onclick="IronLog.exportBackup()">
+          ${ICONS.download} Export JSON
+        </button>
+        <button class="g" onclick="IronLog.triggerImport()">
+          ${ICONS.upload} Restore JSON
+        </button>
+        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="IronLog.handleFileImport(event)">
+        <button class="g" onclick="IronLog.exportCsv()">
+          ${ICONS.download} Export CSV
+        </button>
+      </div>
+
+      <div style="margin-top:20px;padding-top:12px;border-top:1px solid var(--bd)">
+        <button class="danger-outline sm" onclick="IronLog.confirmResetData()">
+          ${ICONS.trash} Reset All Data
+        </button>
+      </div>
+    </div>
+  `;
+
+  return html;
+}
+
+/**
+ * Interactive SVG Recovery Body Model Builder
+ */
+function renderBodySvg() {
+  const state = getState();
+  const allEx = getAllExercises();
+
+  const getMuscleColor = (muscle) => {
+    const rec = getMuscleRecovery(muscle, state, allEx);
+    if (rec.status === 'red') return 'var(--rd)';
+    if (rec.status === 'yellow') return 'var(--yl)';
+    return 'var(--gn)';
+  };
+
+  const createPath = (d, fill) => 
+    `<path d="${d}" fill="${fill}" stroke="var(--cd)" stroke-width="1.3" stroke-linejoin="round"/>`;
+
+  const mirrorPath = (d) => 
+    d.replace(/(-?\d+(\.\d+)?),(-?\d+(\.\d+)?)/g, (match, x, a, y) => `${200 - parseFloat(x)},${y}`);
+
+  const createMirroredMuscle = (d, muscle) => {
+    const color = muscle ? getMuscleColor(muscle) : 'var(--bd)';
+    return createPath(d, color) + createPath(mirrorPath(d), color);
+  };
+
+  const createStaticBone = (d) => 
+    createPath(d, '#2b3038') + createPath(mirrorPath(d), '#2b3038');
+
+  const arm = createMirroredMuscle(
+    'M56,82Q66,80 70,90Q68,106 62,116Q52,112 52,98Q52,88 56,82Z', 
+    bodyView === 'f' ? 'biceps' : 'triceps'
+  );
+
+  const legs = createMirroredMuscle(
+    'M76,148Q92,150 99,150L97,206Q86,222 76,208Q68,176 76,148Z', 
+    bodyView === 'f' ? 'quads' : 'hamstrings'
+  );
+
+  const calf = createMirroredMuscle(
+    'M78,228Q92,230 96,230Q96,258 90,282Q80,282 76,256Q74,240 78,228Z', 
+    'calves'
+  );
+
+  const shoulders = createMirroredMuscle(
+    'M74,52Q56,54 52,72Q54,80 62,82Q70,66 82,60Z', 
+    'shoulders'
+  );
+
+  let svgContent = `
+    <svg viewBox="0 0 200 316" style="max-width:240px;display:block;margin:auto">
+      <ellipse cx="100" cy="22" rx="11" ry="14" fill="var(--mu)"/>
+      <path d="M93,34L93,46L107,46L107,34Z" fill="var(--mu)"/>
+  `;
+
+  if (bodyView === 'f') {
+    // Front View
+    svgContent += legs;
+    svgContent += createStaticBone('M82,212Q90,222 97,210L97,224Q88,230 82,224Z');
+    svgContent += calf;
+    svgContent += createStaticBone('M82,284Q92,284 94,284L96,300Q86,306 80,300Z');
+    svgContent += createMirroredMuscle('M74,128Q88,140 99,140L99,150Q84,150 76,144Z');
+    svgContent += createMirroredMuscle('M72,88Q80,96 86,92L86,132Q78,130 74,120Q70,104 72,88Z', 'abs');
+    svgContent += [
+      'M88,92L99,92L99,102L88,102Z',
+      'M88,104L99,104L99,114L88,114Z',
+      'M89,116L99,116L99,126L89,126Z',
+      'M90,128L99,128L99,138L90,138Z'
+    ].map(d => createMirroredMuscle(d, 'abs')).join('');
+    svgContent += createMirroredMuscle('M82,60Q92,56 99,62L99,88Q84,94 72,84Q70,68 82,60Z', 'chest');
+    svgContent += createMirroredMuscle('M94,44L74,52L84,58L97,52Z', 'back');
+  } else {
+    // Back View
+    svgContent += createMirroredMuscle('M76,138Q90,132 99,138L99,166Q84,172 74,160Q72,148 76,138Z', 'glutes');
+    svgContent += legs;
+    svgContent += createStaticBone('M82,212Q90,222 97,210L97,224Q88,230 82,224Z');
+    svgContent += calf;
+    svgContent += createStaticBone('M82,284Q92,284 94,284L96,300Q86,306 80,300Z');
+    svgContent += createMirroredMuscle('M76,62Q72,88 80,114Q90,126 99,128L99,98Q86,82 76,62Z', 'back');
+    svgContent += createMirroredMuscle('M100,44L74,54Q84,64 100,96Q116,64 126,54Z', 'back');
+  }
+
+  svgContent += arm;
+  svgContent += createMirroredMuscle('M50,118Q60,116 62,122Q58,150 46,172Q36,160 40,140Q44,126 50,118Z', 'forearms');
+  svgContent += createStaticBone('M46,172Q36,174 30,186Q34,196 40,190Q44,200 50,192Q52,184 48,174Z');
+  svgContent += shoulders;
+  svgContent += '</svg>';
+
+  return svgContent;
+}
+
+/**
+ * Main Render Dispatcher
+ */
+function renderApp() {
+  const state = getState();
+  const appContainer = $('app');
+  const navContainer = $('nv');
+
+  if (!state.p) {
+    if (navContainer) navContainer.style.display = 'none';
+    appContainer.innerHTML = renderOnboardingView();
+    return;
+  }
+
+  if (navContainer) {
+    navContainer.style.display = 'flex';
+    navContainer.innerHTML = renderNavigation();
+  }
+
+  const viewRenderers = {
+    today: renderTodayView,
+    weight: renderWeightView,
+    body: renderBodyView,
+    progress: renderProgressView,
+    exercises: renderExercisesView,
+    settings: renderSettingsView
+  };
+
+  const renderer = viewRenderers[currentTab] || renderTodayView;
+  appContainer.innerHTML = renderer() + renderRestTimerBar();
+}
+
+/**
+ * Active Workout Timer Interval
+ */
+function setupTimerInterval() {
+  setInterval(() => {
+    const state = getState();
+    const activeTimerEl = $('activeTimer');
+    if (activeTimerEl && state.a) {
+      const elapsed = Math.floor((Date.now() - state.a.start) / 1000);
+      activeTimerEl.textContent = formatTime(elapsed);
+    }
+  }, 1000);
+}
+
+// Global actions namespace
+window.IronLog = {
+  setTab(tabId) {
+    currentTab = tabId;
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  },
+
+  toggleTheme() {
+    const state = getState();
+    const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
+    state.theme = nextTheme;
+    saveState();
+    applyTheme();
+    renderApp();
+  },
+
+  updateSetting(key, val) {
+    const state = getState();
+    state[key] = val;
+    saveState();
+    if (key === 'theme') applyTheme();
+    renderApp();
+  },
+
+  setLengthUnit(unit) {
+    const state = getState();
+    state.u = unit;
+    saveState();
+    renderApp();
+  },
+
+  stepInput(inputId, delta) {
+    const el = $(inputId);
+    if (!el) return;
+    const current = parseFloat(el.value) || 0;
+    const step = delta;
+    const updated = Math.max(0, current + step);
+    el.value = updated % 1 === 0 ? updated : updated.toFixed(2).replace(/\.00$/, '');
+  },
+
+  saveOnboarding() {
+    const g = $('ob_gender').value;
+    const a = +$('ob_age').value;
+    const h = +$('ob_height').value;
+    const w = +$('ob_weight').value;
+    const o = $('ob_goal').value;
+    const l = $('ob_level').value;
+
+    if (!a || !h || !w) {
+      return showToast('Please enter your age, height, and weight.');
+    }
+
+    const state = getState();
+    state.p = { g, a, h, w, o, l, pri: [] };
+    state.w = [{ d: getTodayDate(), w }];
+    saveState();
+    currentTab = 'body';
+    renderApp();
+    showToast('Profile created! Now enter your initial measurements.');
+  },
+
+  saveProfileEdit() {
+    const state = getState();
+    state.p.g = $('ed_gender').value;
+    state.p.a = +$('ed_age').value;
+    state.p.h = +$('ed_height').value;
+    state.p.w = +$('ed_weight').value;
+    state.p.o = $('ed_goal').value;
+    state.p.l = $('ed_level').value;
+    saveState();
+    showToast('Profile saved successfully.');
+    renderApp();
+  },
+
+  saveQuickWeight() {
+    const input = $('quickWeightInput');
+    if (!input) return;
+    const state = getState();
+    const parsedKg = parseWeightInput(input.value, state.wu);
+    if (!parsedKg) return showToast('Please enter a valid weight.');
+
+    const todayStr = getTodayDate();
+    const lastEntry = state.w[state.w.length - 1];
+    if (lastEntry && lastEntry.d === todayStr) {
+      lastEntry.w = parsedKg;
+    } else {
+      state.w.push({ d: todayStr, w: parsedKg });
+    }
+
+    saveState();
+    showToast('Weight recorded.');
+    renderApp();
+  },
+
+  deleteWeightEntry(dateStr) {
+    const state = getState();
+    state.w = state.w.filter(e => e.d !== dateStr);
+    saveState();
+    showToast('Weight entry removed.');
+    renderApp();
+  },
+
+  checkinWorkout() {
+    const state = getState();
+    state.a = { start: Date.now(), sets: [] };
+    saveState();
+    triggerHaptic([100]);
+    renderApp();
+    showToast('Workout started! Have a great session.');
+  },
+
+  checkoutWorkout() {
+    const state = getState();
+    if (!state.a) return;
+
+    const todayWorkout = getTodayWorkout();
+    const workoutName = todayWorkout ? todayWorkout[0] : 'Extra Session';
+
+    state.s.push({
+      d: getTodayDate(),
+      n: workoutName,
+      start: state.a.start,
+      end: Date.now(),
+      sets: state.a.sets
+    });
+
+    state.a = null;
+    stopRestTimer();
+    saveState();
+    triggerHaptic([150, 100, 250]);
+    renderApp();
+    showToast('Workout completed and saved!');
+  },
+
+  setDayOverride(val) {
+    const state = getState();
+    const todayStr = getTodayDate();
+    state.ov = val === 'auto' ? null : { d: todayStr, i: +val };
+    state.x = null; // reset daily mods on schedule switch
+    saveState();
+    renderApp();
+  },
+
+  skipExercise(id) {
+    const mods = getDailyMods();
+    mods.rm.push(id);
+    saveState();
+    renderApp();
+    showToast('Exercise skipped for today.');
+  },
+
+  forceExercise(id) {
+    const mods = getDailyMods();
+    mods.fo.push(id);
+    saveState();
+    renderApp();
+  },
+
+  addExerciseToToday(id) {
+    if (!id) return;
+    const mods = getDailyMods();
+    mods.add.push(id);
+    mods.rm = mods.rm.filter(x => x !== id);
+    saveState();
+    renderApp();
+    showToast('Exercise added to today’s workout.');
+  },
+
+  logSet(exId) {
+    const state = getState();
+    if (!state.a) return;
+
+    const wInput = $('w_' + exId);
+    const rInput = $('r_' + exId);
+    if (!wInput || !rInput) return;
+
+    const wVal = parseWeightInput(wInput.value, state.wu);
+    const rVal = parseInt(rInput.value, 10);
+
+    if (wVal == null || isNaN(rVal) || rVal <= 0) {
+      return showToast('Please enter valid weight and reps.');
+    }
+
+    state.a.sets.push({ ex: exId, w: wVal, r: rVal });
+    saveState();
+    triggerHaptic([80]);
+
+    // Kick off rest timer
+    const restSecs = state.restTimerDuration || 90;
+    startRestTimer(
+      restSecs,
+      (remaining) => {
+        const displayEl = $('restTimerDisplay');
+        if (displayEl) displayEl.textContent = formatTime(remaining);
+      },
+      () => {
+        renderApp();
+      }
+    );
+
+    renderApp();
+    showToast(`Set logged: ${formatWeight(wVal, state.wu)} ${state.wu} × ${rVal} reps`);
+  },
+
+  logExtraSet(exId) {
+    const state = getState();
+    const allEx = getAllExercises();
+    const logged = state.a.sets.filter(s => s.ex === exId);
+    const last = logged.length ? logged[logged.length - 1] : { w: getSuggestedWeight(exId, state, allEx), r: 10 };
+
+    state.a.sets.push({ ex: exId, w: last.w, r: last.r });
+    saveState();
+    renderApp();
+    showToast('Extra set logged.');
+  },
+
+  deleteSet(exId, setIdx) {
+    const state = getState();
+    if (!state.a) return;
+    let matchCount = 0;
+    state.a.sets = state.a.sets.filter(s => {
+      if (s.ex === exId) {
+        if (matchCount === setIdx) {
+          matchCount++;
+          return false;
+        }
+        matchCount++;
+      }
+      return true;
+    });
+    saveState();
+    renderApp();
+    showToast('Set removed.');
+  },
+
+  adjustRest(delta) {
+    adjustRestTimer(delta);
+    const displayEl = $('restTimerDisplay');
+    if (displayEl) displayEl.textContent = formatTime(getRestTimeRemaining());
+  },
+
+  toggleRestPause() {
+    const isPaused = togglePauseRestTimer();
+    const btn = $('restPauseBtn');
+    if (btn) btn.innerHTML = isPaused ? ICONS.play : ICONS.pause;
+  },
+
+  dismissRest() {
+    stopRestTimer();
+    renderApp();
+  },
+
+  saveMeasurements() {
+    const state = getState();
+    const unit = state.u;
+    const values = {};
+    let hasError = false;
+
+    MEASUREMENT_KEYS.forEach(k => {
+      const input = $('bm_' + k);
+      const parsedCm = input ? parseLengthInput(input.value, unit) : null;
+      if (!parsedCm) hasError = true;
+      values[k] = parsedCm;
+    });
+
+    if (hasError) {
+      return showToast('Please enter all measurements before saving.');
+    }
+
+    if (state.pr) {
+      state.c = {
+        pred: state.pr.e,
+        act: values,
+        wp: state.pr.wt,
+        wa: getLatestWeight(),
+        d: state.pr.d
+      };
+    }
+
+    state.m.push({ d: getTodayDate(), v: values });
+    updateProjection();
+    saveState();
+    showToast('Measurements saved! Target plans and projections updated.');
+    IronLog.setTab('progress');
+  },
+
+  toggleMusclePriority(muscle) {
+    const state = getState();
+    const pri = state.p.pri || (state.p.pri = []);
+    const idx = pri.indexOf(muscle);
+    if (idx < 0) {
+      pri.push(muscle);
+      showToast(`${muscle} marked as priority focus (+1 set).`);
+    } else {
+      pri.splice(idx, 1);
+      showToast(`${muscle} removed from priority.`);
+    }
+    updateProjection();
+    saveState();
+    renderApp();
+  },
+
+  showMeasureGuide() {
+    const guideItems = [
+      ['Chest', 'Wrap tape under armpits and across fullest part of chest. Keep arms relaxed at sides after normal exhale.'],
+      ['Shoulders', 'Tape around widest point of shoulders over deltoids, feet together and arms relaxed.'],
+      ['Bicep', 'Arm hanging relaxed at side. Measure midway between shoulder tip and elbow joint.'],
+      ['Waist', 'Measure at navel level or narrowest point. Relax abs and breathe out normally without sucking in.'],
+      ['Hips', 'Feet together. Wrap tape around fullest part of hips and glutes, parallel to floor.'],
+      ['Thigh', 'Weight distributed evenly on both feet. Measure upper thigh right below gluteal crease.'],
+      ['Calf', 'Weight on both feet. Measure around fullest circumference of calf.']
+    ];
+
+    const content = `
+      <h2>How to Measure Accurately</h2>
+      <p class="mu">Use a soft flexible tape measure. Take measurements in the morning before eating or training, with muscles relaxed (unflexed). Keep tape snug but not indenting skin.</p>
+      <div style="margin:14px 0">
+        ${guideItems.map(g => `<p><b>${g[0]}</b><br><span class="mu-sm">${g[1]}</span></p>`).join('')}
+      </div>
+      <button class="w" onclick="IronLog.closeModal()">Close</button>
+    `;
+    openModal(content);
+  },
+
+  showExerciseGuide(exId) {
+    const ex = getAllExercises()[exId];
+    if (!ex) return;
+    const state = getState();
+    const repRange = state.p?.g === 'f' ? '8–15' : '6–12';
+
+    const content = `
+      <h2>${ex.name}</h2>
+      <div class="r" style="margin:8px 0">
+        <span class="t t-ac">Primary: ${ex.primary}</span>
+        ${ex.secondary.length ? `<span class="t">Secondary: ${ex.secondary.join(', ')}</span>` : ''}
+      </div>
+
+      <h3 style="margin-top:14px">Execution Steps</h3>
+      <ol style="padding-left:20px;line-height:1.6">
+        ${ex.steps.map(s => `<li>${s}</li>`).join('')}
+      </ol>
+
+      <h3 style="margin-top:14px;color:var(--rd)">Common Mistakes to Avoid</h3>
+      <p class="mu" style="color:var(--rd)">${ex.mistakes}</p>
+
+      <div class="mu-sm" style="margin-top:12px;padding:10px;background:var(--bg);border-radius:6px">
+        <b>Target Reps:</b> ${repRange} controlled repetitions. Pick a weight where the last 1–2 reps are challenging while maintaining clean form.
+      </div>
+
+      <button class="w" style="margin-top:16px" onclick="IronLog.closeModal()">Got it</button>
+    `;
+    openModal(content);
+  },
+
+  showAddCustomExerciseModal() {
+    const content = `
+      <h2>Add Custom Exercise</h2>
+      <label>Exercise Name</label>
+      <input id="ce_name" placeholder="e.g. Incline Cable Flye">
+
+      <label>Primary Muscle Target</label>
+      <select id="ce_primary">
+        ${MUSCLE_GROUPS.map(m => `<option value="${m}">${m}</option>`).join('')}
+      </select>
+
+      <label>Starting Weight Scaling Factor</label>
+      <input id="ce_factor" type="number" step="0.05" value="0.3" placeholder="0.3">
+      <div class="mu-sm">Fraction of bodyweight used for initial weight suggestion (e.g. 0.3 = 30% of bodyweight).</div>
+
+      <label>Form Steps (separated by semicolon)</label>
+      <textarea id="ce_steps" rows="3" placeholder="Step 1; Step 2; Step 3"></textarea>
+
+      <label>Common Mistakes</label>
+      <input id="ce_mistakes" placeholder="e.g. Swinging torso, cutting depth">
+
+      <button class="w" style="margin-top:16px" onclick="IronLog.saveCustomExercise()">
+        Save Exercise
+      </button>
+    `;
+    openModal(content);
+  },
+
+  saveCustomExercise() {
+    const name = $('ce_name').value.trim();
+    const primary = $('ce_primary').value;
+    const factor = parseFloat($('ce_factor').value) || 0.3;
+    const stepsRaw = $('ce_steps').value.trim();
+    const mistakes = $('ce_mistakes').value.trim() || 'Rushing the reps.';
+
+    if (!name) return showToast('Please enter an exercise name.');
+
+    const steps = stepsRaw ? stepsRaw.split(';').map(s => s.trim()).filter(Boolean) : ['Perform reps under full control.'];
+    const exId = 'custom_' + Date.now();
+
+    const state = getState();
+    if (!state.customExercises) state.customExercises = {};
+    state.customExercises[exId] = {
+      name,
+      primary,
+      secondary: [],
+      weightFactor: factor,
+      steps,
+      mistakes
+    };
+
+    saveState();
+    closeModal();
+    showToast(`"${name}" added to exercise library.`);
+    renderApp();
+  },
+
+  rotateBodyView() {
+    const container = $('bodyFigureContainer');
+    if (container) {
+      container.style.transform = 'scaleX(0)';
+      setTimeout(() => {
+        bodyView = bodyView === 'f' ? 'b' : 'f';
+        container.innerHTML = renderBodySvg();
+        container.style.transform = 'scaleX(1)';
+      }, 150);
+    }
+  },
+
+  onBodyPointerDown(e) {
+    bodyPointerX = e.clientX;
+  },
+
+  onBodyPointerUp(e) {
+    if (Math.abs(e.clientX - bodyPointerX) > 30) {
+      IronLog.rotateBodyView();
+    }
+  },
+
+  onSearchExercise(query) {
+    exerciseSearchQuery = query;
+    renderApp();
+  },
+
+  setExerciseFilter(muscle) {
+    exerciseFilterMuscle = muscle;
+    renderApp();
+  },
+
+  exportBackup() {
+    exportStateJson();
+    showToast('Backup downloaded.');
+  },
+
+  triggerImport() {
+    $('importFileInput').click();
+  },
+
+  handleFileImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const res = importStateJson(e.target.result);
+      if (res.success) {
+        showToast('Backup restored successfully!');
+        applyTheme();
+        renderApp();
+      } else {
+        showToast(`Import failed: ${res.error}`);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  },
+
+  exportCsv() {
+    const success = exportWorkoutsCsv(getAllExercises());
+    if (success) {
+      showToast('Workout history exported to CSV.');
+    } else {
+      showToast('No workouts to export yet.');
+    }
+  },
+
+  confirmResetData() {
+    if (confirm('Are you sure you want to reset all IronLog data? This will erase all workout logs and measurements. This action cannot be undone.')) {
+      resetState();
+      currentTab = 'today';
+      renderApp();
+      showToast('All data has been reset.');
+    }
+  },
+
+  closeModal() {
+    closeModal();
+  }
+};
+
+// Initialize when DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  initApp();
+
+  // Register service worker for offline PWA
+  // Service worker omitted in file:// standalone mode
+});
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "ironlog-gym-tracker",
+  "version": "2.0.0",
+  "description": "Adaptive Push-Pull-Legs gym tracker with golden-era proportion targets, muscle recovery tracking, and smart progression.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build:standalone": "node build-standalone.js",
+    "test": "node --check server.js && node --check js/app.js && node --check js/state.js && node --check js/exercises.js && node --check js/timer.js && node --check js/icons.js && node build-standalone.js"
+  },
+  "keywords": [
+    "gym-tracker",
+    "workout-log",
+    "hypertrophy",
+    "bodybuilding",
+    "pwa",
+    "push-pull-legs"
+  ],
+  "author": "IronLog Team",
+  "license": "MIT"
+}
