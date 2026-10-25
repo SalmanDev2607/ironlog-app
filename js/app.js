@@ -1206,22 +1206,6 @@ function renderSettingsView() {
         </div>
       `}
 
-      <!-- Supabase Connection Details -->
-      <details style="margin-top:16px;border-top:1px solid var(--bd);padding-top:10px">
-        <summary style="cursor:pointer;font-weight:600;font-size:13px;color:var(--mu)">
-          Supabase Connection Settings ${isSupabaseConfigured() ? '(Connected)' : '(Setup Required)'}
-        </summary>
-        <div style="margin-top:10px">
-          <label>Supabase Project URL</label>
-          <input id="cfg_sb_url" placeholder="https://xyzcompany.supabase.co" value="${supabaseConfig.url || ''}">
-          <label>Supabase Anon Public Key</label>
-          <input id="cfg_sb_key" type="password" placeholder="eyJhbGciOiJIUzI1NiIsIn..." value="${supabaseConfig.anonKey || ''}">
-          <div class="r" style="margin-top:10px;gap:8px">
-            <button class="g sm" onclick="IronLog.saveSupabaseConfigFromSettings()">Save Connection</button>
-            <button class="g sm" onclick="IronLog.showSupabaseSqlGuide()">View Required SQL</button>
-          </div>
-        </div>
-      </details>
     </div>
 
     <!-- Profile Editor Card -->
@@ -1279,30 +1263,6 @@ function renderSettingsView() {
       </div>
     ` : ''}
 
-    <!-- Backup, Export & Restore -->
-    <div class="c">
-      <h3>Data Backup & Restore</h3>
-      <p class="mu-sm">Your data is stored locally in your browser. Export backups regularly so you never lose your workout history.</p>
-      
-      <div class="r" style="margin-top:10px;flex-wrap:wrap">
-        <button class="g" onclick="IronLog.exportBackup()">
-          ${ICONS.download} Export JSON
-        </button>
-        <button class="g" onclick="IronLog.triggerImport()">
-          ${ICONS.upload} Restore JSON
-        </button>
-        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="IronLog.handleFileImport(event)">
-        <button class="g" onclick="IronLog.exportCsv()">
-          ${ICONS.download} Export CSV
-        </button>
-      </div>
-
-      <div style="margin-top:20px;padding-top:12px;border-top:1px solid var(--bd)">
-        <button class="danger-outline sm" onclick="IronLog.confirmResetData()">
-          ${ICONS.trash} Reset All Data
-        </button>
-      </div>
-    </div>
   `;
 
   return html;
