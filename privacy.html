@@ -3,114 +3,230 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy – IronLog</title>
+  <title>Privacy Policy – IronLog Gym Tracker</title>
+  <meta name="description" content="IronLog privacy policy: how we handle your workout data, authentication, and personal information." />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #0f0f1a;
       color: #e0e0e0;
-      line-height: 1.7;
+      line-height: 1.8;
       padding: 2rem 1rem;
     }
     .container {
-      max-width: 720px;
+      max-width: 780px;
       margin: 0 auto;
       background: #1a1a2e;
       border-radius: 16px;
-      padding: 2.5rem;
+      padding: 3rem 2.5rem;
     }
     .logo {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      text-decoration: none;
     }
     .logo-icon {
-      width: 40px; height: 40px;
+      width: 44px; height: 44px;
       background: linear-gradient(135deg, #e74c3c, #e67e22);
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-weight: 900; font-size: 1rem; color: #fff;
+      flex-shrink: 0;
     }
-    .logo-text { font-size: 1.5rem; font-weight: 800; color: #fff; }
-    h1 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
-    .updated { color: #888; font-size: 0.85rem; margin-bottom: 2rem; }
-    h2 { font-size: 1.1rem; font-weight: 700; color: #e74c3c; margin: 2rem 0 0.5rem; }
-    p { color: #ccc; margin-bottom: 0.75rem; }
-    ul { color: #ccc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-    ul li { margin-bottom: 0.4rem; }
+    .logo-text { font-size: 1.6rem; font-weight: 800; color: #fff; }
+    h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem; }
+    .subtitle { color: #e74c3c; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .updated { color: #777; font-size: 0.85rem; margin-bottom: 2rem; border-bottom: 1px solid #2a2a3e; padding-bottom: 1.5rem; }
+    h2 {
+      font-size: 1.15rem; font-weight: 700; color: #fff;
+      margin: 2.5rem 0 0.75rem;
+      padding-left: 0.75rem;
+      border-left: 3px solid #e74c3c;
+    }
+    h3 { font-size: 1rem; font-weight: 700; color: #ccc; margin: 1.25rem 0 0.4rem; }
+    p { color: #bbb; margin-bottom: 0.9rem; }
+    ul, ol { color: #bbb; padding-left: 1.75rem; margin-bottom: 0.9rem; }
+    ul li, ol li { margin-bottom: 0.5rem; }
     a { color: #e74c3c; text-decoration: none; }
     a:hover { text-decoration: underline; }
-    .back-link {
-      display: inline-block;
-      margin-top: 2.5rem;
-      padding: 0.6rem 1.4rem;
-      background: linear-gradient(135deg, #e74c3c, #e67e22);
-      color: #fff;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
+    code { background: #0f0f1a; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; color: #e67e22; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    th { background: #0f0f1a; color: #fff; padding: 0.6rem 0.8rem; text-align: left; font-size: 0.9rem; }
+    td { padding: 0.6rem 0.8rem; border-top: 1px solid #2a2a3e; color: #bbb; font-size: 0.9rem; vertical-align: top; }
+    .badge {
+      display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem;
     }
-    .back-link:hover { opacity: 0.9; text-decoration: none; }
-    hr { border: none; border-top: 1px solid #2a2a3e; margin: 1.5rem 0; }
+    .badge-no { background: #1a3a1a; color: #4caf50; }
+    .badge-yes { background: #3a1a1a; color: #e74c3c; }
+    .highlight-box {
+      background: #0f0f1a; border: 1px solid #2a2a3e; border-radius: 10px;
+      padding: 1.2rem 1.5rem; margin: 1rem 0 1.5rem;
+    }
+    .highlight-box p { margin-bottom: 0; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-top: 3rem; padding: 0.7rem 1.5rem;
+      background: linear-gradient(135deg, #e74c3c, #e67e22);
+      color: #fff; border-radius: 10px; font-weight: 700;
+      text-decoration: none; font-size: 0.95rem;
+    }
+    .back-btn:hover { opacity: 0.9; text-decoration: none; }
+    footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #2a2a3e; color: #555; font-size: 0.82rem; text-align: center; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="logo">
+
+    <a href="./index.html" class="logo">
       <div class="logo-icon">IL</div>
       <span class="logo-text">IronLog</span>
-    </div>
+    </a>
 
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: October 2026</p>
+    <p class="subtitle">IronLog – Gym &amp; Hypertrophy Tracker</p>
+    <p class="updated">Last updated: 25 October 2026 &nbsp;|&nbsp; Effective: 25 October 2026</p>
 
-    <p>IronLog ("we", "our", or "the app") is a personal gym and hypertrophy tracking Progressive Web App (PWA). We are committed to protecting your privacy. This policy explains what data we collect and how we use it.</p>
+    <div class="highlight-box">
+      <p>IronLog is a free, open-source Progressive Web App (PWA) for personal gym workout tracking. We are committed to your privacy. <strong>We do not sell your data, run ads, or share your information with third parties for commercial purposes.</strong></p>
+    </div>
 
-    <h2>1. Information We Collect</h2>
-    <p>When you use IronLog, we may collect:</p>
+    <h2>1. Who We Are</h2>
+    <p>IronLog ("the App", "we", "us") is a personal fitness tracking application available at <a href="https://salmandev2607.github.io/ironlog-app">https://salmandev2607.github.io/ironlog-app</a>. The app is developed and maintained independently by the IronLog project. For privacy questions, contact us at <a href="mailto:abdulsalman451@gmail.com">abdulsalman451@gmail.com</a>.</p>
+
+    <h2>2. What Data We Collect</h2>
+    <p>IronLog operates in two modes:</p>
+
+    <h3>2a. Guest Mode (no account required)</h3>
+    <p>When you use IronLog without signing in:</p>
     <ul>
-      <li><strong>Email address</strong> — if you create an account using email/password sign-up</li>
-      <li><strong>Google account info</strong> — name and email, if you sign in with Google OAuth</li>
-      <li><strong>Workout data</strong> — exercises, sets, reps, weights, and check-in history you log in the app</li>
+      <li>No personal data is collected or transmitted to any server</li>
+      <li>Workout data (exercises, sets, reps, weights, check-ins) is stored <strong>only in your browser's <code>localStorage</code></strong> on your device</li>
+      <li>Data never leaves your device in guest mode</li>
+      <li>Clearing browser data will erase all locally stored workout history</li>
     </ul>
 
-    <h2>2. How We Use Your Data</h2>
+    <h3>2b. Signed-In Mode (account required for cloud sync)</h3>
+    <p>If you choose to create an account or sign in with Google, we collect and store:</p>
+    <table>
+      <tr><th>Data Type</th><th>Purpose</th><th>Stored Where</th></tr>
+      <tr><td>Email address</td><td>Account identification &amp; login</td><td>Supabase Auth (encrypted)</td></tr>
+      <tr><td>Display name (Google only)</td><td>Personalise your experience</td><td>Supabase Auth</td></tr>
+      <tr><td>Workout history</td><td>Cross-device cloud sync</td><td>Supabase Database (encrypted at rest)</td></tr>
+      <tr><td>Auth session token</td><td>Keep you logged in</td><td>Browser <code>localStorage</code></td></tr>
+    </table>
+
+    <h2>3. Data We Do NOT Collect</h2>
     <ul>
-      <li>To authenticate you and maintain your session</li>
-      <li>To sync your workout history across devices (cloud backup)</li>
-      <li>To display your progress within the app</li>
+      <li><span class="badge badge-no">NO</span> Location or GPS data</li>
+      <li><span class="badge badge-no">NO</span> Health metrics (heart rate, steps, etc.)</li>
+      <li><span class="badge badge-no">NO</span> Payment or financial information</li>
+      <li><span class="badge badge-no">NO</span> Contacts, calendar, or other device data</li>
+      <li><span class="badge badge-no">NO</span> Tracking cookies or advertising identifiers</li>
+      <li><span class="badge badge-no">NO</span> Usage analytics or crash reporting services</li>
+      <li><span class="badge badge-no">NO</span> Any data beyond what you explicitly enter into the app</li>
     </ul>
-    <p>We do <strong>not</strong> sell, share, or use your data for advertising.</p>
 
-    <h2>3. Data Storage</h2>
+    <h2>4. How We Use Your Data</h2>
+    <p>We use the information collected solely to:</p>
+    <ol>
+      <li><strong>Authenticate your account</strong> — verify your identity when you sign in</li>
+      <li><strong>Sync your workout data</strong> — back up and restore your training history across devices</li>
+      <li><strong>Display your progress</strong> — show workout history, personal records, and muscle recovery within the app</li>
+    </ol>
+    <p>We do <strong>not</strong> use your data for advertising, profiling, marketing emails, or any purpose beyond the core app functionality described above.</p>
+
+    <h2>5. Google Sign-In (OAuth 2.0)</h2>
+    <p>IronLog offers "Sign in with Google" as a convenient login option. When you use this:</p>
     <ul>
-      <li><strong>Locally:</strong> Workout data is stored in your browser's <code>localStorage</code> for offline access</li>
-      <li><strong>Cloud:</strong> If you sign in, data is synced to <a href="https://supabase.com" target="_blank">Supabase</a> (our backend provider) and stored securely with Row Level Security — only you can access your data</li>
-      <li><strong>Authentication:</strong> Handled by Supabase Auth and Google OAuth 2.0</li>
+      <li>You are redirected to Google's secure authentication page</li>
+      <li>Google shares only your <strong>email address</strong> and <strong>display name</strong> with IronLog</li>
+      <li>IronLog does <strong>not</strong> access your Google Drive, Gmail, Contacts, Calendar, or any other Google service</li>
+      <li>The specific OAuth scopes requested are: <code>openid</code>, <code>email</code>, <code>profile</code> — the minimum required for identity only</li>
+      <li>You can revoke IronLog's access at any time at <a href="https://myaccount.google.com/permissions" target="_blank">myaccount.google.com/permissions</a></li>
     </ul>
 
-    <h2>4. Google Sign-In</h2>
-    <p>If you choose to sign in with Google, we receive your Google account's name and email address via OAuth 2.0. We do not access your Google Drive, Contacts, or any other Google services. You can revoke access at any time at <a href="https://myaccount.google.com/permissions" target="_blank">myaccount.google.com/permissions</a>.</p>
+    <h2>6. Data Storage &amp; Security</h2>
 
-    <h2>5. Data Retention</h2>
-    <p>Your data is retained as long as your account is active. You may delete your account and associated data at any time by contacting us.</p>
+    <h3>Local Storage</h3>
+    <p>Workout data is stored in your browser's <code>localStorage</code>. This data is private to your browser and device. It is not shared unless you are signed in with cloud sync enabled.</p>
 
-    <h2>6. Cookies &amp; Tracking</h2>
-    <p>IronLog does not use tracking cookies or third-party analytics. Supabase uses session tokens stored in <code>localStorage</code> for authentication purposes only.</p>
+    <h3>Cloud Storage (Supabase)</h3>
+    <p>Account and workout data for signed-in users is stored on <a href="https://supabase.com" target="_blank">Supabase</a>, our backend-as-a-service provider. Supabase stores data in encrypted form and uses <strong>Row Level Security (RLS)</strong> — a database-level access control that ensures you can only ever read and write your own data. No other user or administrator can query your rows.</p>
+    <p>Supabase's full privacy policy: <a href="https://supabase.com/privacy" target="_blank">supabase.com/privacy</a></p>
 
-    <h2>7. Children's Privacy</h2>
-    <p>IronLog is not directed at children under 13. We do not knowingly collect data from children.</p>
+    <h3>Encryption</h3>
+    <ul>
+      <li>All data transmitted between your device and our servers uses <strong>HTTPS/TLS encryption</strong></li>
+      <li>Data is encrypted at rest in Supabase's infrastructure</li>
+      <li>Passwords are never stored in plain text — they are hashed using Supabase Auth's secure methods</li>
+    </ul>
 
-    <h2>8. Changes to This Policy</h2>
-    <p>We may update this policy occasionally. Changes will be posted on this page with an updated date.</p>
+    <h2>7. Data Sharing &amp; Third Parties</h2>
+    <p>We share your data with only the following parties, solely for operating the app:</p>
+    <table>
+      <tr><th>Party</th><th>Purpose</th><th>Data Shared</th></tr>
+      <tr><td><a href="https://supabase.com" target="_blank">Supabase</a></td><td>Auth &amp; database hosting</td><td>Email, workout data</td></tr>
+      <tr><td><a href="https://accounts.google.com" target="_blank">Google</a></td><td>OAuth sign-in only</td><td>Email, name (from Google to us)</td></tr>
+    </table>
+    <p>We do <strong>not</strong> sell, rent, lease, or otherwise share your personal data with any other third party.</p>
 
-    <h2>9. Contact</h2>
-    <p>For any privacy questions, contact us at: <a href="mailto:abdulsalman451@gmail.com">abdulsalman451@gmail.com</a></p>
+    <h2>8. Data Retention</h2>
+    <ul>
+      <li><strong>Local data:</strong> Retained in your browser until you clear site data or uninstall the app</li>
+      <li><strong>Cloud data:</strong> Retained while your account is active</li>
+      <li><strong>Account deletion:</strong> You may request deletion of your account and all associated cloud data by emailing <a href="mailto:abdulsalman451@gmail.com">abdulsalman451@gmail.com</a>. We will process your request within 30 days.</li>
+    </ul>
 
-    <hr />
-    <a href="/" class="back-link">← Back to IronLog</a>
+    <h2>9. Your Rights</h2>
+    <p>Depending on your location, you may have the following rights regarding your personal data:</p>
+    <ul>
+      <li><strong>Access:</strong> Request a copy of the personal data we hold about you</li>
+      <li><strong>Correction:</strong> Request correction of inaccurate data</li>
+      <li><strong>Deletion:</strong> Request deletion of your account and data</li>
+      <li><strong>Portability:</strong> Request your workout data in a machine-readable format</li>
+      <li><strong>Objection:</strong> Object to or restrict certain processing activities</li>
+    </ul>
+    <p>To exercise any of these rights, contact us at <a href="mailto:abdulsalman451@gmail.com">abdulsalman451@gmail.com</a>.</p>
+
+    <h2>10. Cookies &amp; Tracking</h2>
+    <p>IronLog does <strong>not</strong> use tracking cookies, advertising cookies, or third-party analytics (such as Google Analytics). The only storage we use is:</p>
+    <ul>
+      <li><code>localStorage</code> — for storing workout data and auth session tokens locally on your device</li>
+      <li><code>sessionStorage</code> — for temporary session flags (cleared when you close the browser tab)</li>
+    </ul>
+
+    <h2>11. Children's Privacy</h2>
+    <p>IronLog is not directed at children under the age of 13 (or 16 in the EU/UK). We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us immediately and we will delete it.</p>
+
+    <h2>12. International Users</h2>
+    <p>IronLog is available worldwide. By using the app and creating an account, you consent to your data being processed and stored in the regions where Supabase operates its infrastructure (primarily USA and EU). Supabase complies with applicable data protection laws.</p>
+
+    <h2>13. Service Workers &amp; Offline Use</h2>
+    <p>IronLog uses a Service Worker to enable offline functionality and PWA installation. The Service Worker caches app files (HTML, CSS, JavaScript) on your device to allow the app to work without an internet connection. It does not cache or transmit personal data.</p>
+
+    <h2>14. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. When we do, we will update the "Last updated" date at the top of this page. We encourage you to review this page periodically. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+
+    <h2>15. Contact Us</h2>
+    <p>If you have any questions, concerns, or requests regarding this Privacy Policy or your personal data, please contact:</p>
+    <div class="highlight-box">
+      <p><strong>IronLog Privacy</strong><br>
+      Email: <a href="mailto:abdulsalman451@gmail.com">abdulsalman451@gmail.com</a><br>
+      App: <a href="https://salmandev2607.github.io/ironlog-app">https://salmandev2607.github.io/ironlog-app</a></p>
+    </div>
+
+    <a href="./index.html" class="back-btn">← Back to IronLog App</a>
+
+    <footer>
+      &copy; 2026 IronLog. Free &amp; Open Source.
+      &nbsp;|&nbsp; <a href="./index.html">App</a>
+      &nbsp;|&nbsp; <a href="mailto:abdulsalman451@gmail.com">Contact</a>
+    </footer>
+
   </div>
 </body>
 </html>
