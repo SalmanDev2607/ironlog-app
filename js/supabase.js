@@ -218,56 +218,67 @@ export async function getCurrentSession() {
 
 /**
  * Checks URL for recovery tokens / parameters, sets session explicitly,
- * and returns true if this visit is a password recovery flow.
+ * and returns { isRecovery: boolean, error: string | null }.
  */
-export async function handleRecoveryRedirect() {
-  if (typeof window === 'undefined') return false;
+export async function handleRecoveryRedirect(customLocation) {
+  if (typeof window === 'undefined' && !customLocation) return { isRecovery: false, error: null };
 
-  const rawHash = window.location.hash || '';
+  const loc = customLocation || window.location;
+  const rawHash = loc.hash || '';
   const hash = rawHash.startsWith('#') ? rawHash.substring(1) : rawHash;
   const hashParams = new URLSearchParams(hash);
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = new URLSearchParams(loc.search || '');
 
   const type = hashParams.get('type') || searchParams.get('type');
   const accessToken = hashParams.get('access_token');
   const refreshToken = hashParams.get('refresh_token');
   const code = searchParams.get('code');
+  const errorDescription = hashParams.get('error_description') || searchParams.get('error_description');
 
-  const isRecovery = type === 'recovery';
+  if (errorDescription) {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('il_awaiting_password_reset');
+    }
+    return { isRecovery: false, error: decodeURIComponent(errorDescription.replace(/\+/g, ' ')) };
+  }
 
-  if (!isRecovery) return false;
+  // Recovery is detected if:
+  // 1. type === 'recovery' in hash or query
+  // 2. OR user had requested a password reset in this browser and arrives with access_token or code
+  const awaitingReset = typeof localStorage !== 'undefined' && localStorage.getItem('il_awaiting_password_reset') === 'true';
+  const isRecovery = type === 'recovery' || (awaitingReset && (Boolean(accessToken) || Boolean(code)));
+
+  if (!isRecovery) return { isRecovery: false, error: null };
+
+  // Clear awaiting flag now that we caught the recovery
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem('il_awaiting_password_reset');
+  }
 
   try {
     const client = await ensureClient();
-
-    if (accessToken) {
-      const { error } = await client.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken || ''
-      });
-      if (error) {
-        console.warn('Error setting recovery session from hash:', error);
+    if (client) {
+      if (accessToken) {
+        await client.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken || ''
+        });
+      } else if (code && typeof client.auth.exchangeCodeForSession === 'function') {
+        await client.auth.exchangeCodeForSession(code);
+      } else {
+        await client.auth.getSession();
       }
-    } else if (code) {
-      if (typeof client.auth.exchangeCodeForSession === 'function') {
-        const { error } = await client.auth.exchangeCodeForSession(code);
-        if (error) {
-          console.warn('Error exchanging recovery code for session:', error);
-        }
-      }
-    } else {
-      await client.auth.getSession();
     }
   } catch (err) {
     console.warn('Error establishing recovery session:', err);
   }
 
-  // Clean URL tokens from address bar without page reload
-  if (window.history && window.history.replaceState) {
+  // Clean URL tokens without page reload
+  if (typeof window !== 'undefined' && window.history && window.history.replaceState) {
     window.history.replaceState(null, '', window.location.pathname);
   }
 
-  return true;
+  return { isRecovery: true, error: null };
 }
 
 /**

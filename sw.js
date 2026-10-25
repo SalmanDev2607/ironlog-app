@@ -1,7 +1,8 @@
-const CACHE_NAME = 'ironlog-v2.2.0';
+const CACHE_NAME = 'ironlog-v2.3.0';
 const ASSETS = [
   './',
   './index.html',
+  './privacy.html',
   './manifest.webmanifest',
   './css/styles.css',
   './js/app.js',
@@ -32,6 +33,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log('Evicting old Service Worker cache:', key);
             return caches.delete(key);
           }
         })
@@ -44,24 +46,46 @@ self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
+  const url = new URL(event.request.url);
+  const isSameOrigin = url.origin === self.location.origin;
+
+  // Network-First for core application files (HTML, JS, CSS, navigation)
+  // This ensures live code updates are immediately served when online,
+  // preventing stale cached code traps while preserving full offline functionality.
+  const isAppCode = isSameOrigin && (
+    event.request.mode === 'navigate' ||
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.html') ||
+    url.pathname.endsWith('.css') ||
+    url.pathname === '/' ||
+    url.pathname.endsWith('/')
+  );
+
+  if (isAppCode) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache-First for static assets (fonts, icons, cdn scripts)
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      // Return cached version or fetch from network
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
+      return cached || fetch(event.request).then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
-          });
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return networkResponse;
-      }).catch(() => {
-        // Fallback to cache if network fails (offline)
-        return cached;
       });
-
-      return cached || fetchPromise;
     })
   );
 });
-

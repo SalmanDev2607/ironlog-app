@@ -79,9 +79,9 @@ export async function initApp() {
   applyTheme();
 
   // Check if user arrived via a password reset email link
-  let isPasswordRecovery = false;
+  let recoveryResult = { isRecovery: false, error: null };
   try {
-    isPasswordRecovery = await handleRecoveryRedirect();
+    recoveryResult = await handleRecoveryRedirect();
   } catch (err) {
     console.warn('Recovery redirect handling error:', err);
   }
@@ -96,11 +96,13 @@ export async function initApp() {
     }
   );
 
-  if (isPasswordRecovery) {
+  if (recoveryResult.error) {
+    showToast(`Reset error: ${recoveryResult.error}`);
+  } else if (recoveryResult.isRecovery) {
     // Show the reset modal on top of the view
     setTimeout(() => {
       IronLog.showPasswordResetForm();
-    }, 100);
+    }, 150);
   }
 }
 
@@ -2162,6 +2164,9 @@ window.IronLog = {
     try {
       if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
       if (errBox) errBox.style.display = 'none';
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('il_awaiting_password_reset', 'true');
+      }
       await resetPasswordForEmail(email);
       if (successBox) {
         successBox.innerHTML = `✅ Reset link sent to <b>${email}</b>.<br>Check your inbox (and spam folder). Click the link in the email to set a new password.`;
@@ -2169,6 +2174,9 @@ window.IronLog = {
       }
       if (btn) { btn.style.display = 'none'; }
     } catch (err) {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('il_awaiting_password_reset');
+      }
       if (errBox) { errBox.textContent = err.message || 'Failed to send reset email.'; errBox.style.display = 'block'; }
     } finally {
       if (btn && btn.style.display !== 'none') { btn.disabled = false; btn.textContent = 'Send Reset Link'; }
@@ -2210,6 +2218,9 @@ window.IronLog = {
       if (btn) { btn.disabled = true; btn.textContent = 'Updating...'; }
       if (errBox) errBox.style.display = 'none';
       await updatePassword(password);
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('il_awaiting_password_reset');
+      }
       sessionStorage.setItem('il_guest_pass', 'true');
       showToast('✅ Password updated! You are now signed in.');
       closeModal();
@@ -2318,8 +2329,14 @@ create policy "Users can update their own data"
 };
 
 // Initialize when DOM ready
-document.addEventListener('DOMContentLoaded', () => {
-  initApp();
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initApp();
+    });
+  } else {
+    initApp();
+  }
 
   // Register service worker for offline PWA
   if ('serviceWorker' in navigator) {
@@ -2327,5 +2344,5 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn('ServiceWorker registration error:', err);
     });
   }
-});
+}
 
