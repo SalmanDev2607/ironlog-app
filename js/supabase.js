@@ -82,7 +82,8 @@ export function getClient() {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: true
+        detectSessionInUrl: true,
+        flowType: 'implicit'
       }
     });
     return supabaseClient;
@@ -127,7 +128,8 @@ export async function ensureClient() {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: true
+        detectSessionInUrl: true,
+        flowType: 'implicit'
       }
     });
     return supabaseClient;
@@ -219,6 +221,7 @@ export async function getCurrentSession() {
  */
 export async function resetPasswordForEmail(email) {
   const client = await ensureClient();
+  // Always redirect to the canonical app URL so the token domain matches
   const redirectTo = window.location.origin + window.location.pathname;
   const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
   if (error) throw error;
@@ -229,6 +232,11 @@ export async function resetPasswordForEmail(email) {
  */
 export async function updatePassword(newPassword) {
   const client = await ensureClient();
+  // Verify session exists before attempting update
+  const { data: { session } } = await client.auth.getSession();
+  if (!session) {
+    throw new Error('Auth session missing! Please click the reset link from your email again.');
+  }
   const { error } = await client.auth.updateUser({ password: newPassword });
   if (error) throw error;
 }
