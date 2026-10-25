@@ -52,7 +52,8 @@ import {
   setSupabaseConfig,
   isSupabaseConfigured,
   resetPasswordForEmail,
-  updatePassword
+  updatePassword,
+  handleRecoveryRedirect
 } from './supabase.js';
 
 import {
@@ -73,20 +74,34 @@ let exerciseSearchQuery = '';
 let exerciseFilterMuscle = 'all';
 
 // Initialize App
-export function initApp() {
+export async function initApp() {
   loadState();
   applyTheme();
+
+  // Check if user arrived via a password reset email link
+  let isPasswordRecovery = false;
+  try {
+    isPasswordRecovery = await handleRecoveryRedirect();
+  } catch (err) {
+    console.warn('Recovery redirect handling error:', err);
+  }
+
   renderApp();
   setupTimerInterval();
   initSync(
     () => { applyTheme(); renderApp(); },
     () => {
       // PASSWORD_RECOVERY event fired: user clicked the reset link in their email.
-      // Supabase has granted a temporary session — show the set-new-password form.
-      history.replaceState(null, '', window.location.pathname);
       IronLog.showPasswordResetForm();
     }
   );
+
+  if (isPasswordRecovery) {
+    // Show the reset modal on top of the view
+    setTimeout(() => {
+      IronLog.showPasswordResetForm();
+    }, 100);
+  }
 }
 
 /**

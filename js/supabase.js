@@ -217,6 +217,60 @@ export async function getCurrentSession() {
 }
 
 /**
+ * Checks URL for recovery tokens / parameters, sets session explicitly,
+ * and returns true if this visit is a password recovery flow.
+ */
+export async function handleRecoveryRedirect() {
+  if (typeof window === 'undefined') return false;
+
+  const rawHash = window.location.hash || '';
+  const hash = rawHash.startsWith('#') ? rawHash.substring(1) : rawHash;
+  const hashParams = new URLSearchParams(hash);
+  const searchParams = new URLSearchParams(window.location.search);
+
+  const type = hashParams.get('type') || searchParams.get('type');
+  const accessToken = hashParams.get('access_token');
+  const refreshToken = hashParams.get('refresh_token');
+  const code = searchParams.get('code');
+
+  const isRecovery = type === 'recovery';
+
+  if (!isRecovery) return false;
+
+  try {
+    const client = await ensureClient();
+
+    if (accessToken) {
+      const { error } = await client.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken || ''
+      });
+      if (error) {
+        console.warn('Error setting recovery session from hash:', error);
+      }
+    } else if (code) {
+      if (typeof client.auth.exchangeCodeForSession === 'function') {
+        const { error } = await client.auth.exchangeCodeForSession(code);
+        if (error) {
+          console.warn('Error exchanging recovery code for session:', error);
+        }
+      }
+    } else {
+      await client.auth.getSession();
+    }
+  } catch (err) {
+    console.warn('Error establishing recovery session:', err);
+  }
+
+  // Clean URL tokens from address bar without page reload
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState(null, '', window.location.pathname);
+  }
+
+  return true;
+}
+
+/**
  * Sends a password reset email with a link back to the app
  */
 export async function resetPasswordForEmail(email) {
