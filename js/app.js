@@ -76,28 +76,17 @@ let exerciseFilterMuscle = 'all';
 export function initApp() {
   loadState();
   applyTheme();
-
-  // Detect Supabase password recovery redirect (type=recovery in URL hash)
-  const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
-  if (hashParams.get('type') === 'recovery') {
-    // Clear the hash so it doesn't persist on refresh
-    history.replaceState(null, '', window.location.pathname);
-    // Supabase client picks up the access_token from the hash automatically;
-    // wait a tick then show the set-new-password form
-    loadState();
-    applyTheme();
-    setupTimerInterval();
-    initSync(() => { applyTheme(); renderApp(); });
-    setTimeout(() => IronLog.showPasswordResetForm(), 300);
-    return;
-  }
-
   renderApp();
   setupTimerInterval();
-  initSync(() => {
-    applyTheme();
-    renderApp();
-  });
+  initSync(
+    () => { applyTheme(); renderApp(); },
+    () => {
+      // PASSWORD_RECOVERY event fired: user clicked the reset link in their email.
+      // Supabase has granted a temporary session — show the set-new-password form.
+      history.replaceState(null, '', window.location.pathname);
+      IronLog.showPasswordResetForm();
+    }
+  );
 }
 
 /**

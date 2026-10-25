@@ -219,7 +219,7 @@ export function scheduleDebouncedPush() {
 /**
  * Initialize sync listeners and auth state handling
  */
-export async function initSync(onUpdateCallback) {
+export async function initSync(onUpdateCallback, onPasswordRecovery) {
   // Wire auto-save hook
   setOnSaveListener(scheduleDebouncedPush);
 
@@ -256,6 +256,13 @@ export async function initSync(onUpdateCallback) {
 
   // Subscribe to auth events
   onAuthChange(async (event, session) => {
+    // PASSWORD_RECOVERY: user clicked the reset link — show reset form, don't log in yet
+    if (event === 'PASSWORD_RECOVERY') {
+      currentUser = session?.user || null;
+      if (onPasswordRecovery) onPasswordRecovery();
+      return;
+    }
+
     currentUser = session?.user || null;
     if (currentUser) {
       await pullFromCloud();
