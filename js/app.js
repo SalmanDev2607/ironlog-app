@@ -43,6 +43,24 @@ import {
 
 import { ICONS } from './icons.js';
 
+import {
+  signUpWithEmail,
+  signInWithEmail,
+  signInWithGoogle,
+  signOutUser,
+  getSupabaseConfig,
+  setSupabaseConfig,
+  isSupabaseConfigured
+} from './supabase.js';
+
+import {
+  initSync,
+  pullFromCloud,
+  pushToCloud,
+  getSyncStatus,
+  SYNC_STATUS
+} from './sync.js';
+
 // DOM Element shortcuts
 const $ = (id) => document.getElementById(id);
 
@@ -58,6 +76,10 @@ export function initApp() {
   applyTheme();
   renderApp();
   setupTimerInterval();
+  initSync(() => {
+    applyTheme();
+    renderApp();
+  });
 }
 
 /**
@@ -163,6 +185,30 @@ function getAllExercises() {
 function renderHeader() {
   const state = getState();
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const syncInfo = getSyncStatus();
+
+  let syncLabel = 'Sync';
+  let syncDotClass = 'guest';
+  let syncTooltip = 'Sign in to sync your workouts across devices';
+
+  if (syncInfo.status === SYNC_STATUS.SYNCING) {
+    syncLabel = 'Syncing...';
+    syncDotClass = 'syncing';
+    syncTooltip = 'Uploading changes to cloud...';
+  } else if (syncInfo.status === SYNC_STATUS.SYNCED && syncInfo.user) {
+    const emailPrefix = syncInfo.user.email ? syncInfo.user.email.split('@')[0] : 'Synced';
+    syncLabel = emailPrefix;
+    syncDotClass = 'synced';
+    syncTooltip = `Signed in as ${syncInfo.user.email}. Workouts are backed up.`;
+  } else if (syncInfo.status === SYNC_STATUS.OFFLINE) {
+    syncLabel = 'Offline';
+    syncDotClass = 'offline';
+    syncTooltip = 'Offline mode. Changes are saved locally.';
+  } else if (syncInfo.status === SYNC_STATUS.UNCONFIGURED) {
+    syncLabel = 'Cloud Setup';
+    syncDotClass = 'guest';
+    syncTooltip = 'Connect Supabase in Settings to enable cloud backup';
+  }
   
   return `
     <header class="app-header">
@@ -174,6 +220,10 @@ function renderHeader() {
         </div>
       </div>
       <div class="app-actions">
+        <button class="sync-pill" onclick="IronLog.openAuthModal()" title="${syncTooltip}">
+          <span class="sync-dot ${syncDotClass}"></span>
+          <span>${syncLabel}</span>
+        </button>
         <button class="icon-btn" onclick="IronLog.toggleTheme()" title="Toggle Theme">
           ${isDark ? ICONS.sun : ICONS.moon}
         </button>
@@ -261,6 +311,61 @@ function renderQuickWeightWidget() {
 }
 
 /**
+ * VIEW: Authentication Landing (Initial Website Open)
+ */
+function renderAuthLandingView() {
+  return `
+    <div style="min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding:20px;max-width:460px;margin:auto">
+      <div style="text-align:center;margin-bottom:20px">
+        <img src="./icons/icon.svg" alt="IronLog Logo" style="width:64px;height:64px;border-radius:14px;margin-bottom:10px;box-shadow:0 8px 24px rgba(228,83,26,0.3)">
+        <h1 style="font-size:32px;letter-spacing:1.5px;margin:0">IRONLOG</h1>
+        <div class="mu-sm" style="font-size:13px;margin-top:4px">Hypertrophy Tracker & Aesthetic Engine</div>
+      </div>
+
+      <div class="c" style="margin:0;padding:20px">
+        <div class="auth-tabs">
+          <div id="tab_signin" class="auth-tab ${IronLog.currentAuthTab === 'signin' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signin')">Sign In</div>
+          <div id="tab_signup" class="auth-tab ${IronLog.currentAuthTab === 'signup' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signup')">Create Account</div>
+        </div>
+
+        <div id="auth_error" style="display:none;color:var(--rd);font-size:13px;margin-bottom:12px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:6px"></div>
+
+        <label>Email Address</label>
+        <input id="auth_email" type="email" placeholder="you@example.com" autocomplete="email" required>
+
+        <label>Password</label>
+        <input id="auth_password" type="password" placeholder="At least 6 characters" autocomplete="current-password" required>
+
+        <button id="auth_submit_btn" class="w" style="margin-top:14px" onclick="IronLog.submitAuth()">
+          ${IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In'}
+        </button>
+
+        <div style="display:flex;align-items:center;margin:16px 0;gap:10px">
+          <div style="flex:1;height:1px;background:var(--bd)"></div>
+          <span class="mu-sm" style="font-size:11px;text-transform:uppercase">Or</span>
+          <div style="flex:1;height:1px;background:var(--bd)"></div>
+        </div>
+
+        <button type="button" class="btn-google" onclick="IronLog.handleGoogleSignIn()">
+          ${ICONS.google}
+          <span>Continue with Google</span>
+        </button>
+      </div>
+
+      <div style="margin-top:16px;text-align:center">
+        <button class="g" style="width:100%;padding:12px;font-size:15px;background:var(--cd)" onclick="IronLog.enterAsGuest()">
+          Continue as Guest (Enter without login) →
+        </button>
+        <div class="mu-sm" style="margin-top:8px;font-size:12px;line-height:1.4">
+          Browse all exercises and training routines as a guest.<br>
+          <span style="color:var(--ac);font-weight:600">Note: Account is required to check in and record workouts.</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
  * VIEW: Onboarding / Profile Setup
  */
 function renderOnboardingView() {
@@ -331,6 +436,8 @@ function renderTodayView() {
   const todayStr = getTodayDate();
   const mods = getDailyMods();
   const unit = state.wu;
+  const syncInfo = getSyncStatus();
+  const isLoggedIn = Boolean(syncInfo.user);
 
   let html = renderHeader();
 
@@ -358,7 +465,12 @@ function renderTodayView() {
             <div class="mu-sm" style="text-transform:uppercase;font-weight:700">Scheduled Today</div>
             <h2>${todayWorkout ? todayWorkout[0] : 'Rest Day'}</h2>
           </div>
-          ${todayWorkout ? `<button onclick="IronLog.checkinWorkout()">${ICONS.play} Start Workout</button>` : ''}
+          ${todayWorkout ? `
+            <div style="text-align:right">
+              <button onclick="IronLog.checkinWorkout()">${isLoggedIn ? ICONS.play : '🔒'} Start Workout</button>
+              ${!isLoggedIn ? `<div class="mu-sm" style="font-size:11px;margin-top:3px">Login to check in</div>` : ''}
+            </div>
+          ` : ''}
         </div>
       </div>
     `;
@@ -1017,6 +1129,8 @@ function renderExercisesView() {
  */
 function renderSettingsView() {
   const state = getState();
+  const syncInfo = getSyncStatus();
+  const supabaseConfig = getSupabaseConfig();
   let html = renderHeader();
 
   html += `
@@ -1061,6 +1175,53 @@ function renderSettingsView() {
           </select>
         </div>
       </div>
+    </div>
+
+    <!-- Cloud Account & Cross-Device Sync -->
+    <div class="c">
+      <div class="r sb">
+        <h3>Cloud Sync & Account</h3>
+        <button class="sync-pill" onclick="IronLog.openAuthModal()">
+          <span class="sync-dot ${syncInfo.user ? 'synced' : 'guest'}"></span>
+          <span>${syncInfo.user ? (syncInfo.user.email ? syncInfo.user.email.split('@')[0] : 'Synced') : 'Sync / Log In'}</span>
+        </button>
+      </div>
+      <p class="mu-sm">Log in with Email or Google to automatically sync workouts, body measurements, and custom routines across all your browsers and devices.</p>
+
+      ${syncInfo.user ? `
+        <div style="background:var(--bg);padding:12px;border-radius:var(--radius-sm);margin:10px 0">
+          <div>Signed in as: <b>${syncInfo.user.email}</b></div>
+          <div class="mu-sm" style="margin-top:4px">Status: ${syncInfo.status === SYNC_STATUS.SYNCED ? 'All changes saved to cloud' : syncInfo.status}</div>
+          ${syncInfo.lastSynced ? `<div class="mu-sm">Last Synced: ${new Date(syncInfo.lastSynced).toLocaleTimeString()}</div>` : ''}
+        </div>
+        <div class="r" style="gap:8px;margin-top:10px">
+          <button class="g" onclick="IronLog.handleManualSync()">${ICONS.sync} Sync Now</button>
+          <button class="g danger-outline" onclick="IronLog.handleSignOut()">Log Out</button>
+        </div>
+      ` : `
+        <div style="margin-top:10px">
+          <button class="g" style="width:100%" onclick="IronLog.openAuthModal('signin')">
+            ${ICONS.user} Sign In or Create Account
+          </button>
+        </div>
+      `}
+
+      <!-- Supabase Connection Details -->
+      <details style="margin-top:16px;border-top:1px solid var(--bd);padding-top:10px">
+        <summary style="cursor:pointer;font-weight:600;font-size:13px;color:var(--mu)">
+          Supabase Connection Settings ${isSupabaseConfigured() ? '(Connected)' : '(Setup Required)'}
+        </summary>
+        <div style="margin-top:10px">
+          <label>Supabase Project URL</label>
+          <input id="cfg_sb_url" placeholder="https://xyzcompany.supabase.co" value="${supabaseConfig.url || ''}">
+          <label>Supabase Anon Public Key</label>
+          <input id="cfg_sb_key" type="password" placeholder="eyJhbGciOiJIUzI1NiIsIn..." value="${supabaseConfig.anonKey || ''}">
+          <div class="r" style="margin-top:10px;gap:8px">
+            <button class="g sm" onclick="IronLog.saveSupabaseConfigFromSettings()">Save Connection</button>
+            <button class="g sm" onclick="IronLog.showSupabaseSqlGuide()">View Required SQL</button>
+          </div>
+        </div>
+      </details>
     </div>
 
     <!-- Profile Editor Card -->
@@ -1244,7 +1405,19 @@ export function renderApp() {
   const state = getState();
   const appContainer = $('app');
   const navContainer = $('nv');
+  if (!appContainer) return;
 
+  const syncInfo = getSyncStatus();
+  const hasGuestPass = sessionStorage.getItem('il_guest_pass') === 'true';
+
+  // 1. Initial website open: show Auth Landing view if not logged in and hasn't chosen guest pass
+  if (!syncInfo.user && !hasGuestPass) {
+    if (navContainer) navContainer.style.display = 'none';
+    appContainer.innerHTML = renderAuthLandingView();
+    return;
+  }
+
+  // 2. Initial profile setup if not completed
   if (!state.p) {
     if (navContainer) navContainer.style.display = 'none';
     appContainer.innerHTML = renderOnboardingView();
@@ -1387,6 +1560,13 @@ window.IronLog = {
   },
 
   checkinWorkout() {
+    const syncInfo = getSyncStatus();
+    if (!syncInfo.user) {
+      showToast('Account required to check in and record workouts.');
+      IronLog.openAuthModal('signin', { requiredForCheckin: true });
+      return;
+    }
+
     const state = getState();
     state.a = { start: Date.now(), sets: [] };
     saveState();
@@ -1771,6 +1951,275 @@ window.IronLog = {
       renderApp();
       showToast('All data has been reset.');
     }
+  },
+
+  currentAuthTab: 'signin',
+  pendingCheckinAfterAuth: false,
+
+  openAuthModal(initialTab = 'signin', options = {}) {
+    IronLog.pendingCheckinAfterAuth = Boolean(options?.requiredForCheckin);
+    const syncInfo = getSyncStatus();
+
+    if (syncInfo.user) {
+      // User is already logged in
+      const content = `
+        <h2>User Account</h2>
+        <div style="background:var(--bg);padding:14px;border-radius:var(--radius-sm);margin:14px 0">
+          <div class="r" style="gap:10px;align-items:center">
+            ${ICONS.user}
+            <div>
+              <div style="font-weight:700;font-size:16px">${syncInfo.user.email}</div>
+              <div class="mu-sm">Cloud ID: ${syncInfo.user.id.slice(0, 8)}...</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;font-size:13px;display:flex;align-items:center;gap:6px">
+            <span class="sync-dot synced"></span>
+            <b>Cloud Sync Active</b> (Offline-First)
+          </div>
+          ${syncInfo.lastSynced ? `<div class="mu-sm" style="margin-top:2px">Last sync: ${new Date(syncInfo.lastSynced).toLocaleTimeString()}</div>` : ''}
+        </div>
+
+        <button class="w" style="margin-bottom:8px" onclick="IronLog.handleManualSync()">
+          ${ICONS.sync} Sync Now
+        </button>
+        <button class="g danger-outline" style="width:100%" onclick="IronLog.handleSignOut()">
+          Log Out
+        </button>
+      `;
+      openModal(content);
+      return;
+    }
+
+    // Guest / Not Logged In
+    const isConfigured = isSupabaseConfigured();
+    IronLog.currentAuthTab = initialTab || 'signin';
+
+    const content = `
+      <h2>${options?.requiredForCheckin ? '🔒 Account Required to Check In' : 'Account & Cloud Sync'}</h2>
+      
+      ${options?.requiredForCheckin ? `
+        <div style="padding:10px 14px;background:rgba(228,83,26,0.15);border:1px solid var(--ac);border-radius:var(--radius-sm);margin:12px 0;font-size:13px">
+          <b>Check-in requires an account:</b> Please sign in or create an account to start your workout and track sets across devices.
+        </div>
+      ` : `
+        <p class="mu-sm" style="margin-bottom:14px">
+          Sign in to automatically sync your workouts, measurements, and custom routines across all your browsers and devices.
+        </p>
+      `}
+
+      <div class="auth-tabs">
+        <div id="tab_signin" class="auth-tab ${IronLog.currentAuthTab === 'signin' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signin')">Sign In</div>
+        <div id="tab_signup" class="auth-tab ${IronLog.currentAuthTab === 'signup' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signup')">Create Account</div>
+      </div>
+
+      <div id="auth_error" style="display:none;color:var(--rd);font-size:13px;margin-bottom:10px;padding:8px;background:rgba(239,68,68,0.1);border-radius:6px"></div>
+
+      <label>Email Address</label>
+      <input id="auth_email" type="email" placeholder="you@example.com" autocomplete="email" required>
+
+      <label>Password</label>
+      <input id="auth_password" type="password" placeholder="At least 6 characters" autocomplete="current-password" required>
+
+      <div style="margin-top:16px">
+        <button id="auth_submit_btn" class="w" onclick="IronLog.submitAuth()">
+          ${IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In'}
+        </button>
+      </div>
+
+      <div style="display:flex;align-items:center;margin:18px 0;gap:10px">
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+        <span class="mu-sm" style="font-size:12px;text-transform:uppercase">Or</span>
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+      </div>
+
+      <button type="button" class="btn-google" onclick="IronLog.handleGoogleSignIn()">
+        ${ICONS.google}
+        <span>Continue with Google</span>
+      </button>
+
+      <div class="mu-sm" style="text-align:center;margin-top:16px;font-size:12px">
+        100% offline-friendly. Your workouts remain accessible even without internet.
+      </div>
+    `;
+    openModal(content);
+  },
+
+  enterAsGuest() {
+    sessionStorage.setItem('il_guest_pass', 'true');
+    renderApp();
+  },
+
+  switchAuthTab(tab) {
+    IronLog.currentAuthTab = tab;
+    const tabSignIn = $('tab_signin');
+    const tabSignUp = $('tab_signup');
+    const submitBtn = $('auth_submit_btn');
+    const errBox = $('auth_error');
+    if (errBox) errBox.style.display = 'none';
+
+    if (tab === 'signup') {
+      tabSignIn?.classList.remove('active');
+      tabSignUp?.classList.add('active');
+      if (submitBtn) submitBtn.textContent = 'Create Account';
+    } else {
+      tabSignUp?.classList.remove('active');
+      tabSignIn?.classList.add('active');
+      if (submitBtn) submitBtn.textContent = 'Sign In';
+    }
+  },
+
+  async submitAuth() {
+    const email = ($('auth_email')?.value || '').trim();
+    const password = $('auth_password')?.value || '';
+    const errBox = $('auth_error');
+    const submitBtn = $('auth_submit_btn');
+
+    if (!email || !password) {
+      if (errBox) {
+        errBox.textContent = 'Please enter both email and password.';
+        errBox.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+      }
+
+      if (IronLog.currentAuthTab === 'signup') {
+        const res = await signUpWithEmail(email, password);
+        sessionStorage.setItem('il_guest_pass', 'true');
+        if (res.user && !res.session) {
+          showToast('Account created! Please check your email to verify.');
+          IronLog.closeModal();
+        } else {
+          showToast('Account created and logged in!');
+          IronLog.closeModal();
+          await pullFromCloud();
+          if (IronLog.pendingCheckinAfterAuth) {
+            IronLog.pendingCheckinAfterAuth = false;
+            IronLog.checkinWorkout();
+          } else {
+            renderApp();
+          }
+        }
+      } else {
+        await signInWithEmail(email, password);
+        sessionStorage.setItem('il_guest_pass', 'true');
+        showToast('Signed in successfully!');
+        IronLog.closeModal();
+        await pullFromCloud();
+        if (IronLog.pendingCheckinAfterAuth) {
+          IronLog.pendingCheckinAfterAuth = false;
+          IronLog.checkinWorkout();
+        } else {
+          renderApp();
+        }
+      }
+    } catch (err) {
+      console.error('Auth error:', err);
+      if (errBox) {
+        errBox.textContent = err.message || 'Authentication failed. Please check credentials.';
+        errBox.style.display = 'block';
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In';
+      }
+    }
+  },
+
+  async handleGoogleSignIn() {
+    try {
+      sessionStorage.setItem('il_guest_pass', 'true');
+      await signInWithGoogle();
+    } catch (err) {
+      console.error('Google sign-in error:', err);
+      let msg = err.message || 'Google sign-in failed.';
+      if (msg.includes('provider is not enabled') || msg.includes('validation_failed')) {
+        msg = 'Google provider is not enabled yet in your Supabase dashboard. Please sign in with Email & Password or enable Google under Supabase Auth → Providers.';
+      }
+      const errBox = $('auth_error');
+      if (errBox) {
+        errBox.textContent = msg;
+        errBox.style.display = 'block';
+      } else {
+        showToast(msg);
+      }
+    }
+  },
+
+  async handleSignOut() {
+    try {
+      const state = getState();
+      if (state.a) {
+        state.a = null;
+        saveState();
+      }
+      sessionStorage.removeItem('il_guest_pass');
+      await signOutUser();
+      showToast('Logged out.');
+      IronLog.closeModal();
+      renderApp();
+    } catch (err) {
+      showToast(err.message || 'Error signing out.');
+    }
+  },
+
+  async handleManualSync() {
+    showToast('Syncing with cloud...');
+    const ok = await pullFromCloud();
+    if (ok) {
+      showToast('Synced successfully with cloud!');
+    } else {
+      showToast('Sync completed (or working offline).');
+    }
+    renderApp();
+  },
+
+  saveSupabaseConfigFromSettings() {
+    const url = ($('cfg_sb_url')?.value || '').trim();
+    const key = ($('cfg_sb_key')?.value || '').trim();
+    setSupabaseConfig(url, key);
+    showToast('Supabase connection saved!');
+    renderApp();
+  },
+
+  showSupabaseSqlGuide() {
+    const sql = `-- Run this in your Supabase SQL Editor:
+create table if not exists public.user_data (
+  user_id uuid references auth.users not null primary key,
+  state jsonb not null default '{}'::jsonb,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.user_data enable row level security;
+
+create policy "Users can view their own data"
+  on public.user_data for select using (auth.uid() = user_id);
+
+create policy "Users can insert their own data"
+  on public.user_data for insert with check (auth.uid() = user_id);
+
+create policy "Users can update their own data"
+  on public.user_data for update using (auth.uid() = user_id);`;
+
+    const content = `
+      <h2>Supabase SQL Setup</h2>
+      <p class="mu-sm">Open your Supabase project dashboard → <b>SQL Editor</b> → Paste and Run this snippet:</p>
+      <textarea rows="10" readonly style="font-family:monospace;font-size:12px;margin:10px 0;width:100%">${sql}</textarea>
+      <button class="w" onclick="navigator.clipboard.writeText(\`${sql}\`).then(() => IronLog.showToast('SQL copied to clipboard!'))">
+        Copy SQL to Clipboard
+      </button>
+    `;
+    openModal(content);
+  },
+
+  showToast(msg) {
+    showToast(msg);
   },
 
   closeModal() {

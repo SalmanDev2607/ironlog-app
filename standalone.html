@@ -571,8 +571,97 @@ th {
   border-color: var(--ac);
 }
 
+/* Cloud Sync & Auth Styles */
+.sync-pill {
+  background: var(--cd);
+  border: 1px solid var(--bd);
+  color: var(--tx);
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.sync-pill:hover {
+  border-color: var(--ac);
+  background: var(--cd-hover);
+}
+
+.sync-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.sync-dot.synced { background: #10b981; }
+.sync-dot.syncing { background: #f59e0b; animation: pulseSync 1s infinite alternate; }
+.sync-dot.offline { background: #6b7280; }
+.sync-dot.guest { background: var(--ac); }
+.sync-dot.error { background: var(--rd); }
+
+@keyframes pulseSync {
+  from { opacity: 0.4; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1.15); }
+}
+
+.btn-google {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+}
+
+.btn-google:hover {
+  background: #f9fafb !important;
+  border-color: #9ca3af !important;
+}
+
+.auth-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 16px;
+}
+
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--mu);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.auth-tab.active {
+  color: var(--ac);
+  border-bottom-color: var(--ac);
+}
+
+
 
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (typeof supabase !== 'undefined' && !window.supabase) {
+      window.supabase = supabase;
+    }
+  </script>
 </head>
 <body>
   <div id="app"></div>
@@ -1919,12 +2008,19 @@ function loadState() {
   return AppState;
 }
 
+let onSaveListener = null;
+
+function setOnSaveListener(fn) {
+  onSaveListener = fn;
+}
+
 /**
  * Saves current state to localStorage
  */
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(AppState));
+    if (onSaveListener) onSaveListener();
   } catch (err) {
     console.error('Failed to persist state to localStorage:', err);
   }
@@ -2292,13 +2388,534 @@ const ICONS = {
   minus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
   download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
   upload: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`,
-  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`
+  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
+  cloud: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>`,
+  cloudCheck: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 14 2 2 4-4"/><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>`,
+  sync: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>`,
+  user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  google: `<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3h3.88c2.27-2.09 3.665-5.17 3.665-9.09z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.09C3.27 21.36 7.35 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.32c-.25-.72-.38-1.49-.38-2.32s.13-1.6.38-2.32V6.59H1.28C.46 8.21 0 10.05 0 12s.46 3.79 1.28 5.41l4-3.09z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.64 1.28 6.59l4 3.09c.95-2.83 3.6-4.93 6.72-4.93z"/></svg>`
 };
 
+
+// --- supabase.js ---
+// IronLog Supabase Client & Authentication Service
+
+const CONFIG_STORAGE_KEY = 'il_supabase_config';
+
+// Default Supabase project configuration (can be updated via UI settings or here)
+const DEFAULT_SUPABASE_CONFIG = {
+  url: 'https://meioyarhiguhjlbjjlkx.supabase.co',
+  anonKey: 'sb_publishable_au1YcfxlMUhs2Gc6fFm32Q_rE3eO2Rq'
+};
+
+let supabaseClient = null;
+
+/**
+ * Returns current Supabase project URL and anon public key
+ */
+function getSupabaseConfig() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem(CONFIG_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.url && parsed.anonKey) return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to read Supabase config from storage:', err);
+  }
+  return { ...DEFAULT_SUPABASE_CONFIG };
+}
+
+/**
+ * Updates Supabase credentials in local storage and re-initializes client
+ */
+function setSupabaseConfig(url, anonKey) {
+  const cleanUrl = (url || '').trim().replace(/\/+$/, '');
+  const cleanKey = (anonKey || '').trim();
+  
+  if (typeof localStorage !== 'undefined') {
+    if (!cleanUrl || !cleanKey) {
+      localStorage.removeItem(CONFIG_STORAGE_KEY);
+    } else {
+      localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify({ url: cleanUrl, anonKey: cleanKey }));
+    }
+  }
+  
+  supabaseClient = null; // force re-init
+  return getClient();
+}
+
+/**
+ * Checks whether Supabase credentials have been configured
+ */
+function isSupabaseConfigured() {
+  const cfg = getSupabaseConfig();
+  return Boolean(cfg.url && cfg.anonKey && cfg.url.startsWith('http'));
+}
+
+/**
+ * Resolves createClient function from window.supabase or global supabase
+ */
+function resolveCreateClientFn() {
+  if (typeof window !== 'undefined') {
+    if (window.supabase?.createClient) return window.supabase.createClient;
+    if (typeof supabase !== 'undefined' && supabase?.createClient) return supabase.createClient;
+  }
+  return null;
+}
+
+/**
+ * Returns or initializes the Supabase client synchronously if library is ready
+ */
+function getClient() {
+  if (supabaseClient) return supabaseClient;
+  if (!isSupabaseConfigured()) return null;
+
+  const createClientFn = resolveCreateClientFn();
+  if (!createClientFn) return null;
+
+  const cfg = getSupabaseConfig();
+  try {
+    supabaseClient = createClientFn(cfg.url, cfg.anonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    });
+    return supabaseClient;
+  } catch (err) {
+    console.error('Error initializing Supabase client:', err);
+    return null;
+  }
+}
+
+/**
+ * Ensures the Supabase client is initialized (with dynamic ESM fallback if script is delayed)
+ */
+export async function ensureClient() {
+  if (supabaseClient) return supabaseClient;
+
+  if (!isSupabaseConfigured()) {
+    throw new Error('Supabase credentials are missing. Set project URL & Key in Settings.');
+  }
+
+  let createClientFn = resolveCreateClientFn();
+
+  // If classic script not loaded, try dynamic ESM import from CDN
+  if (!createClientFn) {
+    try {
+      const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      createClientFn = mod?.createClient || null;
+      if (createClientFn && typeof window !== 'undefined') {
+        window.supabase = mod;
+      }
+    } catch (err) {
+      console.warn('Failed to load Supabase from ESM CDN:', err);
+    }
+  }
+
+  if (!createClientFn) {
+    throw new Error('Could not load Supabase SDK. Please check your internet connection.');
+  }
+
+  const cfg = getSupabaseConfig();
+  try {
+    supabaseClient = createClientFn(cfg.url, cfg.anonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    });
+    return supabaseClient;
+  } catch (err) {
+    console.error('Error initializing Supabase client:', err);
+    throw new Error('Failed to connect to Supabase: ' + err.message);
+  }
+}
+
+/**
+ * Signs up a user with email and password
+ */
+export async function signUpWithEmail(email, password) {
+  const client = await ensureClient();
+  const { data, error } = await client.auth.signUp({
+    email,
+    password
+  });
+  
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Signs in with email and password
+ */
+export async function signInWithEmail(email, password) {
+  const client = await ensureClient();
+  const { data, error } = await client.auth.signInWithPassword({
+    email,
+    password
+  });
+  
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Initiates Google OAuth Sign-in flow
+ */
+export async function signInWithGoogle() {
+  const client = await ensureClient();
+  const redirectUrl = window.location.origin + window.location.pathname;
+  const { data, error } = await client.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: redirectUrl
+    }
+  });
+  
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Signs out the current authenticated user
+ */
+export async function signOutUser() {
+  const client = await ensureClient().catch(() => null);
+  if (!client) return;
+  const { error } = await client.auth.signOut();
+  if (error) throw error;
+}
+
+/**
+ * Retrieves the currently logged-in user
+ */
+export async function getCurrentUser() {
+  const client = await ensureClient().catch(() => null);
+  if (!client) return null;
+  const { data: { user }, error } = await client.auth.getUser();
+  if (error || !user) return null;
+  return user;
+}
+
+/**
+ * Retrieves the current session
+ */
+export async function getCurrentSession() {
+  const client = await ensureClient().catch(() => null);
+  if (!client) return null;
+  const { data: { session }, error } = await client.auth.getSession();
+  if (error || !session) return null;
+  return session;
+}
+
+/**
+ * Listens to authentication state changes (SIGNED_IN, SIGNED_OUT, etc.)
+ */
+function onAuthChange(callback) {
+  const client = getClient();
+  if (!client) {
+    // If not ready yet, retry when client is ensured
+    ensureClient().then(c => {
+      if (c) {
+        c.auth.onAuthStateChange((event, session) => {
+          callback(event, session);
+        });
+      }
+    }).catch(() => {});
+    return { unsubscribe: () => {} };
+  }
+  
+  const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
+    callback(event, session);
+  });
+  
+  return subscription;
+}
+
+
+// --- sync.js ---
+// IronLog Offline-First Cloud Synchronization Engine
+
+
+
+
+const SYNC_STATUS = {
+  UNCONFIGURED: 'unconfigured',
+  GUEST: 'guest',
+  SYNCING: 'syncing',
+  SYNCED: 'synced',
+  OFFLINE: 'offline',
+  ERROR: 'error'
+};
+
+let currentSyncStatus = SYNC_STATUS.GUEST;
+let statusChangeListeners = [];
+let pushDebounceTimer = null;
+let lastSyncedTime = null;
+let currentUser = null;
+
+/**
+ * Register a listener for sync status updates
+ */
+function onSyncStatusChange(fn) {
+  statusChangeListeners.push(fn);
+  fn(currentSyncStatus, { user: currentUser, lastSynced: lastSyncedTime });
+  return () => {
+    statusChangeListeners = statusChangeListeners.filter(l => l !== fn);
+  };
+}
+
+function setStatus(status) {
+  currentSyncStatus = status;
+  statusChangeListeners.forEach(fn => fn(currentSyncStatus, {
+    user: currentUser,
+    lastSynced: lastSyncedTime
+  }));
+}
+
+function getSyncStatus() {
+  return {
+    status: currentSyncStatus,
+    user: currentUser,
+    lastSynced: lastSyncedTime,
+    isConfigured: isSupabaseConfigured()
+  };
+}
+
+/**
+ * Merge remote state with local state without data loss
+ */
+function mergeStates(local, remote) {
+  if (!remote) return local;
+  if (!local) return remote;
+
+  // 1. Merge completed workout sessions (union by start timestamp & date)
+  const mergedSessions = [...(local.s || [])];
+  const localSessionKeys = new Set(mergedSessions.map(s => `${s.d}_${s.start || s.n}`));
+
+  (remote.s || []).forEach(remS => {
+    const key = `${remS.d}_${remS.start || remS.n}`;
+    if (!localSessionKeys.has(key)) {
+      mergedSessions.push(remS);
+      localSessionKeys.add(key);
+    }
+  });
+  // Sort chronologically
+  mergedSessions.sort((a, b) => (a.start || 0) - (b.start || 0));
+
+  // 2. Merge weight history (by date, latest wins)
+  const weightMap = new Map();
+  (local.w || []).forEach(entry => weightMap.set(entry.d, entry));
+  (remote.w || []).forEach(entry => {
+    if (!weightMap.has(entry.d)) {
+      weightMap.set(entry.d, entry);
+    }
+  });
+  const mergedWeights = Array.from(weightMap.values()).sort((a, b) => a.d.localeCompare(b.d));
+
+  // 3. Merge body measurements (by date)
+  const measurementMap = new Map();
+  (local.m || []).forEach(entry => measurementMap.set(entry.d, entry));
+  (remote.m || []).forEach(entry => {
+    if (!measurementMap.has(entry.d)) {
+      measurementMap.set(entry.d, entry);
+    }
+  });
+  const mergedMeasurements = Array.from(measurementMap.values()).sort((a, b) => a.d.localeCompare(b.d));
+
+  // 4. Merge custom exercises
+  const mergedCustom = {
+    ...(remote.customExercises || {}),
+    ...(local.customExercises || {})
+  };
+
+  // 5. Profile & Settings
+  const profile = local.p || remote.p || null;
+  const theme = local.theme || remote.theme || 'dark';
+  const u = local.u || remote.u || 'cm';
+  const wu = local.wu || remote.wu || 'kg';
+  const restTimerDuration = local.restTimerDuration || remote.restTimerDuration || 90;
+
+  return {
+    ...DEFAULT_STATE,
+    ...local,
+    p: profile,
+    s: mergedSessions,
+    w: mergedWeights,
+    m: mergedMeasurements,
+    customExercises: mergedCustom,
+    theme,
+    u,
+    wu,
+    restTimerDuration
+  };
+}
+
+/**
+ * Pull latest user data from Supabase
+ */
+export async function pullFromCloud() {
+  if (!navigator.onLine) {
+    setStatus(SYNC_STATUS.OFFLINE);
+    return false;
+  }
+
+  const client = getClient();
+  if (!client || !currentUser) {
+    setStatus(isSupabaseConfigured() ? SYNC_STATUS.GUEST : SYNC_STATUS.UNCONFIGURED);
+    return false;
+  }
+
+  try {
+    setStatus(SYNC_STATUS.SYNCING);
+
+    const { data, error } = await client
+      .from('user_data')
+      .select('state, updated_at')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (data && data.state) {
+      const currentState = getState();
+      const merged = mergeStates(currentState, data.state);
+      
+      // Update memory state
+      Object.assign(currentState, merged);
+      saveState(); // write to localStorage
+
+      lastSyncedTime = new Date();
+      setStatus(SYNC_STATUS.SYNCED);
+      return true;
+    } else {
+      // First time cloud user: upload local guest data to cloud!
+      await pushToCloud();
+      return true;
+    }
+  } catch (err) {
+    console.error('Failed to pull user data from Supabase:', err);
+    setStatus(SYNC_STATUS.ERROR);
+    return false;
+  }
+}
+
+/**
+ * Push local state to Supabase
+ */
+export async function pushToCloud() {
+  if (!navigator.onLine) {
+    setStatus(SYNC_STATUS.OFFLINE);
+    return false;
+  }
+
+  const client = getClient();
+  if (!client || !currentUser) return false;
+
+  try {
+    setStatus(SYNC_STATUS.SYNCING);
+    const stateToSave = getState();
+
+    const { error } = await client
+      .from('user_data')
+      .upsert({
+        user_id: currentUser.id,
+        state: stateToSave,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id' });
+
+    if (error) throw error;
+
+    lastSyncedTime = new Date();
+    setStatus(SYNC_STATUS.SYNCED);
+    return true;
+  } catch (err) {
+    console.error('Failed to push state to Supabase:', err);
+    setStatus(SYNC_STATUS.ERROR);
+    return false;
+  }
+}
+
+/**
+ * Schedule a debounced push (1.5 seconds)
+ */
+function scheduleDebouncedPush() {
+  if (!currentUser || !isSupabaseConfigured()) return;
+  if (!navigator.onLine) {
+    setStatus(SYNC_STATUS.OFFLINE);
+    return;
+  }
+
+  clearTimeout(pushDebounceTimer);
+  pushDebounceTimer = setTimeout(() => {
+    pushToCloud();
+  }, 1500);
+}
+
+/**
+ * Initialize sync listeners and auth state handling
+ */
+export async function initSync(onUpdateCallback) {
+  // Wire auto-save hook
+  setOnSaveListener(scheduleDebouncedPush);
+
+  // Network connectivity listeners
+  window.addEventListener('online', () => {
+    if (currentUser) {
+      pullFromCloud().then(() => onUpdateCallback?.());
+    } else {
+      setStatus(isSupabaseConfigured() ? SYNC_STATUS.GUEST : SYNC_STATUS.UNCONFIGURED);
+    }
+  });
+
+  window.addEventListener('offline', () => {
+    setStatus(SYNC_STATUS.OFFLINE);
+  });
+
+  if (!isSupabaseConfigured()) {
+    setStatus(SYNC_STATUS.UNCONFIGURED);
+    return;
+  }
+
+  try {
+    currentUser = await getCurrentUser();
+    if (currentUser) {
+      await pullFromCloud();
+      onUpdateCallback?.();
+    } else {
+      setStatus(SYNC_STATUS.GUEST);
+    }
+  } catch (err) {
+    console.warn('Initial auth check notice:', err);
+    setStatus(SYNC_STATUS.GUEST);
+  }
+
+  // Subscribe to auth events
+  onAuthChange(async (event, session) => {
+    currentUser = session?.user || null;
+    if (currentUser) {
+      await pullFromCloud();
+      onUpdateCallback?.();
+    } else {
+      setStatus(SYNC_STATUS.GUEST);
+      onUpdateCallback?.();
+    }
+  });
+}
 
 
 // --- app.js ---
 // IronLog Main Application Controller
+
+
+
+
 
 
 
@@ -2323,6 +2940,10 @@ function initApp() {
   applyTheme();
   renderApp();
   setupTimerInterval();
+  initSync(() => {
+    applyTheme();
+    renderApp();
+  });
 }
 
 /**
@@ -2428,6 +3049,30 @@ function getAllExercises() {
 function renderHeader() {
   const state = getState();
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const syncInfo = getSyncStatus();
+
+  let syncLabel = 'Sync';
+  let syncDotClass = 'guest';
+  let syncTooltip = 'Sign in to sync your workouts across devices';
+
+  if (syncInfo.status === SYNC_STATUS.SYNCING) {
+    syncLabel = 'Syncing...';
+    syncDotClass = 'syncing';
+    syncTooltip = 'Uploading changes to cloud...';
+  } else if (syncInfo.status === SYNC_STATUS.SYNCED && syncInfo.user) {
+    const emailPrefix = syncInfo.user.email ? syncInfo.user.email.split('@')[0] : 'Synced';
+    syncLabel = emailPrefix;
+    syncDotClass = 'synced';
+    syncTooltip = `Signed in as ${syncInfo.user.email}. Workouts are backed up.`;
+  } else if (syncInfo.status === SYNC_STATUS.OFFLINE) {
+    syncLabel = 'Offline';
+    syncDotClass = 'offline';
+    syncTooltip = 'Offline mode. Changes are saved locally.';
+  } else if (syncInfo.status === SYNC_STATUS.UNCONFIGURED) {
+    syncLabel = 'Cloud Setup';
+    syncDotClass = 'guest';
+    syncTooltip = 'Connect Supabase in Settings to enable cloud backup';
+  }
   
   return `
     <header class="app-header">
@@ -2439,6 +3084,10 @@ function renderHeader() {
         </div>
       </div>
       <div class="app-actions">
+        <button class="sync-pill" onclick="IronLog.openAuthModal()" title="${syncTooltip}">
+          <span class="sync-dot ${syncDotClass}"></span>
+          <span>${syncLabel}</span>
+        </button>
         <button class="icon-btn" onclick="IronLog.toggleTheme()" title="Toggle Theme">
           ${isDark ? ICONS.sun : ICONS.moon}
         </button>
@@ -2526,6 +3175,61 @@ function renderQuickWeightWidget() {
 }
 
 /**
+ * VIEW: Authentication Landing (Initial Website Open)
+ */
+function renderAuthLandingView() {
+  return `
+    <div style="min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding:20px;max-width:460px;margin:auto">
+      <div style="text-align:center;margin-bottom:20px">
+        <img src="./icons/icon.svg" alt="IronLog Logo" style="width:64px;height:64px;border-radius:14px;margin-bottom:10px;box-shadow:0 8px 24px rgba(228,83,26,0.3)">
+        <h1 style="font-size:32px;letter-spacing:1.5px;margin:0">IRONLOG</h1>
+        <div class="mu-sm" style="font-size:13px;margin-top:4px">Hypertrophy Tracker & Aesthetic Engine</div>
+      </div>
+
+      <div class="c" style="margin:0;padding:20px">
+        <div class="auth-tabs">
+          <div id="tab_signin" class="auth-tab ${IronLog.currentAuthTab === 'signin' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signin')">Sign In</div>
+          <div id="tab_signup" class="auth-tab ${IronLog.currentAuthTab === 'signup' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signup')">Create Account</div>
+        </div>
+
+        <div id="auth_error" style="display:none;color:var(--rd);font-size:13px;margin-bottom:12px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:6px"></div>
+
+        <label>Email Address</label>
+        <input id="auth_email" type="email" placeholder="you@example.com" autocomplete="email" required>
+
+        <label>Password</label>
+        <input id="auth_password" type="password" placeholder="At least 6 characters" autocomplete="current-password" required>
+
+        <button id="auth_submit_btn" class="w" style="margin-top:14px" onclick="IronLog.submitAuth()">
+          ${IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In'}
+        </button>
+
+        <div style="display:flex;align-items:center;margin:16px 0;gap:10px">
+          <div style="flex:1;height:1px;background:var(--bd)"></div>
+          <span class="mu-sm" style="font-size:11px;text-transform:uppercase">Or</span>
+          <div style="flex:1;height:1px;background:var(--bd)"></div>
+        </div>
+
+        <button type="button" class="btn-google" onclick="IronLog.handleGoogleSignIn()">
+          ${ICONS.google}
+          <span>Continue with Google</span>
+        </button>
+      </div>
+
+      <div style="margin-top:16px;text-align:center">
+        <button class="g" style="width:100%;padding:12px;font-size:15px;background:var(--cd)" onclick="IronLog.enterAsGuest()">
+          Continue as Guest (Enter without login) →
+        </button>
+        <div class="mu-sm" style="margin-top:8px;font-size:12px;line-height:1.4">
+          Browse all exercises and training routines as a guest.<br>
+          <span style="color:var(--ac);font-weight:600">Note: Account is required to check in and record workouts.</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
  * VIEW: Onboarding / Profile Setup
  */
 function renderOnboardingView() {
@@ -2596,6 +3300,8 @@ function renderTodayView() {
   const todayStr = getTodayDate();
   const mods = getDailyMods();
   const unit = state.wu;
+  const syncInfo = getSyncStatus();
+  const isLoggedIn = Boolean(syncInfo.user);
 
   let html = renderHeader();
 
@@ -2623,7 +3329,12 @@ function renderTodayView() {
             <div class="mu-sm" style="text-transform:uppercase;font-weight:700">Scheduled Today</div>
             <h2>${todayWorkout ? todayWorkout[0] : 'Rest Day'}</h2>
           </div>
-          ${todayWorkout ? `<button onclick="IronLog.checkinWorkout()">${ICONS.play} Start Workout</button>` : ''}
+          ${todayWorkout ? `
+            <div style="text-align:right">
+              <button onclick="IronLog.checkinWorkout()">${isLoggedIn ? ICONS.play : '🔒'} Start Workout</button>
+              ${!isLoggedIn ? `<div class="mu-sm" style="font-size:11px;margin-top:3px">Login to check in</div>` : ''}
+            </div>
+          ` : ''}
         </div>
       </div>
     `;
@@ -3282,6 +3993,8 @@ function renderExercisesView() {
  */
 function renderSettingsView() {
   const state = getState();
+  const syncInfo = getSyncStatus();
+  const supabaseConfig = getSupabaseConfig();
   let html = renderHeader();
 
   html += `
@@ -3326,6 +4039,53 @@ function renderSettingsView() {
           </select>
         </div>
       </div>
+    </div>
+
+    <!-- Cloud Account & Cross-Device Sync -->
+    <div class="c">
+      <div class="r sb">
+        <h3>Cloud Sync & Account</h3>
+        <button class="sync-pill" onclick="IronLog.openAuthModal()">
+          <span class="sync-dot ${syncInfo.user ? 'synced' : 'guest'}"></span>
+          <span>${syncInfo.user ? (syncInfo.user.email ? syncInfo.user.email.split('@')[0] : 'Synced') : 'Sync / Log In'}</span>
+        </button>
+      </div>
+      <p class="mu-sm">Log in with Email or Google to automatically sync workouts, body measurements, and custom routines across all your browsers and devices.</p>
+
+      ${syncInfo.user ? `
+        <div style="background:var(--bg);padding:12px;border-radius:var(--radius-sm);margin:10px 0">
+          <div>Signed in as: <b>${syncInfo.user.email}</b></div>
+          <div class="mu-sm" style="margin-top:4px">Status: ${syncInfo.status === SYNC_STATUS.SYNCED ? 'All changes saved to cloud' : syncInfo.status}</div>
+          ${syncInfo.lastSynced ? `<div class="mu-sm">Last Synced: ${new Date(syncInfo.lastSynced).toLocaleTimeString()}</div>` : ''}
+        </div>
+        <div class="r" style="gap:8px;margin-top:10px">
+          <button class="g" onclick="IronLog.handleManualSync()">${ICONS.sync} Sync Now</button>
+          <button class="g danger-outline" onclick="IronLog.handleSignOut()">Log Out</button>
+        </div>
+      ` : `
+        <div style="margin-top:10px">
+          <button class="g" style="width:100%" onclick="IronLog.openAuthModal('signin')">
+            ${ICONS.user} Sign In or Create Account
+          </button>
+        </div>
+      `}
+
+      <!-- Supabase Connection Details -->
+      <details style="margin-top:16px;border-top:1px solid var(--bd);padding-top:10px">
+        <summary style="cursor:pointer;font-weight:600;font-size:13px;color:var(--mu)">
+          Supabase Connection Settings ${isSupabaseConfigured() ? '(Connected)' : '(Setup Required)'}
+        </summary>
+        <div style="margin-top:10px">
+          <label>Supabase Project URL</label>
+          <input id="cfg_sb_url" placeholder="https://xyzcompany.supabase.co" value="${supabaseConfig.url || ''}">
+          <label>Supabase Anon Public Key</label>
+          <input id="cfg_sb_key" type="password" placeholder="eyJhbGciOiJIUzI1NiIsIn..." value="${supabaseConfig.anonKey || ''}">
+          <div class="r" style="margin-top:10px;gap:8px">
+            <button class="g sm" onclick="IronLog.saveSupabaseConfigFromSettings()">Save Connection</button>
+            <button class="g sm" onclick="IronLog.showSupabaseSqlGuide()">View Required SQL</button>
+          </div>
+        </div>
+      </details>
     </div>
 
     <!-- Profile Editor Card -->
@@ -3509,7 +4269,19 @@ function renderApp() {
   const state = getState();
   const appContainer = $('app');
   const navContainer = $('nv');
+  if (!appContainer) return;
 
+  const syncInfo = getSyncStatus();
+  const hasGuestPass = sessionStorage.getItem('il_guest_pass') === 'true';
+
+  // 1. Initial website open: show Auth Landing view if not logged in and hasn't chosen guest pass
+  if (!syncInfo.user && !hasGuestPass) {
+    if (navContainer) navContainer.style.display = 'none';
+    appContainer.innerHTML = renderAuthLandingView();
+    return;
+  }
+
+  // 2. Initial profile setup if not completed
   if (!state.p) {
     if (navContainer) navContainer.style.display = 'none';
     appContainer.innerHTML = renderOnboardingView();
@@ -3652,6 +4424,13 @@ window.IronLog = {
   },
 
   checkinWorkout() {
+    const syncInfo = getSyncStatus();
+    if (!syncInfo.user) {
+      showToast('Account required to check in and record workouts.');
+      IronLog.openAuthModal('signin', { requiredForCheckin: true });
+      return;
+    }
+
     const state = getState();
     state.a = { start: Date.now(), sets: [] };
     saveState();
@@ -4036,6 +4815,275 @@ window.IronLog = {
       renderApp();
       showToast('All data has been reset.');
     }
+  },
+
+  currentAuthTab: 'signin',
+  pendingCheckinAfterAuth: false,
+
+  openAuthModal(initialTab = 'signin', options = {}) {
+    IronLog.pendingCheckinAfterAuth = Boolean(options?.requiredForCheckin);
+    const syncInfo = getSyncStatus();
+
+    if (syncInfo.user) {
+      // User is already logged in
+      const content = `
+        <h2>User Account</h2>
+        <div style="background:var(--bg);padding:14px;border-radius:var(--radius-sm);margin:14px 0">
+          <div class="r" style="gap:10px;align-items:center">
+            ${ICONS.user}
+            <div>
+              <div style="font-weight:700;font-size:16px">${syncInfo.user.email}</div>
+              <div class="mu-sm">Cloud ID: ${syncInfo.user.id.slice(0, 8)}...</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;font-size:13px;display:flex;align-items:center;gap:6px">
+            <span class="sync-dot synced"></span>
+            <b>Cloud Sync Active</b> (Offline-First)
+          </div>
+          ${syncInfo.lastSynced ? `<div class="mu-sm" style="margin-top:2px">Last sync: ${new Date(syncInfo.lastSynced).toLocaleTimeString()}</div>` : ''}
+        </div>
+
+        <button class="w" style="margin-bottom:8px" onclick="IronLog.handleManualSync()">
+          ${ICONS.sync} Sync Now
+        </button>
+        <button class="g danger-outline" style="width:100%" onclick="IronLog.handleSignOut()">
+          Log Out
+        </button>
+      `;
+      openModal(content);
+      return;
+    }
+
+    // Guest / Not Logged In
+    const isConfigured = isSupabaseConfigured();
+    IronLog.currentAuthTab = initialTab || 'signin';
+
+    const content = `
+      <h2>${options?.requiredForCheckin ? '🔒 Account Required to Check In' : 'Account & Cloud Sync'}</h2>
+      
+      ${options?.requiredForCheckin ? `
+        <div style="padding:10px 14px;background:rgba(228,83,26,0.15);border:1px solid var(--ac);border-radius:var(--radius-sm);margin:12px 0;font-size:13px">
+          <b>Check-in requires an account:</b> Please sign in or create an account to start your workout and track sets across devices.
+        </div>
+      ` : `
+        <p class="mu-sm" style="margin-bottom:14px">
+          Sign in to automatically sync your workouts, measurements, and custom routines across all your browsers and devices.
+        </p>
+      `}
+
+      <div class="auth-tabs">
+        <div id="tab_signin" class="auth-tab ${IronLog.currentAuthTab === 'signin' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signin')">Sign In</div>
+        <div id="tab_signup" class="auth-tab ${IronLog.currentAuthTab === 'signup' ? 'active' : ''}" onclick="IronLog.switchAuthTab('signup')">Create Account</div>
+      </div>
+
+      <div id="auth_error" style="display:none;color:var(--rd);font-size:13px;margin-bottom:10px;padding:8px;background:rgba(239,68,68,0.1);border-radius:6px"></div>
+
+      <label>Email Address</label>
+      <input id="auth_email" type="email" placeholder="you@example.com" autocomplete="email" required>
+
+      <label>Password</label>
+      <input id="auth_password" type="password" placeholder="At least 6 characters" autocomplete="current-password" required>
+
+      <div style="margin-top:16px">
+        <button id="auth_submit_btn" class="w" onclick="IronLog.submitAuth()">
+          ${IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In'}
+        </button>
+      </div>
+
+      <div style="display:flex;align-items:center;margin:18px 0;gap:10px">
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+        <span class="mu-sm" style="font-size:12px;text-transform:uppercase">Or</span>
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+      </div>
+
+      <button type="button" class="btn-google" onclick="IronLog.handleGoogleSignIn()">
+        ${ICONS.google}
+        <span>Continue with Google</span>
+      </button>
+
+      <div class="mu-sm" style="text-align:center;margin-top:16px;font-size:12px">
+        100% offline-friendly. Your workouts remain accessible even without internet.
+      </div>
+    `;
+    openModal(content);
+  },
+
+  enterAsGuest() {
+    sessionStorage.setItem('il_guest_pass', 'true');
+    renderApp();
+  },
+
+  switchAuthTab(tab) {
+    IronLog.currentAuthTab = tab;
+    const tabSignIn = $('tab_signin');
+    const tabSignUp = $('tab_signup');
+    const submitBtn = $('auth_submit_btn');
+    const errBox = $('auth_error');
+    if (errBox) errBox.style.display = 'none';
+
+    if (tab === 'signup') {
+      tabSignIn?.classList.remove('active');
+      tabSignUp?.classList.add('active');
+      if (submitBtn) submitBtn.textContent = 'Create Account';
+    } else {
+      tabSignUp?.classList.remove('active');
+      tabSignIn?.classList.add('active');
+      if (submitBtn) submitBtn.textContent = 'Sign In';
+    }
+  },
+
+  async submitAuth() {
+    const email = ($('auth_email')?.value || '').trim();
+    const password = $('auth_password')?.value || '';
+    const errBox = $('auth_error');
+    const submitBtn = $('auth_submit_btn');
+
+    if (!email || !password) {
+      if (errBox) {
+        errBox.textContent = 'Please enter both email and password.';
+        errBox.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+      }
+
+      if (IronLog.currentAuthTab === 'signup') {
+        const res = await signUpWithEmail(email, password);
+        sessionStorage.setItem('il_guest_pass', 'true');
+        if (res.user && !res.session) {
+          showToast('Account created! Please check your email to verify.');
+          IronLog.closeModal();
+        } else {
+          showToast('Account created and logged in!');
+          IronLog.closeModal();
+          await pullFromCloud();
+          if (IronLog.pendingCheckinAfterAuth) {
+            IronLog.pendingCheckinAfterAuth = false;
+            IronLog.checkinWorkout();
+          } else {
+            renderApp();
+          }
+        }
+      } else {
+        await signInWithEmail(email, password);
+        sessionStorage.setItem('il_guest_pass', 'true');
+        showToast('Signed in successfully!');
+        IronLog.closeModal();
+        await pullFromCloud();
+        if (IronLog.pendingCheckinAfterAuth) {
+          IronLog.pendingCheckinAfterAuth = false;
+          IronLog.checkinWorkout();
+        } else {
+          renderApp();
+        }
+      }
+    } catch (err) {
+      console.error('Auth error:', err);
+      if (errBox) {
+        errBox.textContent = err.message || 'Authentication failed. Please check credentials.';
+        errBox.style.display = 'block';
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In';
+      }
+    }
+  },
+
+  async handleGoogleSignIn() {
+    try {
+      sessionStorage.setItem('il_guest_pass', 'true');
+      await signInWithGoogle();
+    } catch (err) {
+      console.error('Google sign-in error:', err);
+      let msg = err.message || 'Google sign-in failed.';
+      if (msg.includes('provider is not enabled') || msg.includes('validation_failed')) {
+        msg = 'Google provider is not enabled yet in your Supabase dashboard. Please sign in with Email & Password or enable Google under Supabase Auth → Providers.';
+      }
+      const errBox = $('auth_error');
+      if (errBox) {
+        errBox.textContent = msg;
+        errBox.style.display = 'block';
+      } else {
+        showToast(msg);
+      }
+    }
+  },
+
+  async handleSignOut() {
+    try {
+      const state = getState();
+      if (state.a) {
+        state.a = null;
+        saveState();
+      }
+      sessionStorage.removeItem('il_guest_pass');
+      await signOutUser();
+      showToast('Logged out.');
+      IronLog.closeModal();
+      renderApp();
+    } catch (err) {
+      showToast(err.message || 'Error signing out.');
+    }
+  },
+
+  async handleManualSync() {
+    showToast('Syncing with cloud...');
+    const ok = await pullFromCloud();
+    if (ok) {
+      showToast('Synced successfully with cloud!');
+    } else {
+      showToast('Sync completed (or working offline).');
+    }
+    renderApp();
+  },
+
+  saveSupabaseConfigFromSettings() {
+    const url = ($('cfg_sb_url')?.value || '').trim();
+    const key = ($('cfg_sb_key')?.value || '').trim();
+    setSupabaseConfig(url, key);
+    showToast('Supabase connection saved!');
+    renderApp();
+  },
+
+  showSupabaseSqlGuide() {
+    const sql = `-- Run this in your Supabase SQL Editor:
+create table if not exists public.user_data (
+  user_id uuid references auth.users not null primary key,
+  state jsonb not null default '{}'::jsonb,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.user_data enable row level security;
+
+create policy "Users can view their own data"
+  on public.user_data for select using (auth.uid() = user_id);
+
+create policy "Users can insert their own data"
+  on public.user_data for insert with check (auth.uid() = user_id);
+
+create policy "Users can update their own data"
+  on public.user_data for update using (auth.uid() = user_id);`;
+
+    const content = `
+      <h2>Supabase SQL Setup</h2>
+      <p class="mu-sm">Open your Supabase project dashboard → <b>SQL Editor</b> → Paste and Run this snippet:</p>
+      <textarea rows="10" readonly style="font-family:monospace;font-size:12px;margin:10px 0;width:100%">${sql}</textarea>
+      <button class="w" onclick="navigator.clipboard.writeText(\`${sql}\`).then(() => IronLog.showToast('SQL copied to clipboard!'))">
+        Copy SQL to Clipboard
+      </button>
+    `;
+    openModal(content);
+  },
+
+  showToast(msg) {
+    showToast(msg);
   },
 
   closeModal() {

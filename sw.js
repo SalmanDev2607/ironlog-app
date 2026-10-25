@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ironlog-v2.1.0';
+const CACHE_NAME = 'ironlog-v2.2.0';
 const ASSETS = [
   './',
   './index.html',
@@ -8,7 +8,11 @@ const ASSETS = [
   './js/state.js',
   './js/exercises.js',
   './js/timer.js',
+  './js/icons.js',
+  './js/supabase.js',
+  './js/sync.js',
   './icons/icon.svg',
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
   'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap'
 ];
 

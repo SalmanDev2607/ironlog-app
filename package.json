@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "node server.js",
     "build:standalone": "node build-standalone.js",
-    "test": "node --check server.js && node --check js/app.js && node --check js/state.js && node --check js/exercises.js && node --check js/timer.js && node --check js/icons.js && node build-standalone.js"
+    "test": "node --check server.js && node --check js/app.js && node --check js/state.js && node --check js/exercises.js && node --check js/timer.js && node --check js/icons.js && node --check js/supabase.js && node --check js/sync.js && node build-standalone.js"
   },
   "keywords": [
     "gym-tracker",

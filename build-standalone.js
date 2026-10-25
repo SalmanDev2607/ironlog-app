@@ -28,6 +28,8 @@ const exercisesJs = stripModules(fs.readFileSync(path.join(rootDir, 'js', 'exerc
 const stateJs = stripModules(fs.readFileSync(path.join(rootDir, 'js', 'state.js'), 'utf8'));
 const timerJs = stripModules(fs.readFileSync(path.join(rootDir, 'js', 'timer.js'), 'utf8'));
 const iconsJs = stripModules(fs.readFileSync(path.join(rootDir, 'js', 'icons.js'), 'utf8'));
+const supabaseJs = stripModules(fs.readFileSync(path.join(rootDir, 'js', 'supabase.js'), 'utf8'));
+const syncJs = stripModules(fs.readFileSync(path.join(rootDir, 'js', 'sync.js'), 'utf8'));
 const appJs = stripModules(fs.readFileSync(path.join(rootDir, 'js', 'app.js'), 'utf8'))
   .replace(/if \('serviceWorker' in navigator\) \{[\s\S]*?\n  \}/g, '// Service worker omitted in file:// standalone mode');
 
@@ -58,6 +60,12 @@ const standaloneHtml = `<!DOCTYPE html>
   <style>
 ${cssContent}
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (typeof supabase !== 'undefined' && !window.supabase) {
+      window.supabase = supabase;
+    }
+  </script>
 </head>
 <body>
   <div id="app"></div>
@@ -78,6 +86,12 @@ ${timerJs}
 
 // --- icons.js ---
 ${iconsJs}
+
+// --- supabase.js ---
+${supabaseJs}
+
+// --- sync.js ---
+${syncJs}
 
 // --- app.js ---
 ${appJs}

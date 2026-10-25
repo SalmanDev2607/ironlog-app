@@ -62,12 +62,19 @@ export function loadState() {
   return AppState;
 }
 
+let onSaveListener = null;
+
+export function setOnSaveListener(fn) {
+  onSaveListener = fn;
+}
+
 /**
  * Saves current state to localStorage
  */
 export function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(AppState));
+    if (onSaveListener) onSaveListener();
   } catch (err) {
     console.error('Failed to persist state to localStorage:', err);
   }
