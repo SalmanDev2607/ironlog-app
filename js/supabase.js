@@ -215,6 +215,25 @@ export async function getCurrentSession() {
 }
 
 /**
+ * Sends a password reset email with a link back to the app
+ */
+export async function resetPasswordForEmail(email) {
+  const client = await ensureClient();
+  const redirectTo = window.location.origin + window.location.pathname;
+  const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+  if (error) throw error;
+}
+
+/**
+ * Updates the authenticated user's password (called after clicking reset link)
+ */
+export async function updatePassword(newPassword) {
+  const client = await ensureClient();
+  const { error } = await client.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+}
+
+/**
  * Listens to authentication state changes (SIGNED_IN, SIGNED_OUT, etc.)
  */
 export function onAuthChange(callback) {

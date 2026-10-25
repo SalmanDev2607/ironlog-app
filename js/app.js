@@ -50,7 +50,9 @@ import {
   signOutUser,
   getSupabaseConfig,
   setSupabaseConfig,
-  isSupabaseConfigured
+  isSupabaseConfigured,
+  resetPasswordForEmail,
+  updatePassword
 } from './supabase.js';
 
 import {
@@ -74,6 +76,22 @@ let exerciseFilterMuscle = 'all';
 export function initApp() {
   loadState();
   applyTheme();
+
+  // Detect Supabase password recovery redirect (type=recovery in URL hash)
+  const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
+  if (hashParams.get('type') === 'recovery') {
+    // Clear the hash so it doesn't persist on refresh
+    history.replaceState(null, '', window.location.pathname);
+    // Supabase client picks up the access_token from the hash automatically;
+    // wait a tick then show the set-new-password form
+    loadState();
+    applyTheme();
+    setupTimerInterval();
+    initSync(() => { applyTheme(); renderApp(); });
+    setTimeout(() => IronLog.showPasswordResetForm(), 300);
+    return;
+  }
+
   renderApp();
   setupTimerInterval();
   initSync(() => {
@@ -339,6 +357,12 @@ function renderAuthLandingView() {
         <button id="auth_submit_btn" class="w" style="margin-top:14px" onclick="IronLog.submitAuth()">
           ${IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In'}
         </button>
+
+        <div style="text-align:right;margin-top:8px">
+          <button type="button" class="link-btn" onclick="IronLog.handleForgotPassword()" style="background:none;border:none;color:var(--mu);font-size:12px;cursor:pointer;padding:0;text-decoration:underline">
+            Forgot password?
+          </button>
+        </div>
 
         <div style="display:flex;align-items:center;margin:16px 0;gap:10px">
           <div style="flex:1;height:1px;background:var(--bd)"></div>
@@ -1986,6 +2010,12 @@ window.IronLog = {
         </button>
       </div>
 
+      <div style="text-align:right;margin-top:8px">
+        <button type="button" onclick="IronLog.handleForgotPassword()" style="background:none;border:none;color:var(--mu);font-size:12px;cursor:pointer;padding:0;text-decoration:underline">
+          Forgot password?
+        </button>
+      </div>
+
       <div style="display:flex;align-items:center;margin:18px 0;gap:10px">
         <div style="flex:1;height:1px;background:var(--bd)"></div>
         <span class="mu-sm" style="font-size:12px;text-transform:uppercase">Or</span>
@@ -2089,6 +2119,102 @@ window.IronLog = {
         submitBtn.disabled = false;
         submitBtn.textContent = IronLog.currentAuthTab === 'signup' ? 'Create Account' : 'Sign In';
       }
+    }
+  },
+
+  // ── Forgot / Reset Password ─────────────────────────────────────────────
+
+  handleForgotPassword() {
+    const content = `
+      <h2>Reset Password</h2>
+      <p class="mu-sm" style="margin-bottom:16px">
+        Enter your email address and we'll send you a link to reset your password.
+      </p>
+      <div id="fp_error" style="display:none;color:var(--rd);font-size:13px;margin-bottom:10px;padding:8px;background:rgba(239,68,68,0.1);border-radius:6px"></div>
+      <div id="fp_success" style="display:none;color:#4caf50;font-size:13px;margin-bottom:10px;padding:10px 12px;background:rgba(76,175,80,0.1);border-radius:6px;line-height:1.5"></div>
+      <label>Email Address</label>
+      <input id="fp_email" type="email" placeholder="you@example.com" autocomplete="email">
+      <button id="fp_btn" class="w" style="margin-top:14px" onclick="IronLog.submitForgotPassword()">
+        Send Reset Link
+      </button>
+      <button class="g" style="width:100%;margin-top:8px" onclick="IronLog.openAuthModal('signin')">
+        ← Back to Sign In
+      </button>
+    `;
+    openModal(content);
+  },
+
+  async submitForgotPassword() {
+    const email = ($('fp_email')?.value || '').trim();
+    const errBox = $('fp_error');
+    const successBox = $('fp_success');
+    const btn = $('fp_btn');
+
+    if (!email) {
+      if (errBox) { errBox.textContent = 'Please enter your email address.'; errBox.style.display = 'block'; }
+      return;
+    }
+
+    try {
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+      if (errBox) errBox.style.display = 'none';
+      await resetPasswordForEmail(email);
+      if (successBox) {
+        successBox.innerHTML = `✅ Reset link sent to <b>${email}</b>.<br>Check your inbox (and spam folder). Click the link in the email to set a new password.`;
+        successBox.style.display = 'block';
+      }
+      if (btn) { btn.style.display = 'none'; }
+    } catch (err) {
+      if (errBox) { errBox.textContent = err.message || 'Failed to send reset email.'; errBox.style.display = 'block'; }
+    } finally {
+      if (btn && btn.style.display !== 'none') { btn.disabled = false; btn.textContent = 'Send Reset Link'; }
+    }
+  },
+
+  showPasswordResetForm() {
+    const content = `
+      <h2>🔑 Set New Password</h2>
+      <p class="mu-sm" style="margin-bottom:16px">Choose a strong new password for your IronLog account.</p>
+      <div id="pr_error" style="display:none;color:var(--rd);font-size:13px;margin-bottom:10px;padding:8px;background:rgba(239,68,68,0.1);border-radius:6px"></div>
+      <label>New Password</label>
+      <input id="pr_password" type="password" placeholder="At least 6 characters" autocomplete="new-password">
+      <label style="margin-top:10px">Confirm New Password</label>
+      <input id="pr_confirm" type="password" placeholder="Repeat your new password" autocomplete="new-password">
+      <button id="pr_btn" class="w" style="margin-top:16px" onclick="IronLog.submitNewPassword()">
+        Update Password
+      </button>
+    `;
+    openModal(content);
+  },
+
+  async submitNewPassword() {
+    const password = $('pr_password')?.value || '';
+    const confirm = $('pr_confirm')?.value || '';
+    const errBox = $('pr_error');
+    const btn = $('pr_btn');
+
+    if (!password || password.length < 6) {
+      if (errBox) { errBox.textContent = 'Password must be at least 6 characters.'; errBox.style.display = 'block'; }
+      return;
+    }
+    if (password !== confirm) {
+      if (errBox) { errBox.textContent = 'Passwords do not match.'; errBox.style.display = 'block'; }
+      return;
+    }
+
+    try {
+      if (btn) { btn.disabled = true; btn.textContent = 'Updating...'; }
+      if (errBox) errBox.style.display = 'none';
+      await updatePassword(password);
+      sessionStorage.setItem('il_guest_pass', 'true');
+      showToast('✅ Password updated! You are now signed in.');
+      closeModal();
+      await pullFromCloud();
+      renderApp();
+    } catch (err) {
+      if (errBox) { errBox.textContent = err.message || 'Failed to update password.'; errBox.style.display = 'block'; }
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Update Password'; }
     }
   },
 
