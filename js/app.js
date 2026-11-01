@@ -2387,6 +2387,10 @@ create policy "Users can update their own data"
     showToast(msg);
   },
 
+  openModal(htmlContent) {
+    openModal(htmlContent);
+  },
+
   closeModal() {
     closeModal();
   }

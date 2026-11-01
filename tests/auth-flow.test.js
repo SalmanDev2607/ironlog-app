@@ -186,10 +186,10 @@ async function runTests() {
   });
 
   // 9. Verify Service Worker cache version and strategy
-  test('Service worker contains upgraded cache version ironlog-v2.4.2', () => {
+  test('Service worker contains upgraded cache version ironlog-v2.4.3', () => {
     const fs = require('fs');
     const swContent = fs.readFileSync('sw.js', 'utf8');
-    assert.match(swContent, /ironlog-v2\.4\.2/, 'sw.js must define cache version ironlog-v2.4.2');
+    assert.match(swContent, /ironlog-v2\.4\.3/, 'sw.js must define cache version ironlog-v2.4.3');
   });
 
   console.log(`\nResults: ${passed} passed, ${failed} failed`);

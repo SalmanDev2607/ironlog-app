@@ -1453,6 +1453,20 @@ function formatBotMessage(text) {
   return formatted;
 }
 
+function showModalDialog(html) {
+  if (window.IronLog && typeof window.IronLog.openModal === 'function') {
+    window.IronLog.openModal(html);
+    return;
+  }
+  const md = document.getElementById('md');
+  const mb = document.getElementById('mb');
+  if (md && mb) {
+    mb.innerHTML = html;
+    md.style.display = 'flex';
+    setTimeout(() => md.classList.add('show'), 10);
+  }
+}
+
 /**
  * Open Admin Unlock Modal
  */
@@ -1488,9 +1502,7 @@ export function openAdminUnlockModal() {
     </div>
   `;
 
-  if (window.IronLog && window.IronLog.openModal) {
-    window.IronLog.openModal(html);
-  }
+  showModalDialog(html);
 }
 
 /**
@@ -1613,9 +1625,7 @@ export function openAiConfigModal() {
     </div>
   `;
 
-  if (window.IronLog && window.IronLog.openModal) {
-    window.IronLog.openModal(html);
-  }
+  showModalDialog(html);
 }
 
 /**
