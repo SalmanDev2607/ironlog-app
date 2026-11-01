@@ -64,6 +64,16 @@ import {
   SYNC_STATUS
 } from './sync.js';
 
+import {
+  mountChatWidget,
+  toggleChat,
+  getChatCacheStats,
+  clearChatCache,
+  getAiConfig,
+  openAiConfigModal,
+  isAdminSession
+} from './chatbot.js';
+
 // DOM Element shortcuts
 const $ = (id) => document.getElementById(id);
 
@@ -87,6 +97,7 @@ export async function initApp() {
   }
 
   renderApp();
+  mountChatWidget();
   setupTimerInterval();
   initSync(
     () => { applyTheme(); renderApp(); },
@@ -247,6 +258,9 @@ function renderHeader() {
         <button class="sync-pill" onclick="IronLog.openAuthModal()" title="${syncTooltip}">
           <span class="sync-dot ${syncDotClass}"></span>
           <span>${syncLabel}</span>
+        </button>
+        <button class="icon-btn" onclick="IronLog.toggleChat()" title="IronLog Assistant">
+          ${ICONS.bot}
         </button>
         <button class="icon-btn" onclick="IronLog.toggleTheme()" title="Toggle Theme">
           ${isDark ? ICONS.sun : ICONS.moon}
@@ -1293,6 +1307,34 @@ function renderSettingsView() {
       </div>
     ` : ''}
 
+    <!-- IronLog Assistant & Knowledge Cache Card -->
+    <div class="c">
+      <h3>IronLog AI Coach (RAG & Semantic Cache)</h3>
+      <p class="mu-sm">Retrieval-Augmented Assistant grounded in your IronLog training logs and exercise database, strictly scoped to gym training.</p>
+      
+      <div style="background:var(--bg);padding:12px;border-radius:var(--radius-sm);margin:10px 0">
+        <div class="r sb" style="align-items:center">
+          <div>
+            <div>AI Provider: <b>${getAiConfig().apiKey ? getAiConfig().provider.toUpperCase() + ' (' + (getAiConfig().model || 'active') + ')' : 'Local RAG (Offline)'}</b></div>
+            <div class="mu-sm" style="margin-top:3px">Status: ${getAiConfig().apiKey ? 'Connected to Cloud LLM' : 'Grounded in Local Knowledge Chunks'}</div>
+          </div>
+          <button class="sm" onclick="IronLog.openAiSettings()">${isAdminSession() ? 'Configure AI (Admin)' : 'Configure AI 🔒'}</button>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);padding:12px;border-radius:var(--radius-sm);margin:10px 0;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div>Cached Questions: <b>${getChatCacheStats().totalEntries}</b></div>
+          <div class="mu-sm">Total Cache Hits: <b>${getChatCacheStats().totalHits}</b></div>
+        </div>
+        <button class="sm" onclick="IronLog.toggleChat()">Open Chat</button>
+      </div>
+
+      <div class="r" style="gap:8px">
+        <button class="g" style="flex:1" onclick="IronLog.handleClearChatCache()">Clear Cache</button>
+      </div>
+    </div>
+
   `;
 
   return html;
@@ -1448,6 +1490,28 @@ function setupTimerInterval() {
 
 // Global actions namespace
 window.IronLog = {
+  toggleChat() {
+    toggleChat();
+  },
+
+  openAiSettings() {
+    openAiConfigModal();
+  },
+
+  getCurrentUser() {
+    return getSyncStatus().user;
+  },
+
+  isAdmin() {
+    return isAdminSession();
+  },
+
+  handleClearChatCache() {
+    clearChatCache();
+    showToast('Assistant cache cleared.');
+    renderApp();
+  },
+
   setTab(tabId) {
     currentTab = tabId;
     renderApp();

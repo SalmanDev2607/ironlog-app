@@ -30,9 +30,12 @@
 | [`js/exercises.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/js/exercises.js) | 82-exercise database across 11 muscle groups, 15 workout routines (`WORKOUT_SPLITS`), muscle recovery calculations, and Golden-era aesthetic formulas. |
 | [`js/supabase.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/js/supabase.js) | Supabase client initializer, authentication functions (Email + Google OAuth), recovery token parser (`handleRecoveryRedirect`), and session management. |
 | [`js/sync.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/js/sync.js) | Offline-first cloud sync engine. Debounced push on save, cloud pull on login/reconnect, and union-based state merger (`mergeStates`). |
+| [`js/chatbot.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/js/chatbot.js) | Offline IronLog Assistant, app guardrail scope classifier, semantic similarity query cache (`il_chatbot_cache`), and UI chat widget. |
 | [`js/timer.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/js/timer.js) | Rest timer engine using Web Audio API synthesis (harmonic chime bell) and Mobile Vibration API. |
 | [`js/icons.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/js/icons.js) | Raw SVG vector strings used across the interface. |
 | [`tests/auth-flow.test.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/tests/auth-flow.test.js) | Automated unit & integration tests for password recovery, URL parsing, and token handling. |
+| [`tests/chatbot.test.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/tests/chatbot.test.js) | Automated test suite for chatbot scope enforcement, keyword extraction, similarity calculation, and query caching. |
+| [`supabase/rag-vector-setup.sql`](file:///home/vigo/vigo/personalSpace/ironlog-app/supabase/rag-vector-setup.sql) | PostgreSQL schema & migration for Supabase `pgvector` semantic search, RLS policies, and corpus seeding. |
 | [`build-standalone.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/build-standalone.js) | Node.js script that strips ES modules and compiles everything into `standalone.html`. |
 | [`standalone.html`](file:///home/vigo/vigo/personalSpace/ironlog-app/standalone.html) | Generated single-file bundle. |
 | [`server.js`](file:///home/vigo/vigo/personalSpace/ironlog-app/server.js) | Lightweight development server with port fallback. |
@@ -148,7 +151,7 @@ To prevent stale cache lock-ins during continuous deployment:
 - **Static Assets** (fonts, vector icons, vendor CDNs):
   - **Cache-First**: Served from cache to conserve bandwidth.
 - **Cache Eviction**:
-  - Controlled by `CACHE_NAME = 'ironlog-v2.3.0'`.
+  - Controlled by `CACHE_NAME = 'ironlog-v2.4.1'`.
   - **Rule**: When updating JS or CSS files in production, bump `CACHE_NAME` in `sw.js` to invalidate deprecated caches.
 
 ---
@@ -163,7 +166,8 @@ To prevent stale cache lock-ins during continuous deployment:
   4. `icons.js`
   5. `supabase.js`
   6. `sync.js`
-  7. `app.js`
+  7. `chatbot.js`
+  8. `app.js`
 - `stripModules()` removes `import` and `export` statements, transforming ES modules into a monolithic, global scope.
 - Injects a base64 Data URI for the app icon.
 - Automatically tested and generated during `npm test`.

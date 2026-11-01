@@ -52,8 +52,8 @@ const server = http.createServer((req, res) => {
 
     // Caching headers
     const headers = { 'Content-Type': contentType };
-    if (ext === '.html' || ext === '.webmanifest') {
-      headers['Cache-Control'] = 'no-cache';
+    if (ext === '.html' || ext === '.webmanifest' || ext === '.js' || ext === '.css') {
+      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
     } else {
       headers['Cache-Control'] = 'public, max-age=86400';
     }
